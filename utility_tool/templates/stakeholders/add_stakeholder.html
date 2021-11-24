@@ -1,0 +1,57 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+    body * { font-family: "Playfair Display", serif; }
+</style>
+<body>
+<div class="hero-unit">
+    <div class="container-fluid">
+             <form  id="stform" method="post"  enctype="multipart/form-data">
+              <h2 class="form-signin-heading">Add Stakeholders</h2>
+             You can add up to 6 people at a time manually, save and add 6 more or go back to My Stakeholders.
+             <!-- and import a list from Excel -->
+             <br>
+             <font color="#7F00FF">Note: only name and email address are required entry, other fields are optional.</font>
+             <br>
+             <!-- Provide a button to click to submit the form.  
+             <input class="btn btn-success" type="submit" name="submit" id="submit" value="Save and Back to Stakeholders"/>-->
+             <!--
+              {% if whereamI == "menu" %}                                                                                                                                                                          
+                   <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-primary" type="submit" name="menu" id="menu" value="Save and Back to Flowchart"/></a>
+              {% endif %}  
+              -->
+              {% csrf_token %}
+              {{ stform.management_form }}
+              <br><b><font color="red">{{ sterr }} </font></b>
+              {% for form in stform %}
+              {{ form.id }}
+              {{ form.errors }}                   
+             <br>
+             <font color="red">* </font>First Name:&nbsp;&nbsp;&nbsp;{{ form.firstName }} &nbsp;
+             <font color="red">* </font>Last Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.lastName }}
+             <br>
+             &nbsp;&nbsp;Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.title }} &nbsp;
+             Organization:&nbsp;&nbsp;&nbsp;{{ form.organisation }}
+             <br>
+             <font color="red">* </font>Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.email }} &nbsp;&nbsp;
+             Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{form.phone }}
+             <br>
+             &nbsp;&nbsp;Notes:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ form.notes }}
+             <br />
+             <!--<div style="border-bottom: thin dotted black">-->
+             {% endfor %}
+         <!--
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         </script> -->
+         <span style="float:right;">        
+         <input class="btn btn-success" type="submit" name="submit" id="submit" value="Save and Back to Stakeholders"/>
+         </span> 
+     </form> 
+      </div>
+</div>
+</body>
+
+{% endblock %}

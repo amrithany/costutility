@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                          
+<style>
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 45%;
+    padding: 10px;
+}
+</style>
+<div class="hero-unit">
+    <br><br><b>Screening Criteria:</b><font color="blue"> Resources to help you identify any absolute or non-negotiable requirements that can be applied to narrow down the list of Solution Options to a number that will be feasible to evaluate fully</font>
+<br><br> 
+    Screening Criteria are non-negotiable requirements that can be quickly and easily assessed as Yes/No answers. These can be helpful for kicking off a brainstorming session to identify potential Solution Options or in narrowing down a list of potential Solution Options you already have. If further information is needed to determine whether a Solution Option meets one of these Screening Criteria and this information cannot be obtained immediately, this may suggest the Solution Option should move forward for further evaluation.
+    <br> <br>  
+    <b><font color="blue">Examples of Screening Criteria include:</font></b>
+    <div class="row">
+    <div class="column">  
+    &emsp;Fits within available budget    
+    <br>&emsp;Can be implemented by date required 
+    <br>&emsp;Comports with privacy standards 
+    <br>&emsp;Evidence of effectiveness exists  
+    </div>
+    <div class="column">    
+    Fits within school schedule
+    <br>Meets content requirements or learning objectives
+    <br>Meets state code or other regulations
+    <br>Serves target population (grade level, ELL, etc.)
+    </div>
+    </div>
+    <br> <b><font color="blue">For example,</font></b> if you are trying to decide which literacy program to implement in your school, and you already have a list of 7 possible literacy programs (Solution Options), you may decide to use the following Screening Criteria:
+    <br>&emsp;&emsp; 1.  Fits within available budget: the purchase price of the program must be less than $100 per student
+    <br>&emsp;&emsp; 2.  Fits within school schedule: program must be able to be implemented for 3 hours per week during school hours. 
+    <br><br> If you already have the necessary information about purchase price and how the programs could fit into your school schedule, you can quickly eliminate any program that has a purchase price greater than $100 per student and/or that cannot be implemented for 3 hours per week during school hours. Hopefully, this initial screening will leave you with a more manageable list of literacy programs to move forward for full evaluation. <i>DecisionMaker</i> allows you to put away Solution Options that do not meet your Screening Criteria and reinstate them later if you change your mind.
+    <br><br> The table below demonstrates how you might map each Solution Option against each Screening Criterion to decide whether to keep or eliminate each option.
+
+    <br>
+    <img src="{% static "scr3.PNG" %}" alt="Mapping Solution Options against Screening Criteria" />
+    <br>
+    {% if whereamI == 'aboutmaker' %}                                                                                                                                                                                
+    <a href="/utility_tool/resources/about_maker.html"><input class="btn btn-success" type="button" name="cancel" value="Back to About DecisionMaker"></a>
+    {% else %}      
+        {% if dec_id != 0 %}
+            <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+        {% endif %}   
+        <a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a>
+     {% endif %}    
+</div>
+{% endblock %}

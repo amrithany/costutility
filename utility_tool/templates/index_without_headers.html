@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %} <!-- New line -->
+
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Bootstrap -->
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+        <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+        <title>CBCSE Cost Utility Tool Kit</title>
+    </head>
+
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <h4 style="color:grey">CBCSE Cost Utility Tool Kit</h4>
+                </div>
+           </div>
+        </div>
+        <div>
+        {% block body_block %}
+        {% endblock %}
+        </div>
+    <!--/.fluid-container-->
+    <footer>
+        <div class="container" align="center">
+             {% block footer_block %}
+             {% endblock %}
+        </div>
+    </footer>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+     </body>
+    </html>
+
+
+
+

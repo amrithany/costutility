@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<!-- saved from url=(0108)https://www.pythonanywhere.com/user/amritha/files/home/amritha/costutility/utility_tool/templates/Steps.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% load static %}
+<style>
+/*Back Button*/
+a.button {
+  background-color: #305970;
+  text-decoration: none;
+  color: white;
+  border-radius: 12px;
+  text-align: center;
+  transition: all .3s;
+  padding: 1% 0;
+  width: 10%;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  font-family: "Playfair Display", serif;
+  font-size: 1em;
+  font-weight: 200;
+  letter-spacing:.05em;
+  cursor: none;
+}
+a.button:hover,
+a.button:focus {
+    opacity: 0.7;
+}
+@media screen and (max-width: 768px) {
+  a.button {
+    background-color: #305970;
+    text-decoration: none;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    transition: all .3s;
+    padding: 2% 2%;
+    width: 20%;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    font-family: "Playfair Display", serif;
+    font-size: 1em;
+    font-weight: 200;
+    letter-spacing:.05em;
+    cursor: pointer;
+  }
+}
+
+/*Regular Text Styling*/
+#emphasis {
+  font-weight: 600;
+  color: #447a9a;
+  font-family: "Playfair Display", serif;
+}
+#accent {
+  color: #447a9a;
+}
+
+/*Section 1 Grid (2x2)*/
+@media screen and (min-width: 768px){
+  section#section-one .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(7, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top header-top"
+  "subtitle subtitle"
+  "about about"
+  "column-1 column-2"
+  "column-3 column-4"
+  "text text"
+}
+}
+@media screen and (max-width: 768px){
+  section#section-one .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(9, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top"
+  "subtitle"
+  "about"
+  "column-1"
+  "column-2"
+  "column-3"
+  "column-4"
+  "text"
+}
+}
+
+/*Section 2 Grid (3x1)*/
+section#section-two .grid {
+  display: grid;
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(5, auto);
+  grid-template-areas:
+  "header-top header-top header-top"
+  "subtitle subtitle subtitle"
+  "about about about"
+  "column-1 column-2 column-3"
+  "text text text"
+  }
+
+@media screen and (max-width: 500px){
+section#section-two .grid {
+  display: grid;
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(7, auto);
+  grid-template-areas:
+  "header-top"
+  "subtitle"
+  "about"
+  "column-1"
+  "column-2"
+  "column-3"
+  "text"
+  }
+}
+/*Section 3 Grid (1 column)*/
+section#section-three .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(7, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top"
+  "subtitle"
+  "about"
+  "column-1"
+  "column-2"
+  "column-3"
+  "column-4"
+}
+
+/*Section 4 Grid*/
+@media screen and (max-width: 768px){
+  section#section-four .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(9, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top"
+  "subtitle"
+  "about"
+  "column-1"
+  "photo"
+  "text"
+  }
+}
+@media screen and (min-width: 768px){
+  section#section-four .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(7, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top header-top"
+  "subtitle subtitle"
+  "about about"
+  "column-1 photo"
+  "text text"
+  }
+}
+
+
+
+/*Section 5 Grid*/
+section#section-five .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top"
+  "subtitle"
+  "column-1"
+}
+
+/*Section 6 Grid*/
+@media screen and (max-width: 768px){
+  section#section-six .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(8, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top"
+  "subtitle"
+  "about"
+  "column-1"
+  "photo"
+  "text"
+  "column-2"
+  "text-2"
+}
+}
+@media screen and (min-width: 768px){
+  section#section-six .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(7, auto);
+  /*margin: 0em 1em 1em 1em;*/
+  grid-gap: 1em;
+  grid-template-areas:
+  "header-top header-top"
+  "subtitle subtitle"
+  "about about"
+  "column-1 photo"
+  "text text"
+  "column-2 column-2"
+}
+}
+/*Section 5 Table*/
+table {
+  font-family: "Playfair Display", serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+td.first {
+  text-align: left;
+}
+td, th {
+  border-bottom: 1px solid gray;
+  border-left: 1px solid gray;
+  text-align: center;
+}
+td:first-child, th:first-child {
+  border-left: none;
+  padding: 1%;
+}
+th.top{
+  background-color: #a4c4d7;
+}
+th {
+  background-color: #f5b5a4;
+}
+th.white {
+  background-color: white;
+}
+tr:nth-child(even) {
+  background-color: #e8f0f5;
+}
+@media screen and (max-width: 768px) {
+  table{
+    font-size: .7em;
+  }
+}
+
+/*Section 7 Grid*/
+section#section-seven .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, auto);
+    /*margin: 0em 1em 1em 1em;*/
+    grid-gap: 1em;
+    grid-template-areas:
+    "header-top"
+    "subtitle"
+    "about"
+    "column-1"
+    "column-2"
+    "column-3"
+  }
+
+  /*Section 8 Grid*/
+
+  /*Tablet*/
+  @media screen and (min-width: 768px) {
+  section#section-eight .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(10, auto);
+      /*margin: 0em 1em 1em 1em;*/
+      grid-column-gap: 2em;
+      grid-row-gap: 1em;
+      grid-template-areas:
+      "header-top header-top"
+      "subtitle subtitle"
+      "column-1 photo"
+      "column-2 column-2"
+      "text text"
+      "column-3 column-3"
+      "column-4 column-5"
+      "column-6 column-6"
+      "column-7 column-8"
+      "text-2 text-2"
+      }
+    }
+
+  @media screen and (min-width: 500px) and (max-width:768px){
+  section#section-eight .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(11, auto);
+      /*margin: 0em 1em 1em 1em;*/
+      grid-column-gap: 2em;
+      grid-row-gap: 1em;
+      grid-template-areas:
+      "header-top header-top"
+      "subtitle subtitle"
+      "column-1 column-1"
+      "photo photo"
+      "column-2 column-2"
+      "text text"
+      "column-3 column-3"
+      "column-4 column-5"
+      "column-6 column-6"
+      "column-7 column-8"
+      "text-2 text-2"
+      }
+    }
+
+    @media screen and (max-width: 500px){
+      section#section-eight .grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(13, auto);
+          /*margin: 0em 1em 1em 1em;*/
+          grid-row-gap: 1em;
+          grid-column-gap: 0em;
+          grid-template-areas:
+          "header-top"
+          "subtitle"
+          "column-1"
+          "column-2"
+          "photo"
+          "text"
+          "column-3"
+          "column-4"
+          "column-5"
+          "column-6"
+          "column-7"
+          "column-8"
+          "text-2"
+        }
+      }
+
+
+/*Section 9 Grid*/
+@media screen and (min-width: 768px){
+  section#section-nine .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(4, auto);
+    /*margin: 0em 1em 1em 1em;*/
+    grid-gap: 1em;
+    grid-template-areas:
+    "header-top header-top"
+    "subtitle subtitle"
+    "column-1 photo"
+    "column-2 column-2"
+    }
+  }
+@media screen and (max-width: 768px){
+  section#section-nine .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(5, auto);
+      /*margin: 0em 1em 1em 1em;*/
+      grid-gap: 1em;
+      grid-template-areas:
+      "header-top"
+      "subtitle"
+      "column-1"
+      "photo"
+      "column-2"
+    }
+  }
+
+/*Section 10 Grid*/
+
+@media screen and (max-width: 768px){
+      section#section-ten .grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(10, auto);
+          /*margin: 0em 1em 1em 1em;*/
+          grid-gap: 1em;
+          grid-template-areas:
+          "header-top"
+          "subtitle"
+          "about"
+          "column-1"
+          "photo"
+          "column-2"
+          "column-3"
+          "column-4"
+          "photo-2"
+          "column-5"
+          }
+        }
+@media screen and (min-width: 768px){
+          section#section-ten
+          .grid {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              grid-template-rows: repeat(10, auto);
+              margin: 0em 1em 1em 1em;
+              grid-gap: 1em;
+              grid-template-areas:
+              "header-top header-top"
+              "subtitle subtitle"
+              "about about"
+              "photo photo"
+              "column-1 column-1"
+              "column-2 column-2"
+              "column-3 column-3"
+              "column-4 column-4"
+              "column-5 column-5"
+                "photo-2 photo-2"
+              }
+            }
+
+
+/*Section 11 Grid*/
+      section#section-eleven .grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-template-rows: repeat(6, auto);
+          /*margin: 0em 1em 1em 1em;*/
+          grid-gap: 1em;
+          grid-template-areas:
+          "header-top"
+          "subtitle"
+          "about"
+          "column-1"
+          "column-2"
+          "column-3"
+        }
+
+        /*Section 12 Grid */
+        section#section-twelve .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: repeat(4, auto);
+            /*margin: 0em 1em 1em 1em;*/
+            grid-gap: 1em;
+            grid-template-areas:
+            "header-top header-top header-top header-top"
+            "subtitle subtitle subtitle subtitle"
+            "about about about about"
+            "column-1 column-2 column-3 column-4"
+            }
+        /*Tablet*/
+        @media screen and (min-width: 500px) and (max-width:768px) {
+        section#section-twelve .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(5, auto);
+            /*margin: 0em 1em 1em 1em;*/
+            grid-gap: 1em;
+            grid-template-areas:
+            "header-top header-top"
+            "subtitle subtitle"
+            "about about"
+            "column-1 column-2"
+            "column-3 column-4"
+            }
+          }
+        /*Mobile*/
+        @media screen and (max-width: 500px){
+          section#section-twelve .grid {
+              display: grid;
+              grid-template-columns: 1fr;
+              grid-template-rows: repeat(7, auto);
+              grid-gap: 1em;
+              grid-template-areas:
+              "header-top"
+              "subtitle"
+              "about"
+              "column-1"
+              "column-2"
+              "column-3"
+              "column-4"
+              }
+            }
+
+/*Header, Subtitle, About*/
+.header-top {
+  grid-area: header-top;
+  justify-content: center;
+}
+.subtitle {
+  grid-area: subtitle;
+}
+.about {
+  grid-area: about;
+}
+
+/*Column and Text Formatting*/
+.column-1 {
+  grid-area: column-1;
+  word-wrap: break-word;
+}
+.column-2 {
+  grid-area: column-2;
+}
+.column-3 {
+  grid-area: column-3;
+}
+.column-4 {
+  grid-area: column-4;
+}
+/*Large Screens*/
+@media screen and (min-width:1824px) {
+  .column-photo {
+    grid-area: photo;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    max-width: 100%;
+    padding-bottom: 2%;
+  }
+
+}
+.column-photo {
+  grid-area: photo;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding-bottom: 2%;
+}
+.column-photo-2 {
+  grid-area: photo-2;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.text {
+  grid-area: text;
+}
+.text-2 {
+    grid-area: text-2;
+}
+.column-5 {
+    grid-area: column-5;
+}
+.column-6 {
+    grid-area: column-6;
+}
+.column-7 {
+    grid-area: column-7;
+}
+.column-8 {
+    grid-area: column-8;
+}
+
+/*Sub-Headers*/
+.header-dark {
+  background-color: #447a9a;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding-left: 2%;
+  padding-right: 2%;
+  word-wrap: break-word;
+}
+.header-light {
+  background-color: #6da1bc;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding-left: 2%;
+  padding-right: 2%;
+  word-wrap: break-word;
+}
+.header-white {
+    background-color: white;
+    height: 70px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding-left: 2%;
+    padding-right: 2%;
+    word-wrap: break-word;
+}
+
+/*Icon Formatting*/
+.steps-icon {
+  max-height: 50 px;
+  width: auto;
+}
+img.steps-icon {
+  display: block;
+  object-fit: contain;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100px;
+  width: 100px;
+  /*height: auto;
+  /*max-width: 10%;*/
+  margin-top: 2%;
+}
+</style>
+
+
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./Steps_files/Style.css&#39; %}" rel="stylesheet">
+    <link href="./Steps_files/css" rel="stylesheet">
+
+
+<div id="page-container">
+<div class="nav-upper">
+  <p id="nav-upper"><i>DecisionMaker</i><sup style="font-size: 0.2em">TM</sup> – the CBCSE Cost-Utility Tool Kit © 2019 Teachers College, Columbia University</p>
+ <ul class="nav">
+  <li class="nav"><a href="Home.html">Home</a></li>
+  <li class="nav"><a href="Home.html#About-Us">About DM</a></li>
+  <li class="nav"><a href="/utility_tool/decisions/decisions_list.html">My Decisions</a></li>
+  <li class="nav"><a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a></li>
+  <li class="nav"><a href="Resources-Guidance.html">Resources & Guidance</a></li>
+  <li class="nav"><a href="Contact-Us.html">Contact Us</a></li>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <li class="nav"><a href="/utility_tool/users/login.html">Login</a></li>
+  {% else %}
+     <li class="nav"><a href="/logout.html">Logout</a></li>
+  {% endif %}
+</ul>
+</div>
+<div class="body">
+<section id="section-one">
+    <a name="Decision-Problem"></a><img class="steps-icon" src="{% static "Decision-2.png" %}" alt="Decision Problem" align="center">
+    <div class="grid">
+      <div class="header-top">
+        <h2 class="steps">I. Decision Problem</h2>
+    </div>
+    <div class="subtitle">
+      <h3 class="style1">Resources to help you identify the problem, define your goals, and define the decision problem</h3>
+    </div>
+    <div class="about">
+      <p><i>DecisionMaker</i><sup style="font-size:.4em">TM</sup> will help you address decision problems in which a choice needs to be made between several alternative educational strategies, programs or tools. You can also use it for other types of decisions such as which budget items to continue funding, how much to scale up a promising strategy or program, or which candidate to hire from among a number of potential candidates. Examples of decision problems to which <i>DecisionMaker</i><sup style="font-size:.4em">TM</sup> can be applied include the following:
+      </p></div>
+      <div class="column-1">
+        <div class="header-dark">
+          <h4 id="Steps">School Decisions</h4>
+        </div>
+        <ul>
+          <li class="body-list">Which Social and Emotional Learning (SEL) curriculum should our school purchase?</li>
+          <li class="body-list">What is the best strategy for providing out-of-school (OOS) instruction for our students who are out of school for discipline or health reasons?</li>
+          <li class="body-list">Is an existing after-school program worth continuing to fund at our school?</li>
+        </ul>
+      </div>
+      <div class="column-2">
+        <div class="header-light">
+      <h4 id="Steps">School District Decisions</h4>
+    </div>
+    <ul>
+        <li class="body-list">Which elementary literacy program is most appropriate for our students whose reading skills are below the 750 lexile level?</li>
+        <li class="body-list">Should we scale up a promising Gifted and Talented Identification program to a few grades at all schools or to all grades at a few schools?</li>
+        <li class="body-list">Which digital device should we provide district-wide for our students and teachers? </li>
+        <li class="body-list">What professional development should we provide teachers in order to improve pedagogical practices targeted at helping our K-2 African American students improve their math achievement?</li>
+      </ul>
+      </div>
+      <div class="column-3">
+        <div class="header-light">
+          <h4 id="Steps">State Education Agency Decisions</h4>
+        </div>
+        <ul>
+          <li class="body-list">What is the best way to improve computer education in our state to meet the demands of the 21st Century?</li>
+          <li class="body-list">Should we have a centralized or distributed student information system across our districts?</li>
+          <li class="body-list">Which standardized tests should we require across the state?</li>
+        </ul>
+      </div>
+      <div class="column-4">
+        <div class="header-dark">
+          <h4 id="Steps">University/College Decisions</h4>
+        </div>
+        <ul>
+        <li class="body-list">Which instructional technology tool should we integrate into our classes?</li>
+        <li class="body-list">How do we best serve students who need remediation in math?</li>
+        <li class="body-list">What strategy should we pursue to improve on-time graduation for at-risk students? </li>
+      </ul>
+      </div>
+      <div class="text">
+        <h5>+ Resources to Help You Articulate Problems</h5>
+        <ul>
+          <li class="body-list"><a class="link" href="https://www.cde.state.co.us/uip/rootcauseanalysis" target="_blank">Root Cause Analysis, Colorado Department of Education&nbsp;»</a></li>
+          <li class="body-list"><a class="link" href="https://eric.ed.gov/?id=ED480880" target="_blank">School Leader's Guide to Root Cause Analysis: Using Data to Dissolve Problems. Preuss, Paul G. (2003)&nbsp;»</a></li>
+        </ul>
+      </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <script>
+function goBack() {
+  window.history.back();
+}
+</script>
+  <br>
+  </section></div>
+
+<hr>
+<section id="section-two">
+  <div class="body">
+  <a name="Identify-Stakeholders"></a><img class="steps-icon" src="{% static "Stakeholders-2.png" %}" alt="Identify stakeholders" align="center">
+  <div class="grid">
+    <div class="header-top">
+      <h2 class="steps">II. Identify Stakeholders</h2>
+    </div>
+    <div class="subtitle">
+      <h3 class="style1">Resources to help you identify which stakeholders to include and how </h3>
+    </div>
+    <div class="about">
+      <p align="left">Stakeholders are people who may be affected by a decision. In <i>DecisionMaker</i><sup style="font-size:.4em">TM</sup>, stakeholders are more specifically those who are invited to participate in making the decision being addressed. Relevant stakeholders will vary depending on what the decision is about, but potential stakeholders in educational contexts include the following:
+      </p></div>
+      <div class="column-1">
+        <div class="header-dark">
+          <h4 class="style1">School, District, College/University or State Administrative Leaders</h4>
+        </div>
+        <ul>
+        <li class="body-list">Commissioner</li>
+        <li class="body-list">President/Chancellor</li>
+        <li class="body-list">Superintendents and Assistant Superintendents</li>
+        <li class="body-list">Division Chiefs</li>
+        <li class="body-list">Department Chairs/Heads/Directors</li>
+        <li class="body-list">Principals and Assistant Principals</li>
+      </ul>
+    </div>
+    <div class="column-2">
+      <div class="header-light">
+      <h4 class="style2">School or College/University Staff</h4>
+    </div>
+  <ul>
+        <li class="body-list">Faculty/Teachers and other instructional staff</li>
+        <li class="body-list">Instructional coaches</li>
+        <li class="body-list">Guidance Counselors</li>
+        <li class="body-list">Administrative and other support staff</li>
+      </ul>
+    </div>
+  <div class="column-3">
+    <div class="header-dark">
+        <h4 id="Steps">Other</h4>
+      </div>
+      <ul>
+          <li class="body-list">School, District or State Education Board members</li>
+          <li class="body-list">Parents</li>
+          <li class="body-list">Students</li>
+          <li class="body-list">Community members</li>
+          <li class="body-list">Community partners</li>
+          <li class="body-list">Colleges</li>
+          <li class="body-list">Employers</li>
+        </ul>
+      </div>
+      <div class="text">
+        <p>The National Research Council of the <a class="link" href="http://www.nationalacademies.org/nasem/" target="_blank">National Academies&nbsp;»</a> provides a list of questions that are relevant to the inclusion of stakeholders in environmental decisions. Many of the same issues are relevant to education decision-making. <a class="link" href="https://www.nap.edu/catalog/12434/public-participation-in-environmental-assessment-and-decision-making" target="_blank">Click here&nbsp;» </a> to download the free PDF as a guest, and refer to page 194 to reference this set of questions. Chapter 8 of the document provides a full discussion of issues related to stakeholder participation in decision-making.</p>
+      </div>
+    </div>
+  </div>
+    <a class="button" onclick="goBack()">← Back</a>
+    <br>
+</section>
+<hr>
+<section id="section-three">
+  <div class="body">
+    <a name="Solution-Options"></a><img class="steps-icon" src="{% static "Solution Options-2.png" %}" alt="Solution Options" align="center">
+    <div class="grid">
+      <div class="header-top">
+        <h2 class="steps">III. Solution Options</h2>
+    </div>
+    <div class="subtitle">
+      <h3 class="style1"> Resources to help you identify possible programs, tools or strategies to address the decision problem you have articulated</h3>
+    </div>
+    <div class="about">
+      <p>Solution Options are programs/strategies/tools/individuals that could potentially address the problem that prompted this decision-making process, i.e., they are potential “answers” or solutions to your problem. For example, if you are looking for a Social and Emotional Learning (SEL) program to implement in K-12 schools to address high suspension rates and conflict between students, two Solution Options you might consider are RULER and Character First.</p>
+      </div>
+      <div class="column-1">
+        <div class="header-dark">
+          <h4 id="Steps">Where Can I Find Solution Options?</h4>
+        </div>
+        <p>It may be the case that you have ideas for Solution Options right away, or you may want to ask stakeholders to help you come up with ideas.
+          <br>
+          <br>
+          To identify potential Solution Options for your decision problem, there are a variety of resources you might consult. Potential sources of information include the following:</p>
+        <ul>
+          <li class="body-list">Repositories of research or databases of programs that have been evaluated - see <a class="link" name="reflinks">links&nbsp;» </a><a>to several below.</a></li><a>
+          <li class="body-list"><span style="font-weight:300">Publications (practitioner publications, trade publications or peer-reviewed journals):</span> Literature reviews or meta-analyses on a particular type of intervention might be especially useful to consult. A meta-analysis is a study that combines information from a number of independent studies on the same subject to try to draw a conclusion about general trends.</li>
+          <li class="body-list">Network events or professional association meetings</li>
+          <li class="body-list">Colleagues at your institution</li>
+          <li class="body-list">Colleagues at other institutions</li>
+          <li class="body-list">Vendors</li>
+          <li class="body-list">Consultants</li>
+          <li class="body-list">Professional development sessions</li>
+          </a><li class="body-list"><a>Research or technical assistance centers, e.g., </a><a class="link" href="https://ies.ed.gov/ncee/edlabs/" target="_blank">Regional Educational Labs&nbsp;»</a></li>
+        </ul>
+        <p>Sometimes, establishing a list of Screening Criteria (non-negotiable requirements) first can help you develop a list of viable Solution Options, especially if there could be many different Solution Options and/or you need some guideposts to facilitate brainstorming. For example, imagine that your decision problem is how to provide out-of-school instruction to students who are on long-term suspension or medical leave. Before brainstorming Solution Options, you could check your state’s regulations on what is required under these circumstances. If you are in a state such as New Jersey, you would discover that any solution to this problem must involve at least 10 hours per week of face-to-face and one-to-one interactions between the student and a certified teacher. This immediately rules out some potential Solution Options like having these students participate in regular classes by teleconference or take online courses without teacher supervision.</p>
+      </div>
+      <div class="column-2">
+        <div class="header-light">
+      <h4 id="Steps">How Many Solution Options Should I Consider?</h4>
+    </div>
+    <p>The optimal number of Solution Options to consider will depend on the decision problem at hand and the time and capacity you have available for identifying and evaluating the options. You can add new Solution Options to consider at any time in the decision-making process and “put away” those Solution Options that are clearly not meeting your criteria.
+      <br>nn
+      <br>
+      For example, if you are trying to select a reading curriculum for struggling readers, gathering relevant information on each Solution Option and thoroughly evaluating each potential curriculum could be a very time-consuming process. In this situation, you would want to ensure that the number of options considered is not too large to preclude a thorough evaluation: 3-6 options might be a feasible number.
+      <br>
+      <br>
+      However, a different kind of decision problem, such as ranking budget items to prioritize them for funding, might involve several hundred options. In this case, you would want to devise a less onerous process of gathering relevant information and evaluating each budget item.
+      <br>
+      <br>
+      Note that if you start with a long list of Solution Options, you can use Screening Criteria to narrow down the list until you have a more manageable set to consider thoroughly.
+      </p></div>
+      <div class="column-3">
+        <div class="header-dark">
+      <h4 class="style3">How do I know which information sources are likely to yield suitable Solution Options?</h4>
+    </div>
+    <p>The source of your information may determine the extent to which the potential Solution Option is applicable to your context, and also how reliable the information is. Imagine that you are making a decision to select a reading curriculum for elementary school students and a large majority of your students are English Language Learners (ELLs). Looking for potential reading curricula (Solution Options) in peer-reviewed journals may produce very reliable information about the efficacy of each curriculum in the context studied, but your context may be quite different. Perhaps the study populations contained a very low proportion of ELL students, so even though you trust that the curricula worked well for students in the studies, you are not sure whether that will translate to your own students. You can use <i>DecisionMaker</i><sup style="font-size: 0.4em">TM</sup>’s Relevance Index to help you decide whether a study is relevant enough to your context to give you confidence that the study’s results might apply in your situation.
+    <br>
+    <br>
+    Alternatively, a curriculum recommended by someone from another school in your district with a similar proportion of ELL students may appear to be more suitable for your context but may not have been evaluated rigorously for effectiveness at improving reading outcomes. You will need to consider this trade-off between suitability and reliability when identifying potential Solution Options. It is also important to consider how well each Solution Option interacts with existing policies and regulations in your context. Hence, an option used by another school in your district subject to similar policies and regulations may be the most viable to implement in your context. As a result, you might decide to score a curriculum recommended by a neighboring school higher on “fit with local context” than a curriculum you find in a peer-reviewed journal, but lower on evidence of effectiveness.
+    <br>
+    <br>
+    Bearing these considerations in mind, any of the avenues listed above and below are viable places to start looking for information. We recommend that, once you do have some Solution Options in mind, you use repositories of research to check whether rigorous studies of effectiveness have been conducted in the past, and whether they found positive impacts. If not, you may want to consider piloting some Solution Options to evaluate them in your own context. </p>
+  </div>
+      <div class="column-4">
+        <div class="header-light">
+        <h4 class="style3">Repositories of Research or Databases of Programs that have been Evaluated</h4>
+      </div>
+        <p>You can use the links below to find reports of educational programs and strategies that have been rigorously studied. These may come in the form of individual evaluation reports or studies, or systematic reviews, which synthesize findings from many studies of programs under one theme.</p>
+        <ul>
+        <li class="body-list"><a class="link" href="https://ies.ed.gov/ncee/wwc/" target="_blank">What Works Clearinghouse&nbsp;»</a> Provides reviews of existing rigorous research on different programs, products, practices, and policies in education, and summaries of findings.</li>
+        <li class="body-list"><a class="link" href="http://www.bestevidence.org/" target="_blank">Best Evidence Encyclopedia (BEE)&nbsp;»</a> Provides summaries of scientific reviews produced by many authors and organizations and links to the full texts of each review.</li>
+        <li class="body-list"><a class="link" href="https://www.campbellcollaboration.org/better-evidence/evidence-portals.html" target="_blank">Campbell Collaboration&nbsp;»</a> Provides systematic reviews of research evidence in several areas including education, health, social welfare, crime and justice, and environment and conservation.</li>
+        <li class="body-list"><a class="link" href="https://www.cochranelibrary.com/" target="_blank">Cochrane Library&nbsp;»</a>Provides systematic reviews of health-related interventions.</li>
+        <li class="body-list"><a class="link" href="https://researchmap.digitalpromise.org/" target="_blank">Digital Promise Research Map&nbsp;»</a> Provides links to reviews and articles on educational research in 12 teaching and learning topics, and organizes them in Network View and Chord View to show connections among them.</li>
+        <li class="body-list"><a class="link" href="https://scholar.google.com/" target="_blank">Google Scholar&nbsp;»</a> You can search by key word for scholarly publications on any topic including peer-reviewed articles, evaluation reports, and white papers. These have not been vetted by Google, so you will need to carefully assess the sources and credibility of any documents you find here. Note that peer-reviewed publications often prefer that authors avoid naming specific programs and products. Also, some peer-reviewed journals may be behind a paywall. Sometimes you can find a free, pre-print version of the same paper on the internet by copying and pasting the title of the paper into your search engine.</li>
+      </ul>
+      </div>
+  </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</section>
+<hr>
+<section id="section-four">
+  <div class="body">
+    <a name="Screening-Criteria"></a><img class="steps-icon" src="{% static "Screening-Criteria-2.png" %}" alt="Screening Criteria" align="center">
+    <div class="grid">
+      <div class="header-top">
+        <h2 class="steps">IV. Screening Criteria</h2>
+    </div>
+    <div class="subtitle">
+      <h3 class="style1">Resources to help you identify any absolute or non-negotiable requirements that can be applied to narrow down the list of Solution Options to a number that will be feasible to evaluate fully </h3>
+    </div>
+    <div class="about">
+      <p>Screening Criteria are non-negotiable requirements that can be quickly and easily assessed as yes/no answers. These can be helpful for kicking off a brainstorming session to identify potential Solution Options or in narrowing down a list of potential Solution Options you already have. If further information is needed to determine whether a Solution Option meets one of these Screening Criteria and this information cannot be obtained immediately, this may suggest the Solution Option should move forward for further evaluation.</p>
+      </div>
+      <div class="column-1">
+          <div class="header-dark"><h4 id="Steps">Examples of Screening Criteria</h4>
+          </div>
+        <ul>
+          <li class="body-list">Fits within available budget</li>
+          <li class="body-list">Can be implemented by date required</li>
+          <li class="body-list">Comports with privacy standards</li>
+          <li class="body-list">Evidence of effectiveness exists</li>
+          <li class="body-list">Fits within school schedule </li>
+          <li class="body-list">Meets content requirements or learning objectives</li>
+          <li class="body-list">Meets state code or other regulations</li>
+          <li class="body-list">Serves target population (grade level, ELL, etc.)</li>
+        </ul>
+      </div>
+      <div class="column-photo">
+        <img src="{% static "Students-Library.jpg" %}" style="max-width: 100%">
+    </div>
+    <div class="text">
+      <p><span id="emphasis">For example,</span> if you are trying to decide which literacy program to implement in your school, and you already have a list of 6 possible literacy programs (Solution Options), you may decide to use the following Screening Criteria:
+        <br>
+        <br>
+        </p><ol>
+          <li class="body-list">Fits within available budget: the purchase price of the program must be less than $100 per student</li>
+          <li class="body-list">Fits within school schedule: program must be able to be implemented for 3 hours per week during school hours.</li>
+        </ol>
+        <br>
+        <p>If you already have the necessary information about purchase price and how the programs could fit into your school schedule, you can quickly eliminate any program that has a purchase price greater than $100 per student and/or that cannot be implemented for 3 hours per week during school hours. Hopefully, this initial screening will leave you with a more manageable list of literacy programs to move forward for full evaluation. <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> allows you to put away Solution Options that do not meet your Screening Criteria and reinstate them later if you change your mind.</p>
+        <br>
+      </div>
+  </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</section>
+<hr>
+<section id="section-five">
+  <div class="body">
+  <a name="Screen-Solution-Options"><img class="steps-icon" src="{% static "Screen-Options.png" %}" alt="Screen Solution Options" align="center"></a>
+  <div class="grid">
+    <div class="header-top">
+      <h2 class="steps">V. Screen Solution Options</h2>
+  </div>
+  <div class="subtitle">
+    <h3 class="style1">Applying the Screening Criteria to your Solution Options</h3>
+  </div>
+  <div class="column-1">
+  <p>The table below demonstrates how you might map each Solution Option against each Screening Criterion to decide whether to keep or eliminate each option.
+    <br>
+    <br>
+  </p><p></p><table>
+    <tbody><tr>
+      <th class="top" style="width:40%">Screening Criterion</th>
+      <th class="top" style="width:10%">Option 1</th>
+      <th class="top" style="width:10%">Option 2</th>
+      <th class="top" style="width:10%">Option 3</th>
+      <th class="top" style="width:10%">Option 4</th>
+      <th class="top" style="width:10%">Option 5</th>
+      <th class="top" style="width:10%">Option 6</th>
+    </tr>
+    <tr>
+      <td class="first">Fits within available budget: program must cost less than $100/student</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td class="first">Fits within school schedule: program must be able to be implemented for 3 hours/week during school hours</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <th>"Keep option" or "Put it away for now"</th>
+      <th>Keep option</th>
+      <th>Keep option</th>
+      <th>Put it away for now</th>
+      <th>Put it away for now</th>
+      <th>Keep option</th>
+      <th>Put it away for now</th>
+    </tr>
+
+  </tbody></table>
+  <br>
+  <br>
+  </div>
+  </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</section>
+<hr>
+<section id="section-six">
+  <div class="body">
+  <a name="Evaluation-Criteria"></a><img class="steps-icon" src="{% static "Evaluation-Criteria-2.png" %}" alt="Evaluation Criteria" align="center">
+  <div class="grid">
+    <div class="header-top">
+      <h2 class="steps">VI. Evaluation Criteria</h2>
+  </div>
+  <div class="subtitle">
+    <h3 class="style1">Resources to help identify factors you will consider in evaluating each of the possible Solution Options </h3>
+  </div>
+  <div class="about">
+    <p>Evaluation Criteria are factors that you will consider to help determine which of the potential Solution Options best meet(s) the needs of your stakeholders. Unlike Screening Criteria which essentially require only a Yes/No answer, the goal with Evaluation Criteria is to assess how well each Solution Option meets each criterion. It may take you or your colleagues some time and effort to gather the information and evidence needed to make these assessments.
+      <br>
+      <br>
+  It is important that each Evaluation Criterion you use in <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> can be assigned a numerical value, for example, a test score, a number on a scale, a number corresponding to a rubric rating or other descriptive rating, or a 1/0 rating for Yes/No. By quantifying each item you are using to judge the Solution Options, it is possible to calculate an overall value for each option allowing them to be compared across all factors at once.
+  <br>
+  <br>
+  To help facilitate this, we provide examples of Evaluation Criteria from which you can choose in addition to entering your own criteria. These are presented in two layers: first the “Overarching evaluation criteria” which are the overarching issues against which you might want to evaluate Solution Options, such as “Impact on student academic achievement,” and second, the “Granular evaluation criteria,” which are the more specific and measurable facets against which you might assess each Solution Option, such as “Impact on college admission.” You can view examples of commonly used Overarching and Granular Evaluation Criteria <a class="link" href="http://amritha.pythonanywhere.com/static/Evaluation%20Criteria.pdf">here&nbsp;»</a>.</p>
+  <br>
+    </div>
+    <div class="column-1">
+        <div class="header-dark"><h4 id="Steps">Examples of Overarching Evaluation Criteria</h4>
+        </div>
+      <ul>
+        <li class="body-list">Addresses the identified need </li>
+        <li class="body-list">Equity</li>
+        <li class="body-list">External recommendations</li>
+        <li class="body-list">Feasibility of implementation </li>
+        <li class="body-list">Fit with local context </li>
+        <li class="body-list">Impact on student academic performance</li>
+        <li class="body-list">Impact on student or staff engagement</li>
+        <li class="body-list">Meets required standards and regulations</li>
+        <li class="body-list">Impact on student socio-emotional development </li>
+        <li class="body-list">Improves teacher performance </li>
+        <li class="body-list">Quality of implementation (for programs/strategies/tools already in place) </li>
+        <li class="body-list">Support from stakeholders</li>
+      </ul>
+    </div>
+    <div class="column-photo">
+      <img src="{% static "Teacher-Outside-Kids.jpg" %}" alt="Teacher Outside with Kids" style="max-width: 100%; height: auto">
+  </div>
+  <div class="text">
+    <p><span id="emphasis">For example,</span> if you are selecting a literacy program to implement at your school:
+      </p><ul>
+        <li class="body-list">You might include impact on student academic performance as one Evaluation Criterion. For each Solution Option, you could either review existing studies that indicate a percentage point improvement in performance on a standardized test of reading or conduct your own pilot studies to compare the efficacy of the programs.</li>
+        <li class="body-list">You might include the level of support from teachers as a second criterion. To assess this, you could conduct demonstration lessons from each curriculum during professional development sessions and ask each teacher to indicate their level of support for each program on a scale of 0 to 10. The average teacher rating for each program would be used as the overall metric for teacher support for each program.</li>
+      </ul>
+    </div>
+    <div class="column-2">
+  <div class="header-light">
+    <h4 id="Steps">How many Evaluation Criteria should I use?</h4>
+  </div>
+  <p>There is no fixed number that is right. There should be enough Evaluation Criteria to capture all considerations that are important to you and other stakeholders, but not so many that it would be hard to find the time to gather all the information needed to evaluate each Solution Option against each criterion. In past applications of this framework, six criteria is the average number we have seen used by education decision-makers. But this can vary from 2 to 15. At the extreme, we have also come across a decision that involved an RFP for a new learning management system (LMS) in which over 200 criteria were used to evaluate each LMS being considered. As you can imagine, it took many people several months to evaluate each Solution Option against all these criteria.
+    <br>
+    <br>
+    Note that if the Solution Options do not vary at all in how well they meet a particular Evaluation Criterion, there is no need to include that criterion in the decision analysis. The point of Evaluation Criteria is to help you distinguish between options. In the LMS example above, all LMS’s being considered met most of the criteria so, in reality, the decision-makers only needed to focus their attention on the few items on which the LMS’s varied.</p>
+  </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</div></section>
+<hr>
+<section id="section-seven">
+  <div class="body">
+  <a name="Importance-Scores"></a><img class="steps-icon" src="{% static "Relative-Importance-2.png" %}" alt="Importance Scores" align="center">
+  <div class="grid">
+    <div class="header-top">
+      <h2 class="steps">VII. Importance Scores</h2>
+  </div>
+  <div class="subtitle">
+    <h3 class="style1">What are Importance Scores and how should they be assigned?</h3>
+  </div>
+  <div class="about">
+    <p>Different stakeholders care to a greater or lesser extent about different things. Allowing stakeholders to assign an Importance Score between 0 and 100 to each Evaluation Criterion provides a way to factor different levels of concern about different issues into a decision about which Solution Options to adopt.
+      <br>
+      <br><span id="emphasis">For example,</span> if you are selecting a literacy program to implement at your school and you are considering the following Evaluation Criteria:
+      <br>
+      </p><ul>
+        <li class="body-list">Impact on student academic performance</li>
+        <li class="body-list">Support from teachers</li>
+        <li class="body-list">Availability of materials online</li>
+      </ul>
+      <br>
+      <p>You can assign Importance Scores to each Evaluation Criterion to indicate the relative importance of each criterion as a consideration in the decision. If you believe that impact on student academic performance is of utmost importance, you might assign it an Importance Score of 100. If support from teachers is relatively half as important as impact on student academic achievement, you would assign it an Importance Score of 50. Finally, whether the materials are available online may be of little importance to you if few of your students have internet access after school, so you could assign it a lower score, such as 20 or 10 indicating that it is 5-10 times less important than impact on student academic achievement.
+      <br>
+    <br></p>
+    </div>
+    <div class="column-1">
+      <div class="header-dark">
+        <h4 id="Steps">Integrating Importance Scores from Multiple Stakeholders</h4>
+      </div>
+      <p>If you invite several stakeholders to contribute Importance Scores, <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> will average the scores to provide an overall Importance Score for each Evaluation Criterion. If you are the Project Administrator (Facilitator) for this decision, you will be able to see who contributed which scores. If they vary widely, it may help to get the stakeholders to talk with each other about why different things matter so much (or little) to them and revisit the scoring. Averaging scores can seem democratic but it can also paper over differences that should be understood and addressed to avoid an unnecessarily controversial decision being made. </p>
+      <br>
+      <br>
+    </div>
+    <div class="column-2">
+      <div class="header-light">
+      <h4 class="style3">Assigning Different Numbers of Votes to Different Stakeholders</h4>
+    </div>
+    <p>If you invite stakeholders to contribute Importance Scores, you can allow the scores of certain stakeholders to count more heavily in the decision analysis by giving different numbers of “votes” to different people. For example, you may want to give a student representative a voice in which criteria are most important, while at the same time making sure that a teacher’s inputs count more heavily in the analysis. Each stakeholder starts with 10 votes but you can redistribute them so that, in this situation, the teacher could be assigned 15 votes while the student gets 5 votes. </p>
+    <br>
+    <br>
+  </div>
+  </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</section>
+<hr>
+<section id="section-eight">
+  <div class="body">
+    <a name="Evidence-Gathering"></a><img class="steps-icon" src="{% static "Evidence-Gathering-2.png" %}" alt="Evidence-Gathering" align="center">
+    <div class="grid">
+      <div class="header-top">
+        <h2 class="steps">VIII. Evidence-Gathering to Evaluate Options</h2>
+      </div>
+      <div class="subtitle">
+        <h3 class="style1">Resources to help identify existing evidence or collect new evidence to evaluate how well each Solution Option meets your Evaluation Criteria</h3>
+      </div>
+      <div class="column-1">
+        <div class="header-dark">
+          <br>
+          <h4 id="Steps">Identifying Evaluation Measures and Data to Collect </h4>
+        </div>
+        <p>To assess how well each Solution Option you are considering meets your stated Evaluation Criteria, you will need common measures to evaluate the options against each criterion. For example, if the criterion relates to improving performance on a standardized test, the evaluation measure might be “score on standardized test” or “gain in score on standardized test since last Academic Year.”
+          <br>
+          <br>
+          <i>DecisionMaker</i><sup style="font-size:.4em">TM</sup> suggests ways to evaluate Solution Options against many Evaluation Criteria but, if you need additional ideas, the resources listed below may be helpful in finding existing data or collecting your own data.</p>
+      </div>
+      <div class="column-2">
+        <p><span id="accent">Some examples of existing information you can gather to evaluate Solution Options include:</span>
+          </p><ul>
+            <li class="body-list">Efficacy studies or process evaluations published in peer-reviewed journals or other publications</li>
+            <li class="body-list">Information from the program vendor</li>
+            <li class="body-list">Data collected on outcomes in places where the Solution Options have been implemented previously, either in your own context or in other contexts</li>
+          </ul>
+          <br>
+          <p><span id="accent">You may also choose to collect your own information by:</span>
+            </p><ul>
+              <li class="body-list">Piloting Solution Options and surveying teachers or students for feedback</li>
+              <li class="body-list">Collecting data on outcomes</li>
+              <li class="body-list">Holding focus groups with stakeholders to understand buy-in</li>
+            </ul>
+          </div>
+      <div class="column-photo">
+          <img src="{% static "Science-Teacher.jpg" %}" alt="Science Teacher" style="max-width: 100%; height: auto">
+      </div>
+      <div class="text">
+          <p>If you don’t have much time before a decision must be made, you may need to rely on data from other contexts such as other districts or universities and use this to make an informed estimate of what results you could expect in your own context. Your confidence in being able to replicate the results from another location in your own location might be affected by factors such as the similarity of conditions and populations served, or whether the Solution Option was used in multiple locations and performed similarly across all of them. The Relevance and Credibility section below provides more guidance about this.
+            <br>
+            <br>
+            If no relevant data are available or can be collected within your timeframe for making the decision, you could elicit professional judgments from experienced staff members about how well each Solution Option will perform against each criterion. For example, you could ask Counselors to review college planning software intended for high schoolers and ask them to estimate the percentage increase in high schoolers in your district who will apply to college if you implemented each of several alternative software options in your high schools.</p>
+      </div>
+      <div class="column-3">
+          <div class="header-light">
+            <h4 id="Steps">Relevance and Credibility</h4>
+          </div>
+          <p>In some cases, decision-makers may want to use available evidence to evaluate Solution Options against Evaluation Criteria. However, decision-makers may struggle to determine whether the available evidence is relevant or even appropriate to use in their context.
+            <br>
+            <br>
+            Additionally, in the particular case of assessing evidence of effectiveness, prior studies may exist, but these studies are likely to vary in quality or credibility. Decision-makers may want to consider the results of a less rigorous study to assess whether a Solution Option is effective, but may want to account for the fact that the study could be over- or under- estimating the size of the impact.
+            <br>
+            <br>
+            To account for these issues, <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> provides two optional indices to evaluate existing evidence: a Relevance Index and a Credibility Index. To learn more about these indices and how to use them, please click <a class="link" href="http://amritha.pythonanywhere.com/static/CBCSE%20Relevance%20and%20Credibility%20Indices_042419.pdf" target="_blank">here&nbsp;»</a>.</p>
+            <br>
+      </div>
+      <div class="column-4">
+          <div class="header-dark">
+          <h4 class="style1">Assigning Values to Solution Options for Each Evaluation Criterion</h4>
+        </div>
+          <p>Once you have identified the measures you will use to assess each Solution Option against each Evaluation Criterion and have the data you need to do so in hand, you will need to assign values on each measure for each Solution Option and enter these values into <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup>.
+      </p></div>
+      <div class="column-5">
+          <div class="header-light">
+            <h4 id="Steps">Data Must be in Numerical Form</h4>
+          </div>
+          <p>Data must be collected in a numerical form in order for <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> to calculate a utility value, e.g., points on a 0-10 scale, percentage points, hours per week, days per year, or rubric scores. If you have qualitative data, for example, rubric ratings of “Meets grammar standards to the highest expected level,” “Meets most grammar standards at an acceptable level,” etc., you will need to assign a numerical score to each rubric rating.
+            <br>
+            <br>
+          </p>
+      </div>
+      <div class="column-6">
+          <div class="header-dark">
+            <h4 id="Steps">Likely Lowest and Likely Highest Scores</h4>
+          </div>
+            <p><i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> uses your expectations about likely best and worst case scenarios with respect to each evaluation measure to establish the high and low bounds of utility. The best case scenario you provide is set at 10 out of 10 for utility, assuming that you will be totally satisfied if a Solution Option performs at this level. Similarly, the worst case scenario is set at 0 out of 10 for utility, assuming you will be very dissatisfied with a Solution Option that performs at the lowest likely level. For example, if the evaluation measure is a test of reading comprehension scored between 0 and 40, you would enter the lowest score you think a student in the decision context might feasibly earn, and the highest score. If the population you are trying to serve is struggling readers, you might enter a likely lowest score of 10 and a likely highest score of 25. If they are your advanced readers, the range might be 30-40. These ranges might be based on your past experiences reviewing data from this test, or based on benchmarks provided by the test’s developer/vendor.</p>
+            <br>
+      </div>
+      <div class="column-7">
+            <div class="header-light">
+              <h4 id="Steps">Setting the Direction of Your Preferences</h4>
+            </div>
+            <p>For some evaluation measures such as test scores, graduation rate, or time on task, you are likely to prefer higher values. For others, such as days of absence, dropout rate, or suspensions, you are likely to prefer lower values. <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> asks you to indicate whether higher values are better for each Evaluation Criterion in order to establish whether utility increases for you and your stakeholders as the values go up or down. </p>
+      </div>
+      <div class="column-8">
+            <div class="header-dark">
+              <h4 id="Steps">Resources to Help You Evaluate Solution Options</h4>
+            </div>
+            <p>The free, online resources listed below can be used to help find existing evidence on educational programs, strategies and tools, or to help you produce new evidence to evaluate your Solution Options. <a class="link" href="https://ed.gov/policy/elsec/leg/essa/guidanceuseseinvestment.pdf" target="_blank">Using Evidence to Strengthen Education Investments&nbsp;»</a> is a useful introduction to thinking about evaluating educational programs and strategies. </p>
+      </div>
+      <div class="text-2">
+            <h5>+ Resources to help you conduct your own evaluations of Solution Options</h5>
+            <ul>
+              <li class="body-list"><a class="link" href="https://www.qualtrics.com/blog/10-tips-for-building-effective-surveys/" target="_blank">Best Practices in Survey Design from Qualtrics&nbsp;»</a> Some tips on how to design questions for your own surveys.</li>
+              <li class="body-list"><a class="link" href="http://www.cebc4cw.org/" target="_blank">California Evidence-Based Clearinghouse&nbsp;»</a> Provides descriptions and information on research evidence on child welfare programs, and guidance on how to choose and implement programs. </li>
+              <li class="body-list"><a class="link" href="https://edtech.digitalpromise.org/" target="_blank">Digital Promise’s Ed Tech Pilot Framework&nbsp;»</a> Provides an 8-step framework for district leaders to plan and conduct pilots on educational technology products, along with research-based tools and resources, and tips collected from 14 districts.</li>
+              <li class="body-list"><a class="link" href="https://edtechrce.org/" target="_blank">Mathematica’s Ed Tech RCE Coach&nbsp;»</a> Facilitates the design and analysis of evaluations of educational technology and the interpretation of the results using data on the group using the technology and a comparison group. Although originally designed for evaluating educational technology, RCE Coach can be used for any educational program. </li>
+              <li class="body-list"><a class="link" href="https://rct-yes.com/" target="_blank">RCT-Yes&nbsp;»</a> Facilitates the estimation and reporting of program effects using randomized controlled trials or other evaluation designs with comparison groups. Note that users need to download and install the software as well as R or Stata.</li>
+              <li class="body-list"><a class="link" href="https://ies.ed.gov/ncee/edlabs/projects/technicalAssistance.asp" target="_blank">Regional Education Laboratories&nbsp;»</a>Regional Education Laboratories (RELs) can serve as a “thought partner” for evaluations of educational programs or initiatives. They also offer training, coaching, and technical support (TCTS) for research use “in the form of in-person or virtual consultation or training on research design, data collection or analysis, or approaches for selecting or adapting research-based interventions to new contexts.” </li>
+            </ul>
+            <br>
+            <h5>+ Resources to help you find existing evidence on educational programs, strategies and tools</h5>
+            <ul>
+              <li class="body-list"><a class="link" href="http://www.bestevidence.org/" target="_blank">Best Evidence Encyclopedia (BEE)&nbsp;»</a> Provides summaries of scientific reviews produced by many authors and organizations and links to full texts of each review. </li>
+              <li class="body-list"><a class="link" href="https://www.campbellcollaboration.org/" target="_blank">Campbell Collaboration&nbsp;»</a> Provides systematic reviews of research evidence. </li>
+              <li class="body-list"><a class="link" href="https://www.cochranelibrary.com/" target="_blank">Cochrane Library&nbsp;»</a> Provides systematic reviews of intervention effectiveness and diagnosis tests related to public health in evaluation settings. </li>
+              <li class="body-list"><a class="link" href="https://researchmap.digitalpromise.org/" target="_blank">Digital Promise Research Map&nbsp;»</a> Provides links to reviews and articles of educational research on 12 teaching and learning topics, and organizes them in Network View and Chord View to show connections among them.  </li>
+              <li class="body-list"><a class="link" href="https://ies.ed.gov/ncee/edlabs/" target="_blank">Regional Education Laboratories&nbsp;»</a> School districts or State Education Agencies can contact their REL for help with gathering evidence on educational strategies and programs. Upon request, RELs will perform reference searches and informal reviews of the existing research on interventions, and/or of specific studies against What Works Clearinghouse standards.</li>
+              <li class="body-list"><a class="link" href="https://ies.ed.gov/ncee/wwc/" target="_blank">What Works Clearinghouse&nbsp;»</a> Provides reviews of existing research on different programs, products, practices, and policies in education, and summaries of findings. </li>
+              <li class="body-list"><a class="link" href="https://scholar.google.com/" target="_blank">Google Scholar&nbsp;»</a> You can search by key word for scholarly publications on any topic including peer-reviewed articles, evaluation reports, and white papers. These have not been vetted by Google, so you will need to carefully assess the sources and credibility of any documents you find here. Note that peer-reviewed publications often prefer that authors avoid naming specific programs and products. Also, some peer-reviewed journals may be behind a paywall. Sometimes you can find a free, pre-print version of the same paper on the internet by copying and pasting the title of the paper into your search engine. </li>
+            </ul>
+      </div>
+    </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</section>
+<hr>
+<section id="section-nine">
+  <div class="body">
+      <a name="Costs"></a><img class="steps-icon" src="{% static "Cost-2.png" %}" alt="Cost" align="center">
+      <div class="grid">
+        <div class="header-top">
+          <h2 class="steps">IX. Costs</h2>
+        </div>
+        <div class="subtitle">
+          <h3 class="style1">Resources to help identify the resource requirements and estimate the costs for each Solution Option </h3>
+        </div>
+        <div class="column-1">
+          <div class="header-dark">
+            <h4 id="Steps">Ingredients Method</h4>
+          </div>
+          <p><a class="link" href="https://www.cbcse.org/" target="_blank">CBCSE&nbsp;»</a> (the research center that developed <i>DecisionMaker</i><sup style="font-size:.4em">TM</sup>) uses the ingredients method to estimate the costs of educational programs, strategies or tools (see Levin, 1975; Levin, 1983; Levin &amp; McEwan, 2001; or Levin, McEwan, Belfield, Bowden, &amp; Shand, 2018, for full details on this method). This method defines costs as the resource requirements for implementing a program, strategy or tool (i.e., a Solution Option), regardless of how they are budgeted or financed. These may include personnel time such as teacher and school administrator time, training, facilities, materials, technology and other equipment, services, and other resources. </p>
+          <br>
+        </div>
+        <div class="column-photo">
+          <img src="{% static "Calculator.jpg" %}" alt="Calulating Costs" style="max-width: 90%; height: auto">
+        </div>
+        <div class="column-2">
+          <div class="header-light">
+            <h4 id="Steps">Expenditures Versus Full Costs of Implementation </h4>
+          </div>
+          <p>You may also consider enumerating costs by only considering new expenditures. However, such an analysis may neglect accounting for important resource demands such as the reallocation of teacher and administrator time.
+            <br>
+            <br>
+            For example, expenditures for a new program might include items such as the initial costs of training staff, and any curriculum or additional materials you need to purchase in order to implement the program. However, to understand the full costs of implementing the program, you should consider how teacher and administrator time is being used now, and how that will change when implementing the new program. If one program is very time-consuming for teachers to implement, and another program is not, that may be an important consideration for you, in addition to expenditures. However, if primary concerns for key decision-makers are the additional start-up costs and new demands on the school/district budget, then considering expenditures only may be useful.
+            <br>
+            <br>
+            *Note that if you are only focused on expenditures, then you will be producing expenditure-utility ratios rather than cost-utility ratios in the analysis.</p>
+        <h5>Example:</h5>
+        <p>Below is a table comparing implementation costs vs. expenditures for a school that is considering adopting a social-emotional learning (SEL) program. The school considered two SEL curricula, RULER and Character First. A third Solution Option considered was maintaining the status quo, which involved students attending advisory sessions each day.
+          <br>
+          <br>
+          As you can see from the table, maintaining the status quo required no new expenditures, while Character First required over $1,300 for training and curriculum materials, and RULER required almost $11,000, primarily because the training is more intensive and involves travel.
+          <br>
+          <br>
+          While the expenditure amounts for the two SEL programs were not large, the amount of personnel time involved in implementing an SEL curriculum is quite considerable, especially in the first year. As shown in the table, this amounts to over $100,000 in personnel time (i.e., salary and fringe benefits for the number of hours collectively spent by personnel on this activity). SEL curricula tend to encourage developing a core implementation team and getting the entire community involved in understanding and practicing the principles taught by the curriculum. If personnel are spending time on these SEL activities, they must be spending less time on other school activities (or working longer hours!). As a result, considering the personnel time involved in implementing each program may be important for this particular decision. Note, however, that the status quo of running advisory sessions is also using teacher and administrator time, albeit in different ways. Costs of personnel time for the first year of implementing RULER are almost $10,000 more than for implementing advisory, but the school would actually save $7,400 in personnel time in the first year of implementing Character First.
+          <br>
+          <br>
+          When enumerating costs associated with personnel time, you should always consider how resource requirements will change relative to business as usual, as the status quo is also utilizing important resources in another way. You can see that implementing advisory already demands a lot of personnel time. RULER requires even more time, at least in the first year because it involves a dedicated implementation team and intensive initial training, while Character First uses fewer personnel resources, partly because the availability of sample lesson plans reduces the amount of time teachers need to prepare their own lessons.</p>
+        <h3><img src="{% static "Expenditure.png" %}" alt="Cost Implementation Table" style="max-width: 100%; height: auto"></h3>
+        <h5>+ Tools </h5>
+        <ul>
+          <li class="body-list"><a class="link" href="https://www.cbcsecosttoolkit.org/" target="_blank">CostOut&nbsp;»</a> A free, online tool to help estimate the costs and cost-effectiveness of educational or other social programs. </li>
+        </ul>
+        <p>Guidance on cost estimation methods:</p>
+        <ul>
+          <li class="body-list"><a class="link" href="https://eric.ed.gov/?id=ED574634" target="_blank">The Critical Importance of Costs for Education Decisions&nbsp;» </a> (2017)</li>
+          <li class="body-list"><a class="link" href="https://www.youtube.com/watch?v=ihV6XO9-H24" target="_blank">Using Cost Analysis to Inform Decisions About Professional Learning&nbsp;» </a>(Webinar recording, 2018)</li>
+          <li class="body-list"><a class="link" href="https://static1.squarespace.com/static/583b86882e69cfc61c6c26dc/t/595a38f79de4bb45731dbaeb/1499085047436/19345747%252E2014%252E915604.pdf" target="_blank">Guiding the Development and Use of Cost-Effectiveness Analysis in Education&nbsp;»</a> (2015) </li>
+        </ul>
+        <p>Reports and articles illustrating cost analyses and cost-effectiveness analyses of educational programs by researchers who have rigorously estimated costs:</p>
+        <ul>
+          <li class="body-list"><a class="link" href="https://www.cbcse.org/publications/a-benefit-cost-analysis-of-a-long-term-intervention-on-social-and-emotional-learning-in-compulsory-school" target="_blank">A Benefit-Cost Analysis of a Long-Term Intervention on Social and Emotional Learning in Compulsory School&nbsp;» </a> (2017)</li>
+          <li class="body-list"><a class="link" href="https://www.cbcse.org/publications/cost-effectiveness-analysis-of-early-reading-programs-a-demonstration-with-recommendations-for-future-research" target="_blank">Cost-Effectiveness Analysis of Early Reading Programs: A Demonstration With Recommendations for Future Research&nbsp;» </a>(2015)</li>
+          <li class="body-list"><a class="link" href="https://www.cbcse.org/publications/esss" target="_blank">Examining Systems of Student Support&nbsp;»</a> (2018) </li>
+          <li class="body-list"><a class="link" href="https://www.cbcse.org/publications/leveraging-volunteers-an-experimental-evaluation-of-a-tutoring-program-for-struggling-readers" target="_blank">Leveraging Volunteers: An Experimental Evaluation of a Tutoring Program for Struggling Readers&nbsp;»</a> (2016) </li>
+          <li class="body-list"><a class="link" href="https://www.cbcse.org/publications/reach-cost-analysis" target="_blank">Reach Cost Analysis&nbsp;»</a> (2018) </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</section>
+<hr>
+<section id="section-ten">
+  <div class="body">
+      <a name="Make-Decision"></a><img class="steps-icon" src="{% static "Solution-2.png" %}" alt="Make a Decision" align="center">
+      <div class="grid">
+        <div class="header-top">
+          <h2 class="steps">X. Make a Decision</h2>
+        </div>
+        <div class="subtitle">
+          <h3 class="style1">How to think about the results and apply them to decision-making  </h3>
+        </div>
+        <div class="about">
+          <p>Using the information you have entered about the Solution Options you are considering, <i>DecisionMaker</i><sup style="font-size:0.4em;">TM</sup> provides summary metrics that you can use to compare the Solution Options and inform your decision about which, if any, of the solutions to pursue. </p>
+          <br>
+        </div>
+        <div class="column-1">
+          <div class="header-dark">
+            <h4 id="Steps">Utility Values</h4>
+          </div>
+          <p>These values should reflect how well each Solution Option meets your stakeholders’ criteria and, consequently, how satisfied they will be with this Solution Option. A Solution Option with an overall utility value of 10 would, in theory, meet your stakeholders’ criteria perfectly and a Solution Option scoring 0 would not meet their Evaluation Criteria at all. Clearly, choosing options with higher overall utility values should make your stakeholders happier.
+            <br>
+            <br>
+            If you want to understand more about how utility is calculated, click <a class="link" href="https://www.pythonanywhere.com/user/amritha/files/home/amritha/costutility/utility_tool/templates/Steps.html#Utility">here&nbsp;».</a>
+            <br>
+            <br>
+            </p><p>If none of the Solution Options scores very well on overall utility, you may need to think about whether there is time to start over and consider a new set of options. Alternatively, now that you have a good idea about what your stakeholders care about, it may be possible to modify one of the current options to make it more acceptable to stakeholders. </p>
+            <br>
+            <br>
+          </div>
+          <div class="column-photo">
+            <img src="{% static "Meeting.jpg" %}" alt="Meeting" style="max-width: 90%; height: auto">
+          </div>
+          <div class="column-2">
+            <div class="header-light">
+              <h4 id="Steps">Importance Weights </h4>
+            </div>
+            <p>Note that these overall utility values incorporate stakeholders’ Importance Scores which indicate how much they care about each Evaluation Criterion used in the analysis. These scores are rescaled into the Importance Weights shown on the final results page. A bigger weight means stakeholders care more about the issue. It is worth checking that the Solution Option(s) you decide to adopt score(s) well on the criteria that have the highest weights. </p>
+            <br>
+          </div>
+          <div class="column-3">
+            <div class="header-dark">
+              <h4 id="Steps">Cost-Utility Ratios </h4>
+            </div>
+            <p><i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> combines the overall utility value for each Solution Option with the cost estimate you provided to show you a return on investment metric called a cost-utility ratio. This ratio is the cost per unit of stakeholder satisfaction (costs divided by utility value). A low cost-utility ratio indicates high return on investment because it means a Solution Option costs little per unit of stakeholder satisfaction. While, in theory, you should choose the Solution Option with the lowest cost-utility ratio, there may be reasons not to. One reason would be if the utility value is low, as explained above: paying very little does not help if no-one is going to be happy with the Solution Option chosen. Another reason could be that several options fit within your budget so you may decide to choose the one with the highest utility value knowing that you can afford it and make your stakeholders happier. Satisfied stakeholders are more likely to implement the chosen solution with care, which in turns means it is more likely to be successful in achieving your original goals.
+              <br>
+              <br>
+              We recommend you share the result of the analysis with stakeholders before making a final decision. For example, you can share some or all of the Summary Report which you can download by clicking the “Summary Report” button under the relevant decision flowchart. If stakeholders express dissatisfaction with the Solution Options that show the best results, ask them to think about whether they have other important considerations that they did not initially express. If they do, this may require identifying an additional evaluation criterion and re-evaluating the Solution Options against this new criterion to see whether the overall results change. If the issues they care about were already adequately captured in the Evaluation Criteria, it is likely that the options they favored did not perform well on some evaluation measures. Reviewing the results of the evaluation with them may help them understand the reasons some Solution Options did not fare well in the decision analysis. As with any evaluation, the numerical results should be helpful in promoting discussions based on evidence, but should not make the decision for you. </p>
+              <br>
+            </div>
+            <div class="column-4">
+              <div class="header-light">
+                <h4 id="Steps">"What-If?" Analysis</h4>
+              </div>
+              <p>It is also helpful to see how the results of your analysis might change under different possible circumstances. What if a reading program does not produce test score results as high as you expected? What if the costs of implementing an option double next year? What if you conducted the analysis separately with teachers and administrators? Would the same Solution Option come out on top in each case or would different ones rise to the top? If the same Solution Option performs best under different scenarios, you can be quite confident it is a good choice. If not, think carefully about how likely it is that circumstances change in a way that could lead to less-than-desirable outcomes. </p>
+              <br>
+            </div>
+            <div class="column-5">
+              <div class="header-dark">
+                <h4 id="Steps">Evaluating Whether You Made a Good Decision</h4>
+              </div>
+              <p>At some point after you have implemented one or more Solution Options, revisit the analysis to see whether, in practice, each option has performed as well as expected when it was first selected. You can update the data in the evaluation measures and cost tables to see how the options rank now with up-to-date performance data. This will help you decide whether to continue with the same Solution Options going forward, or whether you might need to change focus. It is also possible that stakeholders change over time or that new factors may need to be considered in the decision, for example, if a new regulation is imposed or if the composition of the student population changes. The analysis can be modified iteratively to ensure that you are continuously re-evaluating the options in light of changing conditions.</p>
+              <br>
+              <br>
+            </div>
+            <div class="column-photo-2">
+              <img src="./Steps_files/{% static" graduation-2.jpg"="" %}"="" alt="Graduation" style="max-width: 80%; height: auto">
+            </div>
+          </div>
+        </div>
+        <a class="button" onclick="goBack()">← Back</a>
+        <br>
+      </section>
+<hr>
+<section id="section-eleven">
+  <div class="body">
+    <a name="Utility"></a>
+    <div class="grid">
+      <div class="header-top">
+        <h2 class="steps">Utility Values</h2>
+      </div>
+      <div class="subtitle">
+        <h3 class="style1">Resources to help you identify existing evidence or collect new evidence to evaluate how well each Solution Option meets your Evaluation Criteria</h3>
+  </div>
+  <div class="about">
+    <p>In <i>DecisionMaker</i><sup style="font-size:.04em">TM</sup>, utility is a measure of stakeholder satisfaction or “usefulness” reported on a scale of 0-10. A utility value of 0 would indicate that the Solution Option provides no stakeholder satisfaction while a value of 10 would indicate the perfect solution.
+      <br>
+      <br>
+      Utility is based on subjective and/or objective valuations of each Solution Option. Users indicate how well each Solution Option performs against each Evaluation Criterion and also how important each of these Evaluation Criteria is relative to the others. We multiply criterion-level utility values derived from the performance rating/score earned by each Solution Option by the importance weights that stakeholders have assigned to the Evaluation Criteria, and sum these to obtain overall utility values for each Solution Option. We assume that utility increases or decreases in a straight line between the highest and lowest likely values for each evaluation measure used.
+      <br>
+      <br>
+      The term “utility” was introduced in 1738 by Daniel Bernoulli, a Swiss mathematician and physicist, to refer to the total satisfaction received by a consumer from consuming a good or service. Philosophers such as Jeremy Bentham defined utility as the “property in any object, whereby it tends to produce benefit, advantage, pleasure, good, or happiness” (1789, I.4.). Utility is hard to measure in practice but economists have developed sophisticated ways to calculate expected utility using a combination of decision-maker preferences and probabilities of outcomes. Henry Levin, an economist of education, illustrated practical applications of utility analysis in education starting in 1980. </p>
+      <br>
+  </div>
+  <div class="column-1">
+    <div class="header-dark">
+      <h4 id="Steps">How the Utility Values are Calculated</h4>
+    </div>
+    <p><i>DecisionMaker</i><sup style="font-size:.04em">TM</sup> uses the data you entered in the Evaluation Measures table to calculate utility. The overall utility value earned by a Solution Option is the sum of the utility scores it earns on each of the Evaluation Criteria (Criterion-level unweighted utility values) multiplied by the importance weights assigned by stakeholders to the criteria. </p>
+    <h5>Example:</h5>
+    <p>Suppose you, as the principal of Everglades Elementary School, need to identify an educational strategy to help K-3 students improve reading comprehension. You are deliberating between two reading programs A and B. You invite your school’s Reading Specialists and all the K-3 teachers to participate in the decision as stakeholders. As a team, they develop a list of three Evaluation Criteria and assign Importance Scores to each of them. Your AP helps you identify an evaluation method for each Evaluation Criterion and collect data to assess how well Program A and Program B perform against it (see table below).</p>
+    <h3><img src="./Steps_files/{% static" program-table.png"="" %}"="" alt="Program table" style="max-width:100%; height: auto"></h3>
+    <br>
+  </div>
+  <div class="column-2">
+    <div class="header-light">
+      <h4 id="Steps">Criterion-Level Unweighted Utility Value</h4>
+    </div>
+    <p>Each measure you used in your evaluation is rescaled to convert your results to a common utility scale with a minimum of 0 and a maximum of 10. The likely lowest score and the likely highest score you entered for each measure are used to set the extremes of the scale, and a straight line connects the two points. This assumes that utility changes in direct proportion to the changes in the evaluation measure.
+      <br>
+      <br>
+      When the rating/score on an evaluation measure is positively associated with the utility values (i.e., higher scores are better), the likely lowest score you entered is assumed to provide 0 utility and the likely highest score you entered is assumed to provide a utility value of 10. The criterion-level unweighted utility value for a Solution Option is:</p>
+    <h3><img src="./Steps_files/{% static" criterion-1.png"="" %}"="" alt="Criterion" style="max-width: 100%; height: auto"></h3>
+    <p>When the rating/score on an evaluation measure is negatively associated with the utility values (i.e., lower scores are better), the likely lowest score you entered is assumed to provide a utility value of 10 while the likely highest score you entered is now assumed to provide 0 utility. The criterion-level unweighted utility value for a Solution Option is:</p>
+    <h3><img src="./Steps_files/{% static" criterion-2.png"="" %}"="" alt="Criterion-2" style="max-width: 100%; height: auto"></h3>
+    <p>Take the criterion-level unweighted utility value of Program A for “evidence of effectiveness in improving reading comprehension” as an example. The evaluation measure is the change in % of students who perform below grade level in reading. Clearly, you want fewer students to be below grade level in reading, so the evaluation measure in this case is negatively associated with utility.
+      <br>
+      <br>
+      The likely lowest score is -20 (i.e., a 20 percentage point reduction in the number of students who perform below grade level).
+      <br>
+      <br>
+      The likely highest score is 10 (i.e., a 10 percentage point increase in the number of students who perform below grade level). Lower scores are better. The likely lowest score of -20 is assigned a utility value of 10 and the likely highest score of 10 is assigned a utility value of 0.
+      <br>
+      <br>
+      A straight line is used to connect the two points, under the assumption that utility changes in direct proportion to the changes in the evaluation measure (see figure below). The score/rating of -10 for Program A is transformed into a utility value of 6.7 using the following formula: </p>
+      <br>
+    <div align="center">
+    <span id="emphasis">Utility value = 10 * (-10 - (-20))/(10 - (-20)) = 6.7</span>
+  </div>
+  <h3><img src="./Steps_files/{% static" criterion-graph.png"="" %}"="" alt="Graph" style="max-width: 100%; height: auto"></h3>
+  </div>
+  <div class="column-3">
+    <div class="header-dark">
+      <h4 id="Steps">Overall Utility Value</h4>
+    </div>
+    <p>The overall utility value is the sum of the criterion-level utility values multiplied by the importance weights. The overall utility values for Program A and Program B are calculated using the following formulas:
+      <br>
+      </p><ul>
+        <li class="body-list">Overall utility value for Program A = (6.7 *0.17) + (9 * 0.33) + (8.5 * 0.50) = 8.36 </li>
+        <li class="body-list">Overall utility value for Program B = (5 * 0.17) + (6 * 0.33) + (5.8 * 0.5) = 5.73 </li>
+      </ul><p></p>
+      <br>
+    <p><a class="link" href="https://www.amazon.com/Cost-Effectiveness-Primer-New-Perspectives-Evaluation/dp/0803921535" target="_blank">Cost-effectiveness: A Primer&nbsp;»</a> by Henry M. Levin (1983) provides examples of how utility can be derived for educational programs or strategies, and the results combined with cost estimates to provide cost-utility ratios. </p>
+  </div>
+  </div>
+  </div>
+  <a class="button" onclick="goBack()">← Back</a>
+  <br>
+</section>
+<hr>
+<section id="section-twelve">
+  <div class="body">
+    <br>
+      <a name="Resources"></a><img class="steps-icon" src="{% static "Resources-2.png" %}" alt="General resources" align="center">
+      <div class="grid">
+        <div class="header-top">
+          <h2 class="steps">XI. General Resources</h2>
+        </div>
+        <div class="subtitle">
+          <h3 class="style1">Miscellaneous other resources</h3>
+        </div>
+        <div class="about">
+          <p>The education agencies who helped us develop <i>DecisionMaker</i><sup style="font-size: 0.4em">TM</sup> named a variety of resources they use to gather information about educational programs, strategies and tools. These include the following: </p>
+          <br>
+        </div>
+        </a><div class="column-1"><a name="Resources" <="" a="">
+          <div class="header-dark">
+            <h4 id="Steps">Professional Associations</h4>
+          </div>
+          </a><ul id="no-indent"><a name="Resources" <="" a="">
+            </a><li class="body-list"><a name="Resources" <="" a=""></a><a class="link" href="https://www.acsa.org/" target="_blank">Association of California School Administrators (ACSA)&nbsp;»</a></li>
+            <li class="body-list"><a class="link" href="https://www.cgcs.org/" target="_blank">Council of the Great City Schools (CGCS)&nbsp;»</a></li>
+            <li class="body-list"><a class="link" href="https://www.ccsso.org/" target="_blank">Council of Chief State School Officers (CCSSO)&nbsp;»</a></li>
+          </ul>
+        </div>
+        <div class="column-2">
+          <div class="header-light">
+            <h4 id="Steps">Consortia</h4>
+          </div>
+          <p><a class="link" href="https://coredistricts.org/" target="_blank">CORE Districts&nbsp;»</a> (California-specific)</p>
+        </div>
+        <div class="column-3">
+          <div class="header-dark">
+            <h4 id="Steps">Books</h4>
+          </div>
+            <p>Visible Learning: A Synthesis of Over 800 Meta-Analyses Relating to Achievement by John Hattie (2008)</p>
+          </div>
+          <div class="column-4">
+            <div class="header-light">
+              <h4 id="Steps">Newspapers and Social Media</h4>
+            </div>
+            <ul id="no-indent">
+              <li class="body-list"><a class="link" href="https://edsource.org/" target="_blank">EdSource&nbsp;»</a></li>
+              <li class="body-list"><a class="link" href="https://www.edweek.org/ew/index.html" target="_blank">Education Week&nbsp;»</a></li>
+              <li class="body-list"><a class="link" href="https://www.twitter.com/">Twitter&nbsp;»</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <a class="button" onclick="goBack()">← Back</a>
+      <br>
+</section>
+<footer>
+  <p id="footer">Developed by <a class="footer-link" href="https://www.cbcse.org/" target="_blank">CBCSE&nbsp;»</a> at <a class="footer-link" href="https://www.tc.columbia.edu/" target="_blank">Teachers College, Columbia University&nbsp;»</a> with the generous support of the <a class="footer-link" href="http://wtgrantfoundation.org/" target="_blank">William T. Grant Foundation&nbsp;»</a>, <i>DecisionMaker</i><sup style="font-size: 0.2em">TM</sup> is freely available to all educators to facilitate collaborative and evidence-based decision-making in education.</p>
+</footer>
+</div>
+
+</body></html>

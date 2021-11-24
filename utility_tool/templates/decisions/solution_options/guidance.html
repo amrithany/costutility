@@ -1,0 +1,80 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+</style>
+<div class="hero-unit">
+<div class="container-fluid">
+<br>
+<h2 class="form-signin-heading"> Resources & Guidance </h2>
+This page links to resources to guide you at various stages of the decision-making process. Click on the relevant step to view the resources available.
+<br><br>
+<table class="table">
+    <tr>    
+        <td><b>I </b> </td>
+        <td><b> Decision Problem</b> </td>
+        <td><a href="/utility_tool/resources/dec_info.html" target="_blank">Resources to help you identify the problem, define your goals, and define the decision problem</a></td>
+    </tr>   
+        <td><b>II </b> </td>
+        <td><b>Identify Stakeholders</b> </td>
+        <td><a href="/utility_tool/resources/st_info.html">Resources to help you identify which stakeholders to include and how</a></td>  
+    </tr>   
+        <td><b>III </b> </td>
+        <td><b>Solution Options</b> </td>
+        <td><a href="/utility_tool/resources/solopt_info.html">Resources to help you identify possible programs, tools or strategies to address the decision problem you have articulated</a></td> 
+    </tr>   
+        <td><b>IV </b> </td>
+        <td><b>Screening Criteria</b> </td>
+        <td><a href="/utility_tool/resources/scr_info.html">Resources to help you identify any absolute or non-negotiable requirements (e.g., compliance issues) that can be applied to narrow down the list of Solution Options to a number that will be feasible to evaluate fully</a></td> 
+    </tr>   
+        <td><b>V</b> </td>
+        <td><b>Evaluation Criteria</b> </td>
+        <td><a href="/utility_tool/resources/eva_info.html">Resources to help identify factors you will consider in evaluating each of the possible Solution Options</a></td> 
+    </tr>   
+        <td><b>VI </b> </td>
+        <td><b>Importance Scores</b> </td>
+        <td><a href="/utility_tool/resources/score_info.html">What are Importance Scores and how should you assign them?</a></td> 
+    </tr>   
+        <td><b>VII </b> </td>
+        <td><b>Evaluation Measures and Results</b> </td>
+        <td><a href="/utility_tool/resources/evamea_info.html">Resources to help identify existing evidence or collect new evidence to evaluate how well each Solution Option meets your Evaluation Criteria</a></td> 
+    </tr>   
+        <td><b>VIII </b> </td>
+        <td><b>Utility Results</b> </td>
+        <td><a href="/utility_tool/resources/utility_info.html">What is utility and how should you interpret it?</a></td> 
+    </tr>   
+        <td><b>IX </b> </td>
+        <td><b>Costs</b> </td>
+        <td><a href="/utility_tool/resources/costs_info.html">Resources to help identify the resource requirements and estimate the costs of implementing each Solution Option</a></td> 
+    </tr>   
+        <td><b>X </b> </td>
+        <td><b>Make a decision</b> </td>
+        <td><a href="/utility_tool/resources/makedec_info.html">How to think about the results and apply them to decision-making</a></td> 
+    </tr>   
+        <td><b>XI </b> </td>
+        <td><b>General Resources</b> </td>
+        <td><a href="/utility_tool/resources/gen_info.html">Miscellaneous other resources</a></td> 
+    </tr>
+</table>
+
+<br>
+{% if dec_id != 0 %}
+    <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>       
+{% endif %}  
+<!--<input class="btn btn-primary" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+        var passvar = '{{dec_id}}';
+
+        function goback() {
+           document.location.href = "/utility_tool/decisions/"+ passvar + "/menu.html";
+        }
+
+</script>
+-->
+</div>
+</div>
+
+{% endblock %}
+

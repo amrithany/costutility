@@ -1,0 +1,14 @@
+<link type="text/css" href="/css/redmond/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+<link type="text/css" href="/css/dj.selectable.css" rel="stylesheet" />
+<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="/js/jquery.dj.selectable.js">
+
+
+$(function(){
+  $('[id=id_q]').bind('autocompleteselect', function(event, ui){
+      $(this).val(ui.item.value);
+          $(this).parents("form").submit();
+  });
+});
+</script>

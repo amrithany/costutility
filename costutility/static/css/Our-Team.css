@@ -1,0 +1,109 @@
+p, img,ul, li,
+figure, figcaption, section, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+figcaption, figure, section {
+  display: block;
+}
+
+p {
+  line-height: 2;
+}
+
+.body {
+  padding-top: 50px;
+}
+
+.spacer {
+  display: none;
+}
+@media screen and (max-width: 500px) {
+  .body {
+    padding-top: 25px;
+  }
+
+.spacer{
+  min-height: 150px;
+  content: "";
+  display: inline-block;
+  }
+}
+
+.photo {
+  display: block;
+  margin: auto;
+  text-align: center;
+  padding-top: 5%;
+  }
+
+.photo > img {
+  width: 250px;
+  filter: grayscale(100%);
+  border-radius: 5%
+}
+
+
+@media screen and (max-width: 500px) {
+  .photo > img {
+    width: 200px;
+  }
+}
+
+
+.text {
+  text-align: left;
+  padding-bottom: 5%;
+}
+
+.text p {
+  hyphens: none;
+  font-family: "Muli", sans-serif;
+  font-size: 1em;
+  letter-spacing: .08em;
+  text-align: left;
+  font-weight: 200;
+}
+
+@media screen and (max-width: 500px) {
+  .text {
+    font-size: .8em;
+  }
+}
+
+.photo h5 {
+  font-family: "Playfair Display", serif;
+  color: #305970;
+  text-decoration: none;
+  font-size: 2em;
+  letter-spacing: .2em;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  .photo h5 {
+    font-size: 1.5em;
+  }
+}
+
+.photo p {
+  font-family: "Playfair Display", serif;
+  color: #447a9a;
+  font-size: 1.2em;
+  letter-spacing: .2em;
+  text-align: center;
+  padding-bottom: 2%;
+}
+
+@media screen and (max-width: 500px) {
+  .photo p {
+    font-size: 1em;
+    letter-spacing: .1em;
+  }
+}

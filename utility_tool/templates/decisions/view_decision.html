@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<div class="hero-unit">
+    <div class="container-fluid">
+             {% csrf_token %}
+             <h3 class="form-signin-heading">Decision Problem Details</h2>
+             <table class="table table-condensed">
+                 <tr> <b>Title:</b> {{ decision.title }} </tr><br />
+                 <tr> <b>Name of the institution/department/person making the decision:</b>  {{ decision.name_decisionmaker }} </tr><br />
+                 <tr> <b>Type of Decision:</b>  {{ decision.type_of_dec }} </tr><br />
+                 <tr> <b>Decision Problem:</b>  {{ decision.decision_prob}} </tr><br />
+                 <tr> <b>Evidence:</b>  {{ decision.evidence}} </tr><br />
+                 <tr> <b>Goal:</b>  {{ decision.goal }} </tr><br />
+                 <tr> <b>Target audience being served:</b>  {{ decision.target_audience }} </tr><br />
+                 <tr> <b>By when do you need to make this decision?:</b>  {{ decision.by_when }} </tr><br />
+             </table>
+             <br><a href="/utility_tool/decisions/decisions_list.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Problems List"/></a>
+
+    </div>
+</div>
+{% endblock %}

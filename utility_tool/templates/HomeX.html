@@ -1,0 +1,719 @@
+<style>/*AMRITHA - COPY AND PASTE ALL NEW CODE IN <STYLE> TAG ... TOO MANY CHANGES MADE. EASIEST TO SWAP OUT. JUST MAKE SURE THE IMAGE IN LINE 4 (in the .hero element) is the same*/
+/*Splash Image Layout*/
+  .hero {
+    background: url("Homepage-Image-Medium.jpg") center;
+    background-size: cover;
+    position: relative;
+    background-position: 50% 20%;
+  }
+
+  @media screen and (max-width:500px) {
+  .hero {
+      background-position: 60% 100%;
+  }
+  }
+
+  .hero:after {
+    background-color: white;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.45;
+              }
+/*"About DecisionMaker" Layout*/
+  /*Large Screens*/
+@media screen and (min-width:1824px) {
+main {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: repeat(5, 1fr);
+  }
+article {
+  grid-column: 1 / span 5;
+  }
+figure {
+  float: right;
+  max-width: 30%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: #305970;
+  font-size: 1em;
+  line-height: 2;
+  font-weight: 200;
+  font-family: "Muli", sans-serif;
+  letter-spacing: .035em;
+  margin: 0.5em;
+  padding-left: 4%;
+  }
+img.scaled {
+  max-width: 100%;
+  }
+}
+  /*Laptop Screens*/
+@media screen and (min-width:500px) and (max-width:1824px) {
+main {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: repeat(5, 1fr);
+  }
+article {
+  grid-column: 1 / span 5;
+  }
+figure {
+  float: right;
+  width: 40%;
+  text-align: center;
+  font-size: 1em;
+  color: #305970;
+  line-height: 2;
+  font-family: "Muli", sans-serif;
+  font-weight: 200;
+  letter-spacing: .035em;
+  padding-left: 4%;
+  }
+img.scaled {
+  width: 100%;
+  }
+}
+
+  /*Mobile Screens*/
+@media screen and (max-width:500px) {
+main {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+  "image"
+  "article"
+}
+article {
+  grid-area: article;
+}
+figure {
+  grid-area: image;
+  float: none;
+  display: block;
+  min-width: 90%;
+  text-align: center;
+  line-height: 2;
+  color: #305970;
+  font-size: 1em;
+  font-weight: 200;
+  letter-spacing: .035em;
+  font-family: "Raleway", sans-serif;
+  margin: auto;
+}
+img.scaled {
+  max-width: 100%;
+}
+}
+
+
+.grid-3 {
+  display: grid;
+  padding-top: 5%;
+  grid-column-gap: 2%;
+  grid-template-columns: repeat (4, 1fr);
+  grid-template-areas:
+  "column-1 column-2 column-3 column-4"
+  "caption-1 caption-2 caption-3 caption-4"
+}
+@media screen and (max-width:768px) {
+  .grid-3{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+  grid-row-gap: 2%;
+  padding-bottom: 5%;
+  grid-template-areas:
+  "column-1 caption-1"
+  "column-2 caption-2"
+  "column-3 caption-3"
+  "column-4 caption-4"
+}
+img.icon-2 {
+  /*margin-left: auto;
+  margin-right: auto;*/
+  width: 200px;
+  height: auto;
+}
+.caption-1 {
+  grid-area: caption-1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.caption-2 {
+  grid-area: caption-2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.caption-3 {
+  grid-area: caption-3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.caption-4 {
+  grid-area: caption-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+}
+.column-1 {
+  grid-area: column-1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-1 {
+  grid-area: caption-1;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+.column-2 {
+  grid-area: column-2;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-2 {
+  grid-area: caption-2;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+.column-3 {
+  grid-area: column-3;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-3 {
+  grid-area: caption-3;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+.column-4 {
+  grid-area: column-4;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-4 {
+  grid-area: caption-4;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+img.icon-2 {
+  /*margin-left: auto;
+  margin-right: auto;*/
+  max-height: auto;
+  max-width: 90%;
+}
+
+/*"Steps of the Decision-Making Process" Layout*/
+/*Main Grid Styling and Layout*/
+  /*Mobile Screen*/
+@media screen and (max-width:768px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(autofit);
+    /*grid-template-rows: repeat(autofit, minmax(50px, 1fr)) ;*/
+    grid-template-columns: .5fr .3fr .3fr .5fr;
+    /*margin-left: 3%;*/
+    grid-template-areas:
+    ". item-n1 item-1. "
+    "item-2 item-2 item-2 item-2"
+    ". item-n2 item-3 ."
+    "item-4 item-4 item-4 item-4"
+    ". item-n3 item-5 ."
+    "item-6 item-6 item-6 item-6"
+    ". item-n4 item-7 ."
+    "item-8 item-8 item-8 item-8"
+    ". item-n5 item-9  ."
+    "item-10 item-10 item-10 item-10"
+    ". item-n6 item-11  ."
+    "item-12 item-12 item-12 item-12"
+    ". item-n7 item-13  ."
+    "item-14 item-14 item-14 item-14"
+    ". item-n8 item-15  ."
+    "item-16 item-16 item-16 item-16"
+    ". item-n9 item-17  ."
+    "item-18 item-18 item-18 item-18"
+    ". item-n10 item-19  ."
+    "item-20 item-20 item-20 item-20"
+    }
+  img.icon {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    display: block;
+    padding: 5% 0;
+  }
+}
+/*Laptop Screen*/
+@media screen and (min-width: 768px) and (max-width: 1824px) {
+    .grid {
+      display: grid;
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: .3fr .3fr .05fr 3fr;
+      grid-template-areas:
+      "item-n1 item-1  . item-2"
+      "item-n2 item-3  . item-4"
+      "item-n3 item-5  . item-6"
+      "item-n4 item-7  . item-8"
+      "item-n5 item-9  . item-10"
+      "item-n6 item-11  . item-12"
+      "item-n7 item-13  . item-14"
+      "item-n8 item-15  . item-16"
+      "item-n9 item-17  . item-18"
+      "item-n10 item-19  . item-20"
+    }
+  }
+/*Large Screens*/
+@media screen and (min-width: 1824px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(auto, 100px);
+    grid-template-columns: minmax(100px, 150px) minmax(100px, 150px).05fr 3fr;
+    grid-template-areas:
+    "item-n1 item-1  . item-2"
+    "item-n2 item-3  . item-4"
+    "item-n3 item-5  . item-6"
+    "item-n4 item-7  . item-8"
+    "item-n5 item-9  . item-10"
+    "item-n6 item-11  . item-12"
+    "item-n7 item-13  . item-14"
+    "item-n8 item-15  . item-16"
+    "item-n9 item-17  . item-18"
+    "item-n10 item-19  . item-20"
+    }
+  }
+
+img.icon {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  display: block;
+}
+.decision-icon {
+  grid-area: item-1;
+  background-color: #4785a7;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.decision-number {
+    grid-area: item-n1;
+    background-color: #4785a7;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.decision {
+  grid-area: item-2;
+  display: flex;
+  align-items: center;
+  }
+.stakeholders-icon {
+  grid-area: item-3;
+  background-color: #4f8fb1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.stakeholders-number {
+    grid-area: item-n2;
+    background-color: #4f8fb1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.stakeholders {
+  grid-area: item-4;
+  display: flex;
+  align-items: center;
+  }
+.solution-options-icon {
+  grid-area: item-5;
+  background-color: #5e98b6;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.solution-options-number {
+    grid-area: item-n3;
+    background-color: #5e98b6;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.solution-options {
+  grid-area: item-6;
+  display: flex;
+  align-items: center;
+  }
+.screening-criteria-icon {
+  grid-area: item-7;
+  background-color: #6da1bc;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.screening-criteria-number {
+    grid-area: item-n4;
+    background-color: #6da1bc;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.screening-criteria {
+  grid-area: item-8;
+  display: flex;
+  align-items: center;
+  }
+.mapping-icon {
+  grid-area: item-9;
+  background-color: #7aa9c4;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.mapping-number {
+    grid-area: item-n5;
+    background-color: #7aa9c4;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.mapping {
+  grid-area: item-10;
+  display: flex;
+  align-items: center;
+  }
+.evaluation-criteria-icon {
+  grid-area: item-11;
+  background-color: #7aa9c4;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.evaluation-criteria-number {
+    grid-area: item-n6;
+    background-color: #7aa9c4;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.evaluation-criteria {
+  grid-area: item-12;
+  display: flex;
+  align-items: center;
+  }
+.relative-importance-icon {
+  grid-area: item-13;
+  background-color: #6da1bc;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.relative-importance-number {
+    grid-area: item-n7;
+    background-color: #6da1bc;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.relative-importance {
+  grid-area: item-14;
+  display: flex;
+  align-items: center;
+  }
+.evaluation-measures-icon {
+  grid-area: item-15;
+  background-color: #5e98b6;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.evaluation-measures-number {
+    grid-area: item-n8;
+    background-color: #5e98b6;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.evaluation-measures {
+  grid-area: item-16;
+  display: flex;
+  align-items: center;
+  }
+.cost-icon {
+  grid-area: item-17;
+  background-color: #4f8fb1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.cost-number {
+    grid-area: item-n9;
+    background-color: #4f8fb1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.cost {
+  grid-area: item-18;
+  display: flex;
+  align-items: center;
+  }
+.solution-icon {
+  grid-area: item-19;
+  background-color: #4785a7;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.solution-number {
+  grid-area: item-n10;
+  background-color: #4785a7;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.solution {
+  grid-area: item-20;
+  display: flex;
+  align-items: center;
+  }
+
+</style>
+
+<html>
+<!--AMRITHA make sure all of this head tag is removed... I keep it in for my own sake as mentioned in order to visualize graphically--><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="Header.css">
+  <link rel="stylesheet" href="Style.css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600&display=swap" rel="stylesheet">
+</head>
+<!--AMRITHA make sure to remove starting here and ending where I indicate--><div class="navbar">
+  <div class="nav-upper">
+  <span style="padding-right: 1%"><i>DecisionMaker</i><sup style="font-size: 0.2em">TM</sup> – the CBCSE Cost-Utility Tool Kit © 2019 Teachers College, Columbia University</span>
+    </div>
+  <a href="Home.html">Home</a>
+  <a href="Home.html#About-Us">About DM</a>
+  <a href="https://www.decisionmakertool.org/utility_tool/decisions/nouser_message.html">My Decisions</a>
+  <a href="My-Stakeholders.html">My Stakeholders</a>
+  <a href="Resources-Guidance.html">Resources & Guidance</a>
+  <a href="Contact-Us.html">Contact Us</a>
+  <a href="https://www.decisionmakertool.org/utility_tool/users/login.html">Login</a>
+  </div>
+<div class="mobile-nav">
+  <div class="nav-upper-mobile">
+    <span style="padding-right: 1%"><i>DecisionMaker</i><sup style="font-size: 0.5em">TM</sup> – the&nbspCBCSE&nbspCost-Utility&nbspTool&nbspKit&nbsp<wbr>©&nbsp2019&nbspTeachers&nbspCollege,&nbspColumbia&nbspUniversity</span>
+</div>
+<div class="menuToggle">
+    <input type="checkbox">
+    <span></span>
+    <span></span>
+    <span></span>
+      <ul class="nav-mobile">
+        <a href="Home.html"><li class="nav">Home</li></a>
+        <a href="Home.html#About-Us"><li class="nav">About DM</li></a>
+        <a href="#"><li class="nav">My Decisions</li></a>
+        <a href="Pages/My-Stakeholders.html"><li class="nav">My Stakeholders</li></a>
+        <a href="Resources-Guidance.html"><li class="nav">Resources & Guidance</li></a>
+        <a href="Contact-Us.html"><li class="nav">Contact Us</li></a>
+        <a href="https://www.decisionmakertool.org/utility_tool/users/login.html"><li class="nav">Login</li></a>
+      </ul>
+      </div>
+    </div><!--AMRITHA - REMOVE UP TO HERE from previous note-->
+<div id="page-container">
+<!--CHANGED starting here with this div class... copy paste all the way down to where I indicate--> <div class="hero">
+<span class="background-image" role="img" aria-label="School administrators talking and laughing in school office"></span>
+  <div class="hero-message">
+    <h1><i>Decision&shy;Maker</i><sup style="font-size: .4em; letter-spacing: .1em">TM</sup></h1>
+    <h2>An online tool to help educators make evidence-based decisions</h2>
+    <br>
+    <a href="https://www.decisionmakertool.org/utility_tool/users/register.html">register</a>
+    </div>
+</div><!--CHANGED stop here where div class-->
+<!--CHANGED moved "a name" to before div... previously was a few lines down--><a name="About-Us">&nbsp;</a><div class="body">
+  <br>
+<h3>About <i>DecisionMaker</i><sup style="font-size:.5em">TM</sup></h3>
+<main>
+  <article>
+    <figure>
+      <!--CHANGED alt text in img tag--><p><img class="scaled" src="Decision Making Circle.png" alt="Circular flowchart of decision-making steps" style="max-width:100%">
+        <figcaption><i>DecisionMaker</i><sup style="font-size: .1em">TM</sup> provides a decision-making framework which you will navigate by clicking on icons in a flowchart, iterating steps as needed.</figcaption>
+      </figure>
+    <p><i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> facilitates school, district, or state education agency decisions that involve a choice between alternative educational activities, strategies, and interventions. Examples may include the following:
+      <ul>
+        <li class="body-list">Choosing among several math curricula</li>
+        <li class="body-list">Selecting digital devices</li>
+        <li class="body-list">Allocating resources amongst competing priorities</li>
+        <li class="body-list">Deciding the best scale up/scale down scenario for an existing program</li>
+        <li class="body-list">Identifying which literacy programs best meet ESSA evidence requirements</li>
+        <li class="body-list">Choosing which school site will host a summer program</li>
+        <li class="body-list">Deciding where to invest professional development funds</li>
+      </ul>
+<p>You can use <i>DecisionMaker</i><sup style="font-size:.4em">TM</sup> to work through a decision alone or in collaboration with stakeholders. Decision-makers identify those factors most important in distinguishing between alternative Solution Options and gather evidence to determine which one(s) best meet(s) stakeholder needs.
+<br>
+<p>By juxtaposing the stakeholder value of each Solution Option - its “utility” - against its costs, <i>DecisionMaker</i><sup style="font-size: 0.4em">TM</sup> allows you to review the trade-offs between monetary investments and stakeholder satisfaction.
+<br>
+<p>Revisiting the decision after implementation to assess whether performance meets expectations helps meet ESSA requirements for ongoing efforts to examine the effects of activities, strategies, or interventions and to assess how well they work in the decision-maker’s own context.
+<br>
+<p>CBCSE worked with many current education decision-makers and practitioners to adapt the cost-utility decision-making framework for educational contexts and to develop <i>DecisionMaker</i><sup style="font-size: 0.4em">TM</sup>:
+</article>
+</main>
+<div class="grid-3">
+  <div class="column-1">
+  <!--CHANGED alt tag in img--><img class="icon-2" src="State.png" alt="Clipart of a state education building">
+</div>
+<div class="caption-1">
+  <p id="caption">A state education agency</p>
+</div>
+<div class="column-2">
+  <!--CHANGED alt tag in img--><img class="icon-2" src="School-District.png" alt="Three clipart school buildings">
+</div>
+<div class="caption-2">
+  <p id="caption">Three school districts</p>
+</div>
+<div class="column-3">
+  <!--CHANGED alt tag in img--><img class="icon-2" src="School.png" alt="Three small clipart school buildings">
+  </div>
+  <div class="caption-3">
+    <p id="caption">Three individual schools</p>
+  </div>
+  <div class="column-4">
+    <!--CHANGED alt tag in img--><img class="icon-2" src="School-Leaders.png" alt="Clipart of group of people standing together">
+  </div>
+  <div class="caption-4">
+    <p id="caption">Many current and aspiring school leaders in a principal preparation program</p>
+  </div>
+</div>
+<br>
+</div>
+<hr>
+<div class="body">
+  <br>
+<h3>Steps in the Decision-Making Process</h3>
+<br>
+<p>The steps listed below link to <a class="link" href="Resources-Guidance.html">Resources & Guidance&nbsp;»</a>, which can help you practically work through a decision. You can access these steps after you register and log in. You can also reach the Resources & Guidance page from the navigation bar at the top of each page.</p>
+<br>
+<br>
+<div class="grid">
+  <div class="decision-icon">
+    <!--CHANGED alt text in img--><img class="icon" src="Decision-1.png" alt="Clipart of person's head with a question mark inside" style="max-width:70px">
+    </div>
+  <div class="decision-number">
+    <p class="number">I.</p>
+  </div>
+  <div class="decision">
+  <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Decision-Making">Identify the decision to be made&nbsp;»</a></p>
+  </div>
+  <div class="stakeholders-icon">
+      <!--CHANGED alt description--><img class="icon" src="Stakeholders-1.png" alt="Clipart of two women and one man sitting at a table" style="max-width:70px">
+    </div>
+  <div class="stakeholders-number">
+    <p class="number">II.</p>
+  </div>
+  <div class="stakeholders">
+    <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Identify-Stakeholders">Identify stakeholders to participate in the decision-making process&nbsp;»</a></p>
+  </div>
+  <div class="solution-options-icon">
+      <!--CHANGED alt description--><img class="icon" src="Solution Options-1.png" alt="Clipart of a bulleted list" style="max-width:70px">
+    </div>
+  <div class="solution-options-number">
+    <p class="number">III.</p>
+  </div>
+  <div class="solution-options">
+    <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Solution-Options">Identify solution options&nbsp;»</a></p>
+  </div>
+  <div class="screening-criteria-icon">
+      <!--CHANGED alt description--><img class="icon" src="Screening Criteria-1.png" alt="Clipart of a pencil writing a bulleted list" style="max-width:70px">
+  </div>
+  <div class="screening-criteria-number">
+    <p class="number">IV.</p>
+  </div>
+  <div class="screening-criteria">
+    <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Screening-Criteria">Identify Screening Criteria&nbsp;»</a></p>
+  </div>
+  <div class="mapping-icon">
+    <!--CHANGED alt description--><img class="icon" src="Mapping-1.png" alt="Clipart of a list with checkmarks" style="max-width:70px">
+    </div>
+  <div class="mapping-number">
+    <p class="number">V.</p>
+  </div>
+  <div class="mapping">
+    <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Screen-Solution-Options">Screen Solution Options to create a shortlist of viable possibilities&nbsp;»</a></p>
+  </div>
+  <div class="evaluation-criteria-icon">
+      <!--CHANGED alt description--><img class="icon" src="Evaluation Criteria-1.png" alt="Clipart of a clipboard with a bulleted list" style="max-width: 50px">
+  </div>
+  <div class="evaluation-criteria-number">
+    <p class="number">VI.</p>
+  </div>
+  <div class="evaluation-criteria">
+  <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Evaluation-Criteria">Create a list of Evaluation Criteria, i.e., factors that will influence the decision&nbsp;»</a></p>
+  </div>
+  <div class="relative-importance-icon">
+    <!--CHANGED alt description--><img class="icon" src="Relative Importance-1.png" alt="Clipart bar graph" style="max-width:70px">
+    </div>
+  <div class="relative-importance-number">
+    <p class="number">VII.</p>
+  </div>
+  <div class="relative-importance">
+    <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Importance-Scores">Assign "Importance Scores" to each criterion&nbsp;»</a></p>
+  </div>
+  <div class="evaluation-measures-icon">
+    <!--CHANGED alt description--><img class="icon" src="Evaluation Measures-1.png" alt="Clipart of a clipboard with a graph and a finger pointing to a checked-off list" style="max-width:50px">
+  </div>
+  <div class="evaluation-measures-number">
+    <p class="number">VIII.</p>
+  </div>
+  <div class="evaluation-measures">
+    <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Evidence-Gathering">Gather evidence to evaluate your Solution Options&nbsp;»</a></p>
+  </div>
+  <div class="cost-icon">
+    <!--CHANGED alt description--><img class="icon" src="Cost-1.png" alt="Clipart of a bar graph and dollar sign" style="max-width:70px">
+    </div>
+  <div class="cost-number">
+    <p class="number">IX.</p>
+  </div>
+  <div class="cost">
+  <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Costs">Estimate the costs per participant of implementing each Solution Option&nbsp;»</a></p>
+  </div>
+  <div class="solution-icon">
+      <!--CHANGED alt description--><img class="icon" src="Solution-1.png" alt="Clipart of two weighted scales" style="max-width:70px">
+    </div>
+  <div class="solution-number">
+    <p class="number">X.</p>
+  </div>
+  <div class="solution">
+    <!--CHANGED this line, but don't need to mess with link if you can fix on your end -- need to make sure there is no space between &nbsp and the »--><p id="left-align"><a class="steps" href="Steps.html#Make-Decision">Use the resulting cost and “utility” values to inform your decision&nbsp;»</a></p>
+  </div>
+</div>
+<br>
+<p>The decision-making framework used in <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> is based on Multiattribute Utility Theory (MAUT) as developed by Edwards (1971); Edwards, Guttentag and Snapper (1975); and Edwards and Newman (1982). The <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> User Manual includes details about the methods.</p>
+</div>
+<br>
+  <!--CHANGED move this </div> to before footer since you will remove footer--></div>
+<!--AMRITHA make sure to remove footer--><footer>
+  <p id="footer">Developed by <a class="footer-link" href="https://www.cbcse.org/" target="_blank">CBCSE&nbsp;»</a> at <a class="footer-link" href="https://www.tc.columbia.edu/" target="_blank">Teachers College, Columbia University&nbsp;»</a> with the generous support of the <a class="footer-link" href="http://wtgrantfoundation.org/" target="_blank">William T. Grant Foundation&nbsp;»</a>, <i>DecisionMaker</i><sup style="font-size:.1em">TM</sup> is freely available to all educators to facilitate collaborative and evidence-based decision-making in education.</p>
+  </footer>
+</html>

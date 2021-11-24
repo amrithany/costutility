@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>
+Decision you are working on: {{dec_title}} 
+</h4></div>
+<br>
+<div class="container-fluid"> 
+<h2 class="form-signin-heading">Identify Stakeholders</h2> 
+<form  id="form1" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+<br>
+If you have not created your Directory of Stakeholders, please go to <a href="/utility_tool/stakeholders/stakeholders.html"><input class="btn btn-primary" type="button" name="cancel" value="My Directory of Stakeholders"/></a> 
+<br><br> 
+If you wish to add Stakeholders for Solution Options, please go to <a href="/utility_tool/decisions/solution_options/add_st_solopt.html"><input class="btn btn-primary" type="button" name="cancel" value="Stakeholders for Solution Options"/></a>
+<br><br> 
+If you wish to add Stakeholders for Screening Criteria, please go to <a href="/utility_tool/decisions/solution_options/add_st_scrcr.html"><input class="btn btn-primary" type="button" name="cancel" value="Stakeholders for Screening Criteria"/></a>
+<br><br> 
+If you wish to add Stakeholders for Evaluation Criteria, please go to <a href="/utility_tool/decisions/solution_options/add_st_evacr.html"><input class="btn btn-primary" type="button" name="cancel" value="Stakeholders for Evaluation Criteria"/></a>
+<br><br> 
+If you wish to add Stakeholders for Importance Scores, please go to <a href="/utility_tool/decisions/solution_options/add_st_iw.html"><input class="btn btn-primary" type="button" name="cancel" value="Stakeholders for Importance Scores"/></a>    
+<br><br><br>
+<a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"/></a>
+<a href="/utility_tool/decisions/solution_options/add_st_all.html"><input class="btn btn-primary" type="button" name="cancel" value="NEW SCREEN (NOT READY) - All Stakeholders"/></a>   
+</form>
+</div>
+</div>
+
+{% endblock %}
+

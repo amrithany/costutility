@@ -1,0 +1,102 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">                                                                                                                                                                                      
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .accordion:hover {
+    background-color: #ccc;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.panel {
+    padding: 0 18px;
+    display: none;
+    overflow: hidden;
+}
+</style>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container" id="soloptform">
+             <form method="post" id="soloptform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Archived Solution Options</h2>
+             <input class="btn btn-success" type="button" name="cancel2" value="Back to Solution Options" onclick="goback2();"/> 
+             <input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+                 {% csrf_token %}
+                 {{ soloptform.management_form }}
+                      {% for form in soloptform %}
+                       <div style="border-bottom: thin dotted black">
+                       <br>
+                       {{ form.id }}
+                       {{ form.errors }} 
+                       <b>{{forloop.counter}}. </b> &nbsp; 
+                       Option: {{ form.option }} 
+                       <br>
+                       Created By: {{ form.created_by }}
+                       Updated By: {{form.updated_by}}
+                       Archived By: {{form.archived_by}}
+                       <br>
+                       <button type="button" class="btn btn-basic active" data-toggle="collapse" data-target="#demo">Solution Option Details</button>
+                       <div id="demo" class="collapse">
+                       <br>    
+                       Details: {{form.option_details}}
+                       <br><br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename1}} {{form.file_attachment1}}
+                       <br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename2}} {{form.file_attachment2}}                                                                                                            
+                        <br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename3}} {{form.file_attachment3}}                                                                                                            
+                         <br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename4}} {{form.file_attachment4}}                                                                                                            
+                         <br>
+                         Link:&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname1}} {{form.link1}}
+                         <br> 
+                       Link:&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname2}} {{form.link2}}
+                         <br>     
+                       Link:&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname3}} {{form.link3}}
+                         <br>     
+                       Link:&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname4}} {{form.link4}}
+                         <br>     
+                      </div>
+                      <br>
+                      </div>
+                      {% endfor %}
+                  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                  <script type="text/javascript">
+                    var passvar = '{{ dec_id }}';
+
+                    function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                    }
+ 
+                    function goback2() {
+                         document.location.href = "/utility_tool/decisions/solution_options/add_solopt_det.html"; 
+                    }
+
+                    //function goback3() {
+                      //document.location.href = "/utility_tool/decisions/" + passvar +"/solution_options/view_solopt_det.html"; 
+                    //}
+                  </script>
+             <input class="btn btn-success" type="button" name="cancel2" value="Back to Solution Options" onclick="goback2();"/> 
+             <input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+         
+</form>
+</div>
+</div>
+
+
+{% endblock %}
+

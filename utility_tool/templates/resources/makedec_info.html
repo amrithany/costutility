@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                           
+<div class="hero-unit">
+<br>
+<br>
+<b>Make a decision: </b><font color="blue">How to think about the results and apply them to decision-making</font>
+<br><br>
+Using the information you have entered about the Solution Options you are considering, <i>DecisionMaker</i> provides summary metrics that you can use to compare the Solution Options and inform your decision about which, if any, of the solutions to pursue.
+<br><br>
+<b><font color="blue">Utility values</font></b>
+<br><br>
+These values should reflect how well each Solution Option meets your stakeholders’ criteria and, consequently, how satisfied they will be with this Solution Option. A Solution Option with an overall utility value of 10 would, in theory, meet your stakeholders’ criteria perfectly and a Solution Option scoring 0 would not meet their Evaluation Criteria at all. Clearly, choosing options with higher overall utility values should make your stakeholders happier.  
+<br><br>
+If none of the Solution Options scores very well on overall utility, you may need to think about whether there is time to start over and consider a new set of options. Alternatively, now that you have a good idea about what your stakeholders care about, it may be possible to modify one of the current options to make it more acceptable to stakeholders.
+<br><br>
+<b><font color="blue">Importance Weights</font></b>
+<br><br>
+Note that these overall utility values incorporate stakeholders’ Importance Scores which indicate how much they care about each Evaluation Criterion used in the analysis. These scores are rescaled into the Importance Weights shown on the final results page. A bigger weight means stakeholders care more about the issue. It is worth checking that the Solution Option(s) you decide to adopt score(s) well on the criteria that have the highest weights. 
+<br><br>
+<b><font color="blue">Cost-utility ratios</font></b>
+<br><br>
+<i>DecisionMaker</i> combines the overall utility value for each Solution Option with the cost estimate you provided to show you a return on investment metric called a cost-utility ratio.  This ratio is the cost per unit of stakeholder satisfaction (costs divided by utility value).  A low cost-utility ratio indicates high return on investment because it means a Solution Option costs little per unit of stakeholder satisfaction.  
+While, in theory, you should choose the Solution Option with the lowest cost-utility ratio, there may be reasons not to. One reason would be if the utility value is low, as explained above: paying very little does not help if no-one is going to be happy with the Solution Option chosen. Another reason could be that several options fit within your budget so you may decide to choose the one with the highest utility value knowing that you can afford it and make your stakeholders happier. Satisfied stakeholders are more likely to implement the chosen solution with care, which in turns means it is more likely to be successful in achieving your original goals. 
+<br><br>
+We recommend you share the result of the analysis with stakeholders before making a final decision.  For example, you can share some or all of the Summary Report which you can download by clicking the “Summary Report” button under the relevant decision flowchart. If stakeholders express dissatisfaction with the Solution Options that show the best results, ask them to think about whether they have other important considerations that they did not initially express. If they do, this may require identifying an additional evaluation criterion and re-evaluating the Solution Options against this new criterion to see whether the overall results change. If the issues they care about were already adequately captured in the Evaluation Criteria, it is likely that the options they favored did not perform well on some evaluation measures. Reviewing the results of the evaluation with them may help them understand the reasons some Solution Options did not fare well in the decision analysis. As with any evaluation, the numerical results should be helpful in promoting discussions based on evidence, but should not make the decision for you.
+<br><br>
+<b><font color="blue">What-if analysis</font></b>
+<br><br>
+It is also helpful to see how the results of your analysis might change under different possible circumstances. What if a reading program does not produce test score results as high as you expected?  What if the costs of implementing an option double next year?  What if you conducted the analysis separately with teachers and administrators?  Would the same Solution Option come out on top in each case or would different ones rise to the top?  If the same Solution Option performs best under different scenarios, you can be quite confident it is a good choice. If not, think carefully about how likely it is that circumstances change in a way that could lead to less-than-desirable outcomes.
+<br><br><b><font color="blue">Evaluating whether you made a good decision</font></b>
+ <br><br>At some point after you have implemented one or more Solution Options, revisit the analysis to see whether, in practice, each option has performed as well as expected when it was first selected.  You can update the data in the evaluation measures and cost tables to see how the options rank now with up-to-date performance data. This will help you decide whether to continue with the same Solution Options going forward, or whether you might need to change focus. It is also possible that stakeholders change over time or that new factors may need to be considered in the decision, for example, if a new regulation is imposed or if the composition of the student population changes. The analysis can be modified iteratively to ensure that you are continuously re-evaluating the options in light of changing conditions.
+ <br><br>
+{% if whereamI == 'aboutmaker' %}                                                                                                                                                                                
+<a href="/utility_tool/resources/about_maker.html"><input class="btn btn-success" type="button" name="cancel" value="Back to About DecisionMaker"></a>
+{% else %}  
+    {% if dec_id != 0 %}
+        <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+    {% endif %}   
+    <a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+{% endif %}    
+</div>
+{% endblock %}

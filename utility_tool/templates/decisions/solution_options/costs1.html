@@ -1,0 +1,248 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+    body * { font-family: "Playfair Display", serif; }
+</style>
+<body>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+<div class="container-fluid">
+<div class="row">    
+<h3 class="form-signin-heading">Input Cost Information
+<a href="#" title="The Project Administrator should enter costs of each Solution Option in order to obtain cost-utility results. This page is view-only for stakeholders."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+<a href="/Steps.html#Costs" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>
+</h3>
+<form id="form1" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+<font color="blue">     
+    <b>Step 1:</b><p>
+    Indicate which cost metric is most informative for your decision-making:
+     <br></font>
+     {% if loggedinuser == created_by %}
+    <input type="radio" name="type" id="Total" value="Total" onchange="handleChange();"> Total costs for all participants served <br>
+    <input type="radio" name="type" id="Avg" value="Avg" onchange="handleChange();"> Average costs per participant served <br>
+    <input type="radio" name="type" id="Marginal" value="Marginal" onchange="handleChange();"> The marginal costs of adding each additional participant <br><br>
+    {% else %}
+    <input type="radio" name="type" id="Total" value="Total" disabled> Total costs for all participants served <br>
+    <input type="radio" name="type" id="Avg" value="Avg" disabled> Average costs per participant served <br>
+    <input type="radio" name="type" id="Marginal" value="Marginal" disabled> The marginal costs of adding each additional participant <br><br>
+    {% endif %}
+<font color="blue">         
+    <b>Step 2:</b><p>
+    If you already have the cost estimates for each Solution Option in hand, enter them in Table 1 below. Use the textbox to indicate the source of this cost information. <br>
+    <br> 
+    If you need help in estimating costs, you can use a free, online tool, <a href="https://www.cbcsecosttoolkit.org/" target="_blank"> <font color="green">CostOut</font></a>, funded by the Institute of Education Sciences at the U.S. Department of Education, to help you estimate the cost of each Solution Option. You will need information about all the resources or ingredients required to implement each option.
+    <br><br>
+</font>
+   <b>Table 1. Cost Table</b>
+    <table title="Costs" id="t1" style="font-size:16px;align:center;" cellpadding="7">
+             <tr> 
+                 <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Solution Option</td>
+                 <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Number of participants served</td>
+                 <td id="data1" bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">{{cost_text}}</td>
+            </tr>
+            <tbody>
+            {% for c  in cost_table  %}
+            <tr id="{{c.id}}">
+	         <td bgcolor="lightgrey" style="border: 1px solid grey;" id="option{{c.id}}">{{ c.sol_option }}</td>
+             {% if loggedinuser == created_by %}
+	             <td bgcolor="white" style="border: 1px solid grey;"><div id="no_of_participants{{c.id}}" style="padding-left:2em;"  contenteditable>{{ c.no_of_participants }}</div></td>
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="cost{{c.id}}" style="padding-left:2em;" contenteditable>{{ c.cost|floatformat:"2" }}</div></td>
+             {% else %}
+             <td bgcolor="lightgrey" style="border: 1px solid grey;"> <div id="no_of_participants{{c.id}}" style="padding-left:2em;">{{ c.no_of_participants }}</div></td>
+             <td bgcolor="lightgrey" style="border: 1px solid grey;"> <div id="cost{{c.id}}" style="padding-left:2em;">{{ c.cost|floatformat:"2" }}</div></td>
+             {% endif %}
+            </tr>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+    var loggedinuser = '{{loggedinuser}}';
+    var created_by = '{{created_by}}';
+    window.global_radioval = '{{type_of_cost}}';
+    $(document).ready(function () {
+        var type_GET = '{{type_of_cost}}';   
+        if (type_GET == 'Total') {
+           $("#Total").prop("checked", true);
+        } else if (type_GET == 'Avg') {   
+           $("#Avg").prop("checked", true);
+        } else if (type_GET == 'Marginal') {   
+           $("#Marginal").prop("checked", true);   
+        }
+
+        $('#no_of_participants{{c.id}}').html() = "";
+        document.getElementById("data1").innerHTML = '{{cost_text}}';
+        });        
+
+    function handleChange() {
+       var radioValue = $("input[name='type']:checked").val();
+       window.global_radioval = radioValue; 
+       if (radioValue == 'Avg') {
+           radioValue = "Average Costs";
+           title2 = "Total Average Costs"; }
+       else if (radioValue == 'Total') {
+           radioValue = radioValue + " Costs ";
+           title2 = "Total Costs"; }
+       else if (radioValue == 'Marginal') {
+           radioValue = radioValue + " Costs ";  
+           title2 = "Total Marginal Costs"; }
+
+       document.getElementById("data2").innerHTML = title2;   
+       document.getElementById("data1").innerHTML = radioValue;
+    }
+
+</script>
+{% endfor %}
+</table>
+<br>
+{% if loggedinuser == created_by %}
+    Source of Cost Information:
+    <textarea name="source" id="source" rows="3" cols="200" style="width:100%;word-wrap:break-word;"></textarea>         
+    <br><br>
+{% else %}
+    Source of Cost Information:
+    <textarea name="source" id="source" rows="3" cols="200" style="width:100%;word-wrap:break-word;" readonly></textarea> 
+    <br><br>
+{% endif %}  
+   <font color="blue">
+   <b>Step 3:</b><p>
+    You can also enter more detailed cost information in Table 2. This detail is not required to obtain cost-utility results but may be helpful for implementation considerations.
+    <br><br>
+    </font>
+    <b>Table 2. Detailed Cost Table</b>
+    <table title="detcosts" id="t2" style="font-size:16px;align:center;" cellpadding="7">
+             <tr> 
+                <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Solution Option</td>
+                <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Personnel Costs</td>
+                <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Facilities Costs</td>
+                <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Materials & Equipment Costs</td>
+                <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Training Costs</td> 
+                <td bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Other Costs</td> 
+                <td id="data2" bgcolor="lightblue" style="border: 1px solid grey;font-weight:bold;">Total Costs</td> 
+            </tr>
+            <tbody>
+            {% for d  in detcosts  %}
+            <tr id="{{d.id}}">
+             <td bgcolor="lightgrey" style="border: 1px solid grey;" id="option{{d.id}}">{{ d.sol_option }}</td>
+             {% if loggedinuser == created_by %}
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="personnel_cost{{d.id}}" style="padding-left:2em;" contenteditable>{{ d.personnel_cost|floatformat:"2" }}</div></td>
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="facilities_cost{{d.id}}" style="padding-left:2em;" contenteditable>{{ d.facilities_cost|floatformat:"2" }}</div></td>
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="materials_cost{{d.id}}" style="padding-left:2em;" contenteditable>{{ d.materials_cost|floatformat:"2" }}</div></td>
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="training_cost{{d.id}}" style="padding-left:2em;" contenteditable>{{ d.training_cost|floatformat:"2" }}</div></td>  
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="other_cost{{d.id}}" style="padding-left:2em;" contenteditable>{{ d.other_cost|floatformat:"2" }}</div></td>
+             {% else %}
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;"><div id="personnel_cost{{d.id}}" style="padding-left:2em;">{{ d.personnel_cost|floatformat:"2" }}</div></td>
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;"><div id="facilities_cost{{d.id}}" style="padding-left:2em;">{{ d.facilities_cost|floatformat:"2" }}</div></td>
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;"><div id="materials_cost{{d.id}}" style="padding-left:2em;">{{ d.materials_cost|floatformat:"2" }}</div></td>
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;"><div id="training_cost{{d.id}}" style="padding-left:2em;">{{ d.training_cost|floatformat:"2" }}</div></td>  
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;"><div id="other_cost{{d.id}}" style="padding-left:2em;">{{ d.other_cost|floatformat:"2" }}</div></td>
+             {% endif %}
+             <td bgcolor="lightgrey" style="border: 1px solid grey;"><div id="total_cost{{d.id}}" style="padding-left:2em;">{{ d.total_cost|floatformat:"2" }}</div></td> 
+            </tr>
+            </tbody>
+            {% endfor %}
+            </table>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+    var loggedinuser = '{{loggedinuser}}';                                                                                                             
+    var created_by = '{{created_by}}';
+    var cost_text = '{{cost_text}}';
+
+    $(document).ready(function () {
+        if ((cost_text == 'Average Costs') || (cost_text == 'Marginal Costs')) { 
+           document.getElementById("data2").innerHTML = 'Total {{cost_text}}';
+        }
+        });
+
+</script>
+<br>
+ <font color="blue">
+<b>Step 4:</b><p>
+{% if loggedinuser == created_by %}
+When you have finished entering information on this page, click here: 
+   <input class="btn btn-success btn-sm" type="submit" name="submit3" id="submit3" value="Save and Back to Flowchart"/>
+{% else %}
+   <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="goto"  value="Go Back to Flowchart"/></a>  
+{% endif %}
+</font>    
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript">
+        source = '{{source}}';
+        source = source.replace(/&#39;/g,"'"); 
+        document.getElementById("source").value = source; 
+        $('#submit3').off('click');
+        $("#submit3").on('click', function (e) {
+            var costarray = []; 
+            var idarray = [];
+            var partarray = [];
+            var table = document.getElementById('t1');
+
+            var d_idarray = [];
+            var personnel_cost = [];
+            var facilities_cost = [];
+            var materials_cost = [];
+            var training_cost = [];
+            var other_cost = [];
+            var table2 = document.getElementById('t2');
+            var s = document.getElementById('source').value;
+            s = s.replace(/\n/g, " ");                                                                                                                
+            s = s.replace(/&#39;/g,"'"); 
+            document.getElementById("source").value = s; 
+
+            for (var r = 1, n = table.rows.length; r < n; r++) {
+                     //alert(table.rows[r].cells[2].innerText);
+                     //alert(table.rows[r].id);
+                     idarray.push(table.rows[r].id); 
+                     partarray.push(table.rows[r].cells[1].innerText); 
+                     costarray.push(table.rows[r].cells[2].innerText);
+                    //for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+            }
+
+            for (var r = 1, n = table2.rows.length; r < n; r++) {
+                     d_idarray.push(table2.rows[r].id); 
+                     personnel_cost.push(table2.rows[r].cells[1].innerText); 
+                     facilities_cost.push(table2.rows[r].cells[2].innerText);
+                     materials_cost.push(table2.rows[r].cells[3].innerText); 
+                     training_cost.push(table2.rows[r].cells[4].innerText); 
+                     other_cost.push(table2.rows[r].cells[5].innerText); 
+            }
+
+            for(var i = 0; i < costarray.length; i++) {
+                e.preventDefault();
+                $.ajax({
+                 type:"POST",
+                 url:"{% url 'cost_setup' %}",
+                 data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        'id':idarray[i],
+                        'part':partarray[i],
+                        'cost':costarray[i],
+                        'd_id':d_idarray[i],
+                        'personnel_cost': personnel_cost[i],
+                        'facilities_cost': facilities_cost[i],
+                        'materials_cost': materials_cost[i],
+                        'training_cost': training_cost[i],
+                        'other_cost': other_cost[i],
+                        'radioValue':window.global_radioval,
+                        'source':s
+                        },
+                  success: function(){
+                  //alert('success');
+                  //window.location.reload();
+                  window.location.href = "/utility_tool/decisions/" + {{dec_id}} + "/menu.html"; 
+                  },
+                  error: function(){
+                  //alert('failure');
+                  }    
+                });                                                                                                                                                                             
+             }
+             return false;   
+         });
+         
+        </script>
+</form>
+</div>
+</div>
+</body>
+{% endblock %}

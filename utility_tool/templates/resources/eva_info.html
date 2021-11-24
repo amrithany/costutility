@@ -1,0 +1,62 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                          
+<style>
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 45%;
+    padding: 10px;
+}
+</style>
+<div class="hero-unit">
+    <br><br><b>Evaluation Criteria:</b><font color="blue">  Resources to help identify factors you will consider in evaluating each of the possible Solution Options </font>
+    <br><br> 
+    Evaluation Criteria are factors that you will consider to help determine which of the potential Solution Options best meet(s) the needs of your stakeholders. Unlike Screening Criteria which essentially require only a Yes/No answer, the goal with Evaluation Criteria is to assess how well each Solution Option meets each criterion. It may take you or your colleagues some time and effort to gather the information and evidence needed to make these assessments.
+    <br><br>
+    It is important that each Evaluation Criterion you use in DecisionMaker can be assigned a numerical value, for example, a test score, a number on a scale, a number corresponding to a rubric rating or other descriptive rating, or a 1/0 rating for Yes/No. By quantifying each item you are using to judge the Solution Options, it is possible to calculate an overall value for each option allowing them to be compared across all factors at once.
+    <br> <br>  
+    To help facilitate this, we provide examples of Evaluation Criteria from which you can choose in addition to entering your own criteria. These are presented in two layers:  first the “Overarching evaluation criteria” which are the overarching issues against which you might want to evaluate Solution Options, such as “Impact on student academic achievement,” and second, the “Granular evaluation criteria,” which are the more specific and measurable facets against which you might assess each Solution Option, such as “Impact on college admission.” You can view examples of commonly used Overarching and Granular Evaluation Criteria <a href="{% static 'Evaluation Criteria.pdf' %}" target="_blank"><b><u><font color="green">here</font></u></b></a>.
+    <br><br>
+    <b><font color="blue">Examples of Overarching Evaluation Criteria include:</font></b>
+    <div class="row">
+    <div class="column"> 
+        &emsp;Addresses the identified need
+        <br>&emsp;Equity
+        <br>&emsp;External recommendations
+        <br>&emsp;Feasibility of implementation
+        <br>&emsp;Fit with local context
+        <br>&emsp;Impact on student academic performance
+
+    </div>
+    <div class="column">    
+        Impact on student or staff engagement
+        <br>Meets required standards and regulations
+        <br>Impact on student socio-emotional development
+        <br>Improves teacher performance 
+        <br>Quality of implementation (for programs/strategies/tools already in place)
+        <br>Support from stakeholders
+
+    </div>
+    </div>
+    <br> <b><font color="blue">For example,</font> if you are selecting a literacy program to implement at your school:</b>
+    <li>  You might include impact on student academic performance as one Evaluation Criterion. For each Solution Option, you could either review existing studies that indicate a percentage point improvement in performance on a standardized test of reading or conduct your own pilot studies to compare the efficacy of the programs.</li>
+    <li>  You might include the level of support from teachers as a second criterion. To assess this, you could conduct demonstration lessons from each curriculum during professional development sessions and ask each teacher to indicate their level of support for each program on a scale of 0 to 10.  The average teacher rating for each program would be used as the overall metric for teacher support for each program.</li>
+     <br>
+     <b><font color="blue">How many Evaluation Criteria should I use?</font></b>
+     <br><br>
+    There is no fixed number that is right. There should be enough Evaluation Criteria to capture all considerations that are important to you and other stakeholders, but not so many that it would be hard to find the time to gather all the information needed to evaluate each Solution Option against each criterion. In past applications of this framework, six criteria is the average number we have seen used by education decision-makers. But this can vary from 2 to 15. At the extreme, we have also come across a decision that involved an RFP for a new learning management system (LMS) in which over 200 criteria were used to evaluate each LMS being considered. As you can imagine, it took many people several months to evaluate each Solution Option against all these criteria.
+    <br><br>
+    Note that if the Solution Options do not vary at all in how well they meet a particular Evaluation Criterion, there is no need to include that criterion in the decision analysis. The point of Evaluation Criteria is to help you distinguish between options. In the LMS example above, all LMS’s being considered met most of the criteria so, in reality, the decision-makers only needed to focus their attention on the few items on which the LMS’s varied.
+    <br><br>
+    {% if whereamI == 'aboutmaker' %}                                                                                                                                                                                
+    <a href="/utility_tool/resources/about_maker.html"><input class="btn btn-success" type="button" name="cancel" value="Back to About DecisionMaker"></a>
+    {% else %}  
+        {% if dec_id != 0 %}
+            <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+        {% endif %}   
+        <a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+
+    {% endif %}     
+</div>
+{% endblock %}

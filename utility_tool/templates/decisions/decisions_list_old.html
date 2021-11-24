@@ -1,0 +1,116 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Logged in as {{loggedinuser}}</h4></div>
+    <div class="table-responsive">
+        <h2 class="form-signin-heading">List of Decisions</h2>
+        <h5 style="border: 2px solid grey; padding-left: 15px;"><br>To create a new decision to work on, click on the blue button: “Add New Decision to Make” 
+            <br><br> The person who creates a decision is the Project Administrator (PA)
+            <br><br> A * in front of the Decision ID indicates that you are not the PA but are being invited to participate in this decision as a stakeholder
+            <br><br> To select an existing decision to work on, check the box next to the relevant decision and click the green button: “Go to Decision Flowchart” 
+            <br><br></h5>
+        <br>
+            <a href="/utility_tool/decisions/add_decision.html"> <input class="btn btn-primary" type="button" name="add" id="add" value="Add New Decision to Make" /></a>
+            <!--<input class="btn btn-primary" type="button"  id="view" value="View Decision" onclick="PasstoView();" />-->
+            <input class="btn btn-primary" type="button"  id="edit" value="View / Edit Decision" onclick="PasstoEdit();" /> 
+            <input class="btn btn-primary" type="button" name="delete" value="Delete Decision" onclick="PasstoDel();" /> 
+            <input class="btn btn-success" type="button" name="add" id="solopt" value="Go to Decision Flowchart" onclick="PasstoSol();"/>
+            <br>  
+            <table class="table table-condensed">
+                <thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Created by</th>
+                    <th>Created on</th>
+                    <th>Updated on</th><br />
+                    {% localtime on %}
+                    {% for dec in alldecisions %}
+                            <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">
+                                <td><input type="checkbox" id="{{dec.id}}" value="unchecked" onclick="setId(this, '{{dec.created_by}}');"  style="margin-left:auto; margin-right:auto;"></td>
+                            {% if dec.created_by == loggedinuser %}
+		                       <td>{{dec.id}}</td>
+                            {% else %}   
+                               <td> *{{dec.id}}</td>
+                            {% endif %}   
+                            <td>{{dec.title}}</td>
+                            <td>{{dec.created_by}}</td>
+                            <td>{{dec.created_date}}</td>
+                            <td>{{dec.updated_date}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endlocaltime %}
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var passvar = 000;
+                     var loggedinuser = "{{loggedinuser}}";
+
+                       $(function() {$('input[type=checkbox]').attr('checked', false)});                      
+                       window.onhashchange = function() {
+                         if (window.innerDocClick) {
+                           window.innerDocClick = false;
+                         } else {
+                           if (window.location.hash != '#undefined') {
+                              goBack();
+                           } else {
+                             history.pushState("", document.title, window.location.pathname);
+                             location.reload();
+                            }
+                          }
+                        }              
+
+                     function setId(chkBox, created_by){
+                          var inputs = document.getElementsByTagName("input");
+                          dec_created_by = created_by;
+
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                   if (inputs[i].id != chkBox.id) {
+                                   inputs[i].checked = false;
+                                }}
+                                //else { inputs[i].checked = true;}
+                          }
+                          passvar = chkBox.id;
+                       }
+
+                       //function PasstoView () {
+                          //if (passvar == 000){
+                             //alert('Select a Decision Problem to view');}
+                          //else {
+                             //document.location.href = "/utility_tool/decisions/" + passvar +"/view_decision.html";}
+                       //}
+
+                       function PasstoEdit () {
+                          if (passvar == 000){
+                             alert('Select a Decision Problem to edit');}
+                          else {
+                             document.location.href = "/utility_tool/decisions/" + passvar + "/edit_decision.html";}
+                       }
+
+                       function PasstoDel () {
+                           if (passvar == 000){
+                                 alert('Select a Decision Problem to delete');}
+                           else {
+                               if (loggedinuser == dec_created_by) { 
+                                  if (confirm('Are you sure you want to delete this decision problem? All the solution options, criteria and other settings associated with this decision problem  will be deleted too.')) {
+                                    document.location.href = "/utility_tool/decisions/" + passvar + "/delete_decision.html";
+                                  }
+                              } else { alert('You are not the Decision Owner. You cannot delete this decision!');}
+                        }}    
+
+                       function PasstoSol () {
+                          if (passvar == 000){
+                             alert('Select a Decision to work on');}
+                          else {
+                             document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html";}
+                       }
+                    </script> 
+               </thead>
+            </table>
+    </div>
+</div>
+{% endblock %}
+

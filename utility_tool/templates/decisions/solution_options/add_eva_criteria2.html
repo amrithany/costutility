@@ -1,0 +1,78 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="evacrform">
+             <form method="post" id="evacrform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Current Solution Options</h2>    
+             <table>
+                  {% for o in solopt %}    
+                  <tr>
+                      <td> {{forloop.counter}}. &nbsp;          {{o.sol_option|truncatechars:500}} </td>
+                  </tr>
+                  {% endfor %}
+             </table>
+             <br>
+             <h2 class="form-signin-heading">Evaluation Criteria</h2>
+             <h5 style="border: 2px solid grey;padding-left: 15px;">
+              <br>Use this page to list evaluation criteria, i.e., factors you will consider in assessing each of the solution options to help you choose among them
+              <br><br> Note that cost-utility analysis assumes that costs are always a factor in decision-making. In a later step you will be asked to enter estimated costs of implementing each solution option so you should not specify costs as an evaluation criterion here.
+              <br><br>Examples of evaluation criteria for a decision about a new elementary school literacy curriculum might include:
+              <ul><li type="square" style="color: #888;"> Strength of research evidence to suggest curriculum improves reading comprehension for K-5 students </li>
+              <li type="square" style="color: #888;">  Curriculum  reflects community values </li>
+              <li type="square" style="color: #888;">  Level of teacher buy-in for adoption of this curriculum </li>
+              <li type="square" style="color: #888;">  Feasibility of integrating this curriculum with current schedule </li> </ul>
+              <br>You can enter as many criteria as you think it will be feasible to evaluate each option against.  The average number used is 6
+              <br><br></h5>    
+             <br>
+             <input class="btn btn-primary" type="submit" name="submit" value="Save and Back to Flowchart"/>
+             {% if loggedinuser == created_by  %} 
+                <input class="btn btn-primary" type="submit" name="st" value="Save and Add/View Stakeholders"/>  
+             {% endif %}   
+             <br><br>
+             <table>
+                <thead>
+                    <th>Evaluation Criteria</th>
+                    <th>Created By</th>
+                    <th>Updated By</th>
+                 </thead>
+                 <tbody class="product-instances">
+                 {% csrf_token %}
+                 {% autoescape on %}
+                 {{ evacrform.management_form }}
+                      {% for form in evacrform %}
+                      {{ form.id }}
+                        <tr>
+                            <td>{{form.criterion}}</td>
+                            <td>{{form.created_by}}</td>
+                            <td>{{form.updated_by}}</td>
+                        </tr>
+                      {% endfor %}
+                      {% endautoescape %}
+                  </tbody>
+             </table>
+             <!-- Provide a button to click to submit the form. -->
+             <input class="btn btn-primary" type="submit" name="submit" value="Save and Back to Flowchart"/>            
+             {% if loggedinuser == created_by  %} 
+                <input class="btn btn-primary" type="submit" name="st" value="Save and Add/View Stakeholders"/>                                                                                                  
+             {% endif %}   
+             <!--<input class="btn btn-primary" type="submit" name="submit2" value="Add / View Information on Criteria"/>-->
+             <!--<input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>-->
+         
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+                    var passvar = '{{ dec_id }}';
+                    function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                    }
+         </script> 
+         </form>
+      </div>
+</div>
+
+
+{% endblock %}
+
+

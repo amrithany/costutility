@@ -1,0 +1,85 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                         
+<style>
+
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 45%;
+    padding: 10px;
+    text-align:justify;
+}
+
+.column4 {
+    float: left;
+    width: 40%;                                                                                                                                                                                                  
+    padding: 5px;
+    text-align:justify;
+}
+
+.column2 {
+    float: left;
+    width: 10%;
+    padding: 20px;
+    text-align:justify;
+}
+
+.column3 {
+    float: left;
+    width: 70%;
+    padding: 10px;
+    text-align:justify;
+}
+</style>
+<div class="hero-unit">
+<div class="row">
+    <div class="column">
+        <h3 style="color:blue;"><b>About <i>DecisionMaker</i></b></h3>
+        This free, online tool was developed for education decision-makers by the <a href="https://www.cbcse.org" target="_blank">Center for Benefit-Cost Studies of Education</a> at Teachers College, Columbia University (CBCSE) with funding from the <a href="http://wtgrantfoundation.org" target="_blank">William T. Grant Foundation</a>. 
+    <br><br>
+    The decision-making framework used in <i>DecisionMaker</i> is based on Multiattribute Utility Theory (MAUT) as developed by Edwards (1971), Edwards, Guttentag and Snapper (1975), and Edwards and Newman (1982). The <i>DecisionMaker</i> User Manual includes details on the methods. CBCSE worked with a state education agency, three school districts, three individual schools, and many current and aspiring school leaders in a principal preparation program at Teachers College to adapt the framework for educational contexts.  
+    <br><br>
+    The purpose of <i>DecisionMaker</i> is to facilitate school, district, or state education agency decisions that require a choice between alternative educational programs, strategies, or tools, for example, when choosing among several math curricula or digital devices, or when considering several scale up/scale down scenarios. Decision-makers are invited to identify factors important in distinguishing between alternative solution options and to gather evidence to determine which solution option best meets stakeholder needs. By juxtaposing the quantified value of each solution option against its costs, <i>DecisionMaker</i> allows you to review the trade-offs between monetary investments and stakeholder values.
+    <br><br>
+    You can use <i>DecisionMaker</i> to work through a decision alone or in collaboration with stakeholders, to facilitate multiple ongoing decisions, and to find resources and guidance to help support the decision-making process.   
+
+    </div>
+    <div class="column4">
+        <br>
+        <font color="blue"><b>Steps in the decision-making process:</b></font><br>
+        <!--<div class="column2">
+        <font color="blue">I</font><br><br>
+        <font color="blue">II</font><br><br><br> 
+        <font color="blue">III</font><br><br>
+        <font color="blue">IV</font><br><br><br>
+        <font color="blue">V</font><br><br><br>
+        <font color="blue">VI</font><br><br>
+        <font color="blue">VII</font><br><br><br>
+        <font color="blue">VIII</font><br><br>
+        <font color="blue">IX</font><br><br><br>
+        <font color="blue">X</font> 
+       </div>
+        <div class="column3">-->
+        &emsp;I&emsp;<a href="/utility_tool/resources/dec_info.html">Identify the decision to be made</a><br><br>
+        &emsp;II&emsp;<a href="/utility_tool/resources/st_info.html">Identify stakeholders to participate in the decision-making process</a><br><br> 
+        &emsp;III&emsp;<a href="/utility_tool/resources/solopt_info.html">Identify Solution Options</a><br><br>
+        &emsp;IV&emsp;<a href="/utility_tool/resources/scr_info.html">Apply screening criteria to the list of Solution Options to create a shortlist of viable options</a> <br><br>
+        &emsp;V&emsp;<a href="/utility_tool/resources/eva_info.html">Create a list of evaluation criteria, i.e., factors that will influence the decision</a><br><br>
+        &emsp;VI&emsp;<a href="/utility_tool/resources/score_info.html">Assign “Importance Scores” to each criterion</a> <br><br>
+        &emsp;VII&emsp;<a href="/utility_tool/resources/evamea_info.html">Identify measures to assess the extent to which each Solution Option satisfies each criterion</a><br><br>
+        &emsp;VIII&emsp;<a href="/utility_tool/resources/evamea_info.html">Collect data to evaluate each Solution Option</a> <br><br>
+        &emsp;IX&emsp;<a href="/utility_tool/resources/costs_info.html">Estimate the costs per participant of implementing each Solution Option</a> <br><br>
+        &emsp;X&emsp;<a href="/utility_tool/resources/makedec_info.html">Use the resulting cost and “utility” values to inform your decision</a> 
+        <!--</div>--> 
+        <br><br> 
+        The Resources & Guidance tab in the black bar at the top of each page includes suggestions and advice about each of these steps.   
+    </div>
+</div>
+<br>
+<div align="center">
+    <a href="/users/login.html"><b>Login</b></a> <br>
+    <a href="/users/register.html"><b>Registration for new users</b></a>
+</div>
+</div>
+{% endblock %}

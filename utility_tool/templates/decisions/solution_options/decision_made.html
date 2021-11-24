@@ -1,0 +1,280 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style TYPE="text/css">
+table {
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th {
+    cursor: pointer;
+}
+
+th, td {
+    text-align: left;
+    padding: 16px;
+}
+
+tr:nth-child(even) {
+    background-color: #c1e1ec
+}
+
+.white-space-pre {
+    white-space: pre;
+}
+
+body * { font-family: "Playfair Display", serif; }
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> 
+<body>
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+<div class="container-fluid">
+        <!--<form class="form-signin span8" id="form1" method="post"  enctype="multipart/form-data">-->
+        <form id="decform" method="post" enctype="multipart/form-data">
+       {% csrf_token %}
+        <h2 class="form-signin-heading">Make a Decision
+               <a href="#" title="Use this page to review the results of the cost-utility analysis and record your final decision. This page is view-only for stakeholders."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+               <a href="/Steps.html#Make-Decision" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>  
+             </h2>
+             <font color="blue">     
+                <b>Step 1:</b><p>Review the cost, utility and cost-utility results for the Solution Options you are considering in the summary and table below.
+            <br><p></p>
+             <b>Step 2:</b><p> Choose which option(s) you will move forward to implement and explain your rationale. 
+            <br><p></p>
+            <!--<b>Step 3:</b><p>
+              {% if loggedinuser == created_by %}
+                When you have finished entering information on this page, click here:
+                <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Flowchart"/></a>
+              {% else %} 
+                When you have finished viewing this page, click here:
+                <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Flowchart"/></a> 
+              {% endif %}  
+              <br><p></p>  --> 
+            <b>Optional:</b><!--<p>Click here for a summary report of this decision-making process and results: <a href="/utility_tool/reports/summary_report.html" target="_blank"><input class="btn btn-primary btn-sm" type="button" name="summ" value="Summary Report" title="Click here for a downloadable pdf report that summarizes your decision-making process for this decision."/></a>-->
+            <p>Click here to see more details on the utility results: <input class="btn btn-primary btn-sm" type="submit" name="ur" id="ur" value="Detailed Utility Results"/> 
+            <br><p></p>  
+           <!-- {% if loggedinuser == created_by %}    
+            Click here to see the Importance Scores contributed by each stakeholder and how DecisionMaker combined these scores with their votes to calculate the final weights assigned to each of the Evaluation Criteria: <!--<input class="btn btn-primary btn-sm" type="button" name="impsc" value="View Summary of Importance Scores"/>
+            <br><p></p>        
+            {% endif %}  -->
+           </font>
+            <br><p></p>
+            <b>Summary of Results:
+                <br>Utility Results:</b>
+            <br><i><a href="/Steps.html#Utility"><font color="green"><u>Utility</u></font></a> is a measure of stakeholder satisfaction or “usefulness” reported in DecisionMaker on a scale of 0 to 10.</i>
+            <br>It appears that, before considering costs, <font color="blue">{{so1}}</font> yields the highest stakeholder satisfaction, i.e., it best meets your stakeholders’ criteria, earning an overall utility score of <font color="blue">{{wu|floatformat:"1"}}</font> out of 10.
+            {% if costzero == 'Y' %}
+            <br><br> <font color="blue">No cost information has been entered by the user. If costs are not a consideration for this decision, use the utility values for each Solution Option to inform your decision.</font>
+            {% else %} 
+            <br><br><b>Cost Results:</b>
+            <br><i><a href="/Steps.html#Costs"><font color="green"><u>Costs</u></font></a> are the resource requirements for each Solution Option, which may include personnel time, training, facilities, material and equipment, and other resources.</i>
+            <br><font color="blue">{{so2}}</font> is the least costly: <font color="blue">{{cost_text}}</font> is <font color="blue">{{co|floatformat:"2"}}</font>. 
+            <br><br><b>Cost-utility Results:</b>
+            <br><i><a href="/Steps.html#Make-Decision"><font color="green"><u>Cost-utility</u></font></a> is the costs per unit of stakeholder satisfaction (costs divided by utility value). Lower cost-utility ratios indicate greater return on investment. </i>
+            <br><font color="blue">{{so3}}</font> provides the best return on investment because it costs the least per unit of utility (or unit of stakeholder satisfaction): <font color="blue">{{cur|floatformat:"2"}}</font>.
+            {% if more_than_one == "Y" %}
+            <br><br>If the results show that two or more Solution Options provide the same stakeholder satisfaction and/or return on investment and you still need to choose one, consider adding another evaluation criterion to the analysis to see if that helps to distinguish the options.
+            {% endif %}
+            {% if wuzero == 'Y' %}
+             <br><br>No cost-utility ratio is shown if the utility value of a Solution Option is 0 because you would be making an investment with no return at all.
+             {% endif %} 
+            <br><br>Before making a final decision about which option to choose, bear in mind that even if a Solution Option appears to offer a good return on investment, stakeholder satisfaction is important. While lower costs are helpful when funds are limited, if stakeholders are not satisfied,  they may not implement the option with fidelity. This, in turn, could lead to weaker than expected results. 
+            {% endif %}            
+            <br><br>           
+            <b>Results Table</b>                                                                                           
+            <table id="myTable" class="table table-condensed">
+                <thead style="background-color: #ADD8E6;">
+                    <th onclick="sortTable(0)">Solution Option</th>
+                    <th onclick="sortTable(1)">&emsp;&emsp;Overall Utility Value <br> or Stakeholder satisfaction <br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; 0-10</th>
+                    <th onclick="sortTable(2)">{{cost_text}}</th>
+                    <th onclick="sortTable(3)">Cost per Unit of Utility</th>
+                    <!--onclick="sortTable(1)"-->
+                </thead>    
+                    {% for c in cost_utility %}
+                         <tr>
+                            <td>{{c.sol_option}}</td>
+                            <td style="padding-left:4em;">{{c.weighted_utility|floatformat:"1"}}</td>
+                            <td style="padding-left:2em;">{{c.cost|floatformat:"2"}}</td>
+                            {% if c.cost_utility_ratio is None %}                                                                                                                                                
+                               <td style="padding-left:2em;">N/A</td>
+                            {% else %}
+                               <td style="padding-left:2em;">{{c.cost_utility_ratio}}</td>
+                            {% endif %}    
+                        </tr>
+                   {% endfor %}
+            </table>
+            <a href="export_results.html"><input class="btn btn-primary btn-sm" type="button" name="export" value="Export to Excel"/></a><br> 
+            <font color="blue">Note that the utility values in the first column are rounded to the nearest 10th but the precise utility value is used to calculate the cost-utility ratio in the third column.</font>
+            <br><br> 
+             <!--<form id="decform" method="post" enctype="multipart/form-data">-->
+              <style type="text/css"> ul {list-style:none} </style>    
+             <script type="text/javascript"> 
+               var idArray = [];
+             </script>
+             {% csrf_token %}
+             Which option(s) did you choose? (Please check ALL that apply) <br>
+             {% for q in query %}
+             <tr>
+                 {% if loggedinuser == created_by %}
+                   <td><input type="checkbox" id="{{q.id}}" value="{{q.id}}" name="id" onclick="setId(this);"  style="margin-left:auto; margin-right:auto;"></td>  
+                   {% else %}
+                   <td><input type="checkbox" id="{{q.id}}" value="{{q.id}}" name="id" onclick="setId(this);"  style="margin-left:auto; margin-right:auto;" disabled="disabled"></td>  
+                   {% endif %}  
+             <td>{{q.sol_option}}</td><br>
+             </tr>
+             <script type="text/javascript">
+                var str = '{{sol_opt}}';
+                str = str.replace(/u&#39;/g, '');
+                str = str.replace(/&#39;/g, '');
+                if (str.includes('{{q.id}}') == true) { 
+                  document.getElementById("{{q.id}}").checked = true;
+                }
+                idArray.push("{{q.id}}");
+             </script> 
+            {% endfor %}          
+            {% if loggedinuser == created_by %}
+                 <input type="checkbox" id="none" value="N" name="none" onclick="setId2();" style="margin-left:auto; margin-right:auto;"> None of the above
+                  <br> <br>
+                  In one or two sentences, please explain how the decision between these Solution Options was made and the thinking behind the decision. <br>
+                  <textarea name="reason" id="reason" rows="5" cols="200" style="width:100%;word-wrap:break-word;"></textarea>                                                                                          
+                  <br><br>
+                  What would you say was the primary factor in making this decision?
+                  <textarea name="factor" id="factor" rows="5" cols="200" style="width:100%;word-wrap:break-word;"></textarea>     
+                  <br><br>
+                  If the results of this analysis did not end up influencing your decision, what other considerations were important?
+                  <textarea name="other_cons" id="other_cons" rows="5" cols="200" style="width:100%;word-wrap:break-word;"></textarea>
+                  <br><br>
+             {% else %}
+                 <input type="checkbox" id="none" value="N" name="none" onclick="setId2();" style="margin-left:auto; margin-right:auto;" disabled="disabled"> None of the above
+                  <br> <br>
+                  In one or two sentences, please explain how the decision between these Solution Options was made and the thinking behind the decision. <br>
+                  <textarea name="reason" id="reason" rows="5" cols="200" style="width:100%;word-wrap:break-word;" readonly></textarea>
+                  <br><br>
+                  What would you say was the primary factor in making this decision?
+                  <textarea name="factor" id="factor" rows="5" cols="200" style="width:100%;word-wrap:break-word;" readonly></textarea> 
+                  <br><br>
+                  If the results of this analysis did not end up influencing your decision, what other considerations were important?
+                  <textarea name="other_cons" id="other_cons" rows="5" cols="200" style="width:100%;word-wrap:break-word;" readonly></textarea>
+                  <br><br>
+              {% endif %}  
+ <script type="text/javascript">
+  var passvar = '{{ dec_id }}';
+  var reasonX = '{{reason}}';
+  var noneX = '{{noneX}}';
+  var factorX = '{{primary_factor}}';
+  var res = reasonX.replace(/##/g,'\n');
+  var otherX = '{{other_cons}}';
+  var oth = otherX.replace(/##/g,'\n');
+  if (noneX  == 'Y') { 
+     document.getElementById("none").checked = true;
+   }
+  res = res.replace(/&#39;/g,"'");  
+  factorX = factorX.replace(/&#39;/g,"'");     
+  oth = oth.replace(/&#39;/g,"'"); 
+  document.getElementById("reason").value = res;
+  document.getElementById("factor").value = factorX;  
+  document.getElementById("other_cons").value = oth;      
+
+  function goback() {
+   document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+  }
+
+  function setId(chkBox){
+    var inputs = document.getElementsByTagName("input");
+    if (document.getElementById(chkBox.id).checked == true) {
+       document.getElementById("none").checked = false;
+    }
+    for (i = 0; i<inputs.length; i++ ) {
+        if (inputs[i].type == 'checkbox'){
+           if (inputs[i].id == chkBox.id) {
+              selected.push(chkBox.id);
+           }
+       }
+   }
+ }
+
+  function setId2(){
+    for (index = 0; index < idArray.length; ++index) {
+       if (document.getElementById("none").checked == true) {
+          document.getElementById(idArray[index]).checked = false;
+          document.getElementById("none").value = "Y";
+       } else { document.getElementById("none").value = "N"; }
+    }
+  }
+
+  function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("myTable");
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc"; 
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++; 
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script>
+<span style="float:right;">
+{% if loggedinuser == created_by %}
+ <input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/> 
+ {% else %} 
+ <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Flowchart"/></a>    
+ {% endif %}   
+</span>
+</form>
+</div>
+</div>
+</body>
+{% endblock %}
+
+
+

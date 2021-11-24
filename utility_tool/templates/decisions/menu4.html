@@ -1,0 +1,138 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>flowchart.js · Playground</title>
+        <style type="text/css">
+          .end-element { background-color : #FFCCFF; }
+        </style>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.0/raphael-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="http://flowchart.js.org/flowchart-latest.js"></script>
+        <!-- <script src="../release/flowchart.min.js"></script> -->
+        <script>
+            window.onload = function () {
+                var btn = document.getElementById("run"),
+                    cd = document.getElementById("code"),
+                    chart;
+                (btn.onclick = function () {
+                    var code = cd.value;
+                    if (chart) {
+                      chart.clean();
+                    }
+                    chart = flowchart.parse(code);
+                    chart.drawSVG('canvas', {
+                      // 'x': 30,
+                      // 'y': 50,
+                      'line-width': 3,
+                      'maxWidth': 3,//ensures the flowcharts fits within a certian width
+                      'line-length': 50,
+                      'text-margin': 10,
+                      'font-size': 14,
+                      'font': 'normal',
+                      'font-family': 'Helvetica',
+                      'font-weight': 'bold',
+                      'font-color': 'black',
+                      'line-color': 'black',
+                      'element-color': 'black',
+                      'fill': '#ADD8E6',
+                      'yes-text': 'Solution Options',
+                      'no-text': 'Screening Criteria',
+                      'arrow-end': 'block',
+                      'scale': 0.8,
+                      'symbols': {
+                        'start': {
+                          //'font-color': 'red',
+                          //'element-color': 'green',
+                          //'fill': 'yellow'
+                          'class': 'end-element'  
+                        },
+                        'end':{
+                          'class': 'end-element'
+                        }
+                      },
+                      //'flowstate' : {
+                        //'past' : { 'fill' : '#CCCCCC', 'font-size' : 12},
+                        //'current' : {'fill' : 'blue', 'font-color' : 'red', 'font-weight' : 'bold'},
+                        //'future' : { 'fill' : '#FFFF99'},
+                        //'request' : { 'fill' : 'blue'},
+                        //'invalid': {'fill' : '#444444'},
+                        //'approved' : { 'fill' : '#58C4A3', 'font-size' : 12, 'yes-text' : 'APPROVED', 'no-text' : 'n/a' },
+                        //'rejected' : { 'fill' : '#C45879', 'font-size' : 12, 'yes-text' : 'n/a', 'no-text' : 'REJECTED' }
+                      //}
+                    });
+                    $('[id^=sub1]').click(function(){
+                      alert('info here');
+                    });
+                })();
+            };
+        </script>
+    </head>
+    <body>
+        <div class="hero-unit" style="background-color: white">
+        <div style="color:#0000FF" align="right"><h4>Logged in as {{loggedinuser}} <br>
+                        Decision you are working on: {{dec_title}}</h4></div> 
+        <h2 class="form-signin-heading">Decision Flowchart</h2> 
+        <h4>Please click on the text inside the flowchart symbols to go to the screen</h4>
+        <div><textarea id="code" style="width: 100%;display:none;" rows="11">
+st=>start: Decision Problem
+e=>end: Make a Decision
+op1=>operation: Solution Options :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_solopt_det.html
+opa=>operation: Stakeholders for Solution Options :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_st_solopt.html
+op2=>operation: Screening Criteria :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scr_criteria.html
+opb=>operation: Stakeholders for Screening Criteria :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_st_scrcr.html
+op3=>operation: Evaluation Criteria :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_eva_criteria.html
+opc=>operation: Stakeholders for Evaluation Criteria :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_st_evacr.html
+op4=>operation: Importance Scores :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scores.html
+opd=>operation: Stakeholders for Importance Scores :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_st_iw.html
+cond=>condition: Solution Options
+or Screening Criteria?
+para=>parallel: parallel task
+op5=>operation: Evaluation Measures :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_measures.html
+op6=>operation: Evaluation Results
+para=>parallel: Solution Options  :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_solopt_det.html
+para2=>parallel: Screening Criteria :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scr_criteria.html
+para3=>parallel: Evaluation Criteria :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_eva_criteria.html
+para4=>parallel: Importance Scores :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scores.html
+st->cond
+cond(yes, right)->para
+cond(no)->para2
+para(path1, bottom)->opa->para3
+para(path2, right)->para3
+para2(path1, bottom)->opb->para3
+para2(path2, right)->para3
+para3(path1, bottom)->opc->para4
+para3(path2, right)->para4
+para4(path1, bottom)->opd->op5
+para4(path2, right)->op5
+op5(right)->op6
+op6(right)->e
+
+</textarea></div>
+<div><button id="run" style="display:none;" type="button">Run</button></div>
+<div id="canvas"></div>
+<!--
+st->cond                                                                                                                                           
+cond(yes, right)->para
+cond(no)->para2
+para(path1, bottom)->opa->op3
+para(path2, top)->op3
+para2(path1, bottom)->opb->op3
+para2(path2, top)->op3
+op3(right)->opc                                                                                                                                    
+opc(right)->op4
+op4(right)->opd
+opd(right)->op5
+op5(right)->op6
+op6(right)->e
+-->
+</div>
+</body>
+</html>
+
+
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style type="text/css">
+body .handsontable .grey {
+    color: black;
+    background: #DCDCDC;
+}  
+
+body .handsontable .htAutocompleteArrow {
+             color: black;                                                                                                                                                                                           
+                 }
+</style> 
+</style><script src="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.css">
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid">
+             <form method="post"  enctype="multipart/form-data">
+              {% csrf_token %}
+              <script src="{% static 'js/bootstrap.min.js' %}"></script>
+             <h4 class="form-signin-heading">Current Solution Options</h4>    
+             <table>
+                  {% for o in solopt %}    
+                  <tr>
+                      <td> {{forloop.counter}}. &nbsp;          {{o.sol_option|truncatechars:500}} </td>
+                  </tr>
+                  {% endfor %}
+             </table>
+             <br>
+             <h2 class="form-signin-heading">Evaluation Criteria</h2>
+             <h5 style="border: 2px solid grey;padding-left: 15px;">
+              <br>Use this page to list evaluation criteria, i.e., factors you will consider in assessing each of the Solution Options to help you choose among them
+              <br><br>If you click on the light grey triangle at the right-hand side of each cell in the Evaluation Criteria column below, you can select from a list of possible evaluation criteria. You can also write in your own evaluation criteria
+              <br><br> Note that DecisionMaker assumes that costs are always a factor in decision-making. In a later step you will be asked to enter estimated costs of implementing each Solution Option so you should not specify costs as an evaluation criterion here
+              <br><br>Examples of evaluation criteria for a decision about a new elementary school literacy curriculum might include:
+              <ul><li type="square" style="color: #888;"> Strength of research evidence to suggest curriculum improves reading comprehension for K-5 students </li>
+              <li type="square" style="color: #888;">  Curriculum  reflects community values </li>
+              <li type="square" style="color: #888;">  Level of teacher buy-in for adoption of this curriculum </li>
+              <li type="square" style="color: #888;">  Feasibility of integrating this curriculum with current schedule </li> </ul>
+              <br>You can enter as many criteria as you think it will be feasible to evaluate each option against.  The average number used is 6
+              <br><br></h5>    
+             <input class="btn btn-primary" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>
+             {% if loggedinuser == created_by  %} 
+                <input class="btn btn-primary" type="submit" name="st" id="st" value="Save and Add/View Stakeholders"/>  
+             {% endif %}   
+             <br><br>
+         
+         <div id="example1" class="hot handsontable htColumnHeaders"></div>
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         var dec_id = '{{ dec_id }}';
+         var stakeholdersNow = '{{stakeholdersNow}}';
+
+        $(document).ready(function () {
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {    
+               xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+             }
+            });
+ 
+            $("input[type='submit']").click(function(){
+            var buttonid = this.id;
+            $.ajax({
+                url: "{% url 'add_eva_criteria' %}",
+                data: {'getdata': JSON.stringify(hot.getData())},
+                dataType: 'json',
+                type: 'POST',   
+                success: function (res) {
+                    window.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html";
+                    console.log(res);                                                                                                                
+                },
+                error: function (res) {
+                    if (buttonid == 'submit') {                                                                                                        
+                        window.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html";   
+                    } else if (buttonid == 'st') {
+                      if (stakeholdersNow == 'Y') { 
+                          window.location.href = "/utility_tool/decisions/solution_options/assign_tasks.html";
+                       } else {
+                          window.location.href = "/utility_tool/decisions/solution_options/add_st_all.html";
+                       }
+                    }   
+                    console.log(res);            
+             }
+            });
+            return false;
+            });
+          var data=[[]];                                                                                                                             
+          var hiddencols = [0,2,3];
+          {% for c in qset  %}
+          data.push(['{{c.id}}','{{c.criterion}}','{{c.created_by}}','{{c.updated_by}}']);
+          hiddencols = [0];
+          {% endfor %} 
+          var
+          container = document.getElementById('example1'),
+          hot;
+            hot = new Handsontable(container, {
+                colHeaders: ['','Evaluation Criteria', 'Created By', 'Updated By'],
+                columns: [{},{},{},{}],
+                cells: function(row, col) {
+                     var cellProperties = {};
+                        if ((col === 2) || (col === 3)){                                                                                             
+                         cellProperties.readOnly = true;
+                         cellProperties.className = 'grey';
+                        }
+                       else if (col=== 1) {
+                        cellProperties = {
+                          type: 'autocomplete', 
+                          source: ['','Addresses the identified need','Equity','External recommendations','Feasibility of implementation','Fit with local context','Impact on student academic performance','Impact on student socio-emotional development','Impact on student/staff engagement','Meets required standards and regulations','Number of students in need who can be served','Quality of implementation (for programs/strategies tools already in place)','Return on investment','Support from stakeholders'],
+                         default: '',
+                       } 
+                       }
+                return cellProperties;
+                },   
+                data: data,
+                colWidths: [0,600, 200, 200],
+                minSpareRows: 8,
+                contextMenu: true,
+                allowInsertRow: false,
+                allowInsertColumn: false,
+                allowRemoveRow: false,
+                allowRemoveColumn: false,                                                                                                           
+                licenseKey: "e1ccf-05a6d-60e20-84d04-71653",  
+                hiddenColumns: {
+                  columns: hiddencols,
+                  indicators: true
+               },      
+                beforeValidate: function(value, row, prop){
+                console.log(prop);
+                    if (prop === 1){
+                    return ''
+                  }
+                }
+              });
+           });
+         </script> 
+     </form>
+     </div>
+</div>
+
+
+{% endblock %}
+
+

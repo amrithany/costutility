@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container" id="soloptform">
+             <form method="post" id="soloptform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Solution Options</h2>
+             <table>
+                <thead>
+                    <th>Option</th>
+                    <th>Created By</th>
+                    <th>Updated By</th>
+                 </thead>
+                 <tbody class="product-instances">
+                 {% csrf_token %}
+                 {{ soloptform.management_form }}
+                      {% for form in soloptform %}
+                       {{ form.id }}
+                        <tr>
+                            <td>{{form.option}}</td>
+                            <td>{{form.created_by}}</td>
+                            <td>{{form.updated_by}}</td>
+                        </tr>
+                      {% endfor %}
+                  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                  <script type="text/javascript">
+                    var passvar = '{{ dec_id }}';
+
+                    function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                    }
+                  </script> 
+                  </tbody>
+             </table>
+             <!-- Provide a button to click to submit the form. -->
+             <input class="btn btn-primary" type="submit" name="submit" value="Save"/>            
+             <input class="btn btn-primary" type="submit" name="submit2" value="Add / View Information on Options"/>
+             <a href="/utility_tool/decisions/solution_options/handsontable.html"><input class="btn btn-primary" type="button" name="map" value="Map against Screening Criteria"/></a> 
+	     <input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+         
+</form>
+</div>
+</div>
+
+
+{% endblock %}
+

@@ -1,0 +1,55 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                           
+<div class="hero-unit">
+<br>
+<br>
+<b>Costs: </b><font color="blue">Resources to help identify the resource requirements and estimate the costs for each Solution Option</font>
+<br><br><font color="blue"><b>Ingredients method</b></font> 
+<br><br><b><a href="https://www.cbcse.org/" target="_blank">CBCSE</a></b>  (the research center that developed DecisionMaker) uses the ingredients method to estimate the costs of educational programs, strategies or tools (see Levin, 1975; Levin, 1983; Levin & McEwan, 2001; or Levin, McEwan, Belfield, Bowden, & Shand, 2018, for full details on this method). This method defines costs as the resource requirements for implementing a program, strategy or tool (i.e., a Solution Option), regardless of how they are budgeted or financed. These may include personnel time such as teacher and school administrator time, training, facilities, materials, technology and other equipment, services, and other resources. 
+<br><br><font color="blue"><b>Expenditures versus full costs of implementation</b></font> 
+<br><br>You may also consider enumerating costs by only considering new expenditures. However, such an analysis may neglect accounting for important resource demands such as the reallocation of teacher and administrator time. 
+<br><br>For example, expenditures for a new program might include items such as the initial costs of training staff, and any curriculum or additional materials you need to purchase in order to implement the program. However, to understand  the full costs of implementing the program, you should consider how teacher and administrator time is being used now, and how that will change when implementing the new program. If one program is very time-consuming for teachers to implement, and another program is not, that may be an important consideration for you, in addition to expenditures. However, if primary concerns for key decision-makers are the additional start-up costs and new demands on the school/district budget, then considering expenditures only may be useful. <i>Note that if you are only focused on expenditures, then you will be producing expenditure-utility ratios rather than cost-utility ratios in the analysis.</i>
+<br><br><font color="blue"><b><u>Example</u></b></font>
+<br><br>Below is a table comparing implementation costs vs. expenditures for a school that is considering adopting a social-emotional learning (SEL) program. The school considered two SEL curricula, RULER and Character First. A third Solution Option considered was maintaining the status quo, which involved students attending advisory sessions each day. 
+<br><br>As you can see from the table, maintaining the status quo required no new expenditures, while Character First required over $1,300 for training and curriculum materials, and RULER required almost $11,000, primarily because the training is more intensive and involves travel. 
+<br><br>While the expenditure amounts for the two SEL programs were not large, the amount of personnel time involved in implementing an SEL curriculum is quite considerable, especially in the first year. As shown in the table, this amounts to over $100,000 in personnel time (i.e., salary and fringe benefits for the number of hours collectively spent by personnel on this activity). SEL curricula tend to encourage developing a core implementation team and getting the entire community involved in understanding and practicing the principles taught by the curriculum. If personnel are spending time on these SEL activities, they must be spending less time on other school activities (or working longer hours!). As a result, considering the personnel time involved in implementing each program may be important for this particular decision. Note, however, that the status quo of running advisory sessions is also using teacher and administrator time, albeit in different ways. Costs of personnel time for the first year of implementing RULER are almost $10,000 more than for implementing advisory, but the school would actually save $7,400 in personnel time in the first year of implementing Character First.
+<br><br>When enumerating costs associated with personnel time, you should always consider how resource requirements will change relative to business as usual, as the status quo is also utilizing important resources in another way. You can see that implementing advisory already demands a lot of personnel time. RULER requires even more time, at least in the first year because it involves a dedicated implementation team and intensive initial training, while Character First uses fewer personnel resources, partly because the availability of sample lesson plans reduces the amount of time teachers need to prepare their own lessons.
+<p style="text-align:center;">
+<br><br><img src="{% static "cost1.PNG" %}" alt="Cost Table" /> </p>
+<br><br>
+<font color="blue"><b>Tools</b></font>
+<br><br>
+<b><a href="https://www.cbcsecosttoolkit.org/" target="_blank">CostOut:</a></b> A free, online tool to help estimate the costs and cost-effectiveness of educational or other social programs.
+<br><br>
+<b>Guidance on cost estimation methods</b>
+<br><br>
+<b><a href="https://eric.ed.gov/?id=ED574634" target="_blank">The Critical Importance of Costs for Education Decisions</a></b> (2017)
+<br><br>
+<b><a href="https://www.youtube.com/watch?v=ihV6XO9-H24" target="_blank">Using Cost Analysis to Inform Decisions About Professional Learning</a></b> (Webinar recording, 2018)
+<br><br>
+<b><a href="https://static1.squarespace.com/static/583b86882e69cfc61c6c26dc/t/595a38f79de4bb45731dbaeb/1499085047436/19345747%252E2014%252E915604.pdf" target="_blank">Guiding the Development and Use of Cost-Effectiveness Analysis in Education</a></b> (2015)
+<br><br>
+<b>Reports and articles illustrating cost analyses and cost-effectiveness analyses of educational programs by researchers who have rigorously estimated costs:</b>
+<br><br>
+<b><a href="https://www.cbcse.org/publications/a-benefit-cost-analysis-of-a-long-term-intervention-on-social-and-emotional-learning-in-compulsory-school" target="_blank">A Benefit-Cost Analysis of a Long-Term Intervention on Social and Emotional Learning in Compulsory School</a></b> (2017)
+<br><br>
+<b><a href="https://www.cbcse.org/publications/cost-effectiveness-analysis-of-early-reading-programs-a-demonstration-with-recommendations-for-future-research" target="_blank">Cost-Effectiveness Analysis of Early Reading Programs: A Demonstration With Recommendations for Future Research</a></b> (2015)
+<br><br>
+<b><a href="https://www.cbcse.org/publications/esss" target="_blank">Examining Systems of Student Support</a></b> (2018)
+<br><br>
+<b><a href="https://www.cbcse.org/publications/leveraging-volunteers-an-experimental-evaluation-of-a-tutoring-program-for-struggling-readers" target="_blank">Leveraging Volunteers: An Experimental Evaluation of a Tutoring Program for Struggling Readers</a></b> (2016)
+<br><br>
+<b><a href="https://www.cbcse.org/publications/reach-cost-analysis" target="_blank">Reach Cost Analysis</a></b> (2018) 
+<br><br>
+{% if whereamI == 'aboutmaker' %}
+<a href="/utility_tool/resources/about_maker.html"><input class="btn btn-success" type="button" name="cancel" value="Back to About DecisionMaker"></a>
+{% else %}   
+    {% if dec_id != 0 %}
+        <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+    {% endif %}   
+
+    <a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+{% endif %}    
+</div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid">
+   <form id="form1" method="post"  enctype="multipart/form-data">
+       {% csrf_token %}
+        <h2 class="form-signin-heading">Stakeholders for Solution Options</h2>
+        <h5 style="border: 2px solid grey;padding-left: 15px;">
+            <br> Use this page to invite stakeholders to contribute suggestions for solution options 
+            <br><br> If you have not already created a directory of stakeholders, click on “My Directory of Stakeholders” at the top right corner of the page (in the black bar) 
+            <br><br> After you have built your directory, these stakeholders will appear in the “List of Other Stakeholders in Your Directory” 
+            <br><br> Use the check boxes in the “List of Other Stakeholders in Your Directory” to select the stakeholders you would like to invite and then click the blue “Add from List Below” button 
+            <br><br> These stakeholders will now appear in the top list “Stakeholders invited to contribute to the Solution Options” and they will now be able to view this decision and add solution options if they log in to DecisionMaker using an account created with the same email address you listed 
+            <br><br> Notify your stakeholders that you are waiting for them to contribute ideas for solution options by a certain date/time 
+            <br><br></h5>
+        <input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+        <br><br>
+        Stakeholders invited to contribute to the Solution Options   
+            <table class="table table-condensed">
+            <input class="btn btn-primary" type="submit" name="submit2" value="Delete from List Below"/> <br>   
+                <thead>
+                    <th></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Organization</th><br />
+                    {% localtime on %}
+                    {% for st in st_dec %}
+                           <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">
+                           <td><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="id" onclick="setId2(this);"  style="margin-left:auto; margin-right:auto;"></td>
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.email}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                        </tr>
+                </thead>
+                {% endfor %}
+                {% endlocaltime %}
+            </table>
+        <br>
+        List of Other Stakeholders in Your Directory 
+            <table class="table table-condensed">
+                <input class="btn btn-primary" type="submit" name="submit" value="Add from List Below"/> <br>
+                <thead>
+                    <th></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Organization</th><br />
+                    {% localtime on %}
+                    {% for st in stakeholders %}
+                            <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">
+                                <td><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="id" onclick="setId(this);"  style="margin-left:auto; margin-right:auto;"></td>
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.email}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endlocaltime %}
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var selected = [];
+                     var deleted = [];
+                     var passvar = '{{ dec_id }}';
+                    
+                     function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                     }
+
+                     function setId(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id == chkBox.id) {
+                                       selected.push(chkBox.id);
+                                   }
+                             }
+                          }
+                     }
+
+
+                     function setId2(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id == chkBox.id) {
+                                       deleted.push(chkBox.id);
+                                   }
+                             }
+                          }
+                     }    
+                    </script> 
+               </thead>
+            </table>
+    </form>
+    </div>
+</div>
+{% endblock %}
+
+
+

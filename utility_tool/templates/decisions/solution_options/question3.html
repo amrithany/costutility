@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+</style>
+<div class="hero-unit">
+<div class="container">
+<form class="form-signin span8" id="form1" method="post"  enctype="multipart/form-data">
+<br>
+Do you want everyone to enter options in one list so they can all see all options being suggested, or would you prefer they each enter options on a blank private form which only you and the individual respondent can see? <br><br> 
+<input type="radio" name="gotoSolOpts" value="One"> One list for everyone <br>
+<input type="radio" name="gotoSolOpts" value="Private"> Private list for me and one for each stakeholder <br>
+<br><input class="btn btn-success" type="button" name="cancel" value="Back to Solution Options" onclick="goback();"/>
+<a href="/utility_tool/decisions/solution_options/question2.html"><input class="btn btn-success" type="button" name="cancel" value="<< Back"/></a>
+<input class="btn btn-success" type="button" name="next" value="Next >>">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("input[name='next']").click(function(){
+            var radioValue = $("input[name='gotoSolOpts']:checked").val();
+            document.location.href = "/utility_tool/decisions/solution_options/add_st_solopt.html";
+        });
+        
+    });
+
+    function goback() {
+       document.location.href = "/utility_tool/decisions/solution_options/"  + {{dec_id}} + "/question1.html";
+   }
+</script>
+</form>
+</div>
+</div>
+
+{% endblock %}
+

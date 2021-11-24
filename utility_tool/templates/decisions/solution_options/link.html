@@ -1,0 +1,27 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+<style TYPE="text/css">
+    body * { font-family: "Playfair Display", serif; }
+</style>
+<body>
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+<div class="container" id="soloptform">    
+    <br><br><br>
+    Please cut and paste the link below to view the Solution Option Details for this Decision without logging in. 
+    <br><br>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">                                                                                                                                                                
+var passvar = '{{ dec_id }}';
+var locationval = "http://amritha.pythonanywhere.com/utility_tool/decisions/" + passvar + "/solution_options/view_solopt_det.html"; 
+
+document.write(locationval);
+
+</script> 
+<br><br><a href="/utility_tool/decisions/solution_options/add_solopt_det.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Solution Options" onclick="goback2();"/></a>                
+</div>
+</div>
+</body>
+{% endblock %}

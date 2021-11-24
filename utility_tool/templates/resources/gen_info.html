@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                           
+<div class="hero-unit">
+<br>
+<br>
+<b>General Resources:  </b><font color="blue">Miscellaneous other resources</font>
+<br><br>
+The education agencies who helped us develop <i>DecisionMaker</i> named a variety of resources they use to gather information about educational programs, strategies and tools.  These include:
+<br><br>
+<b><font color="blue">Professional associations</font></b>
+<br><br>
+Association of California School Administrators (<b><a href="https://www.acsa.org/" target="_blank">ACSA</a></b>)<br>
+Council of the Great City Schools  (<b><a href="https://www.cgcs.org/" target="_blank">CGCS</a></b>)<br>
+Council of Chief State School Officers (<b><a href="https://www.ccsso.org/" target="_blank">CCSSO</a></b>)<br>
+<br>
+<b><font color="blue">Consortia</font></b><br>
+<br><b><a href="https://coredistricts.org/" target="_blank">CORE Districts</a></b> (California-specific)<br>
+<br>
+<b><font color="blue">Books</b></font>
+<br><br>
+Visible Learning: A Synthesis of Over 800 Meta-Analyses Relating to Achievement by John Hattie (2008)<br>
+<br>
+<b><font color="blue">Newspapers and social media</font></b><br><br>
+<b><a href="https://edsource.org/" target="_blank">EdSource</a></b><br>    
+<b><a href="https://www.edweek.org/ew/index.html" target="_blank">Education Week</a></b><br>
+Twitter
+
+<br><br>
+{% if dec_id != 0 %}
+    <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+{% endif %}   
+<a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+</div>
+{% endblock %}

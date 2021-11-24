@@ -1,0 +1,122 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }  
+ body * { font-family: "Playfair Display", serif; }       
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="soloptform">
+            <form method="post" id="soloptform"  enctype="multipart/form-data">
+            <h2 class="form-signin-heading">Archived Solution Options <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a> </h2>
+            <div id="myDIV">  
+            <h5 style="border: 2px solid grey; padding-left: 15px;">
+            <br> These are Solution Options that you decided to take out of the running as ways to address the current decision. You can add them back in at any time from this page.
+            <br><br></h5>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>                                                                                                                                 
+             <p></p>
+            <font color="blue">
+            <b>Step 1:</b><p>You can restore any of the archived Solution Options below by selecting the “Restore” button under the relevant Solution Option(s).
+            <br><p></p>
+            <!--<b>Step 2:</b><p>When you are done, click here:      
+             <input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Solution Options"/>-->
+             </font> 
+                 {% csrf_token %}
+                 {{ soloptform.management_form }}
+                      {% for form in soloptform %}
+                       <div>
+                       <br>
+                       {{ form.id }}
+                       {{ form.errors }} 
+                       <b>{{forloop.counter}}. </b> &nbsp; 
+                       Option: {{ form.sol_option }} 
+                       <br>
+                       Created By: {{ form.created_by }}
+                       Updated By: {{form.updated_by}}
+                       <br>
+                       <button type="button" class="btn btn-basic active" data-toggle="collapse" data-target="#demo{{ form.prefix }}">Solution Option Details</button>
+                       <div id="demo{{ form.prefix }}" class="collapse">
+                       <br>    
+                       Details: {{form.option_details}}
+                       <br><br>
+                       <table>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename1}}</td>
+                               <td>{{form.file_attachment1}}</td></tr>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename2}}</td>
+                               <td>{{form.file_attachment2}}</td></tr>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename3}}</td>
+                               <td>{{form.file_attachment3}}</td></tr>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename4}}</td>
+                               <td>{{form.file_attachment4}}</td></tr>
+                           <tr></tr>
+                           <tr></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname1}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link1}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname2}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link2}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname3}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link3}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname4}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link4}}</td></tr>
+                       </table> 
+                      </div>
+                      <br>
+                      <!--Do you wish to un-archive this option? <a href="#" title="Restore this to the Solution Options list for further consideration"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>-->{{form.unarchived}} <br>
+                      </div>
+                      {% endfor %}
+                  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                  <script type="text/javascript">
+                    var passvar = '{{ dec_id }}';
+                    var button_shown = '{{button_shown}}'; 
+                    function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                    }
+ 
+                    function goback2() {
+                         document.location.href = "/utility_tool/decisions/solution_options/add_solopt_det.html"; 
+                    }
+
+                    (function( $ ){
+                                                                                                                                                                                                                 
+                    $.fn.uncheckableRadio = function() {
+                    return this.each(function() {
+                    $(this).mousedown(function() {
+                    $(this).data('wasChecked', this.checked);
+                    });
+                    $(this).click(function() {
+                    if ($(this).data('wasChecked'))
+                    this.checked = false;
+                    });
+                    });
+                    };
+                    })( jQuery );
+                    $('input[type=radio]').uncheckableRadio();
+ 
+                  </script>
+                  <!-- 
+                  {% if button_shown == 'yes' %}     
+                    <input class="btn btn-primary" type="submit" name="submit" value="Save and Back to Flowchart"/>
+                    <input class="btn btn-primary" type="submit" name="solopt" value="Save and Back to Solution Options"/> 
+                  {% endif %}
+                  -->   
+                  <span style="float:right;"><input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Solution Options"/></span>
+</form>
+</div>
+</div>
+</body>
+
+{% endblock %}
+

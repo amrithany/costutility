@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+ {% load static %}
+<html>
+<head>
+      <html lang="en" >
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/Style_fc.css' %}" rel="stylesheet"> 
+    <link href="{% static 'css/Header.css' %}" rel="stylesheet">
+    <link href="{% static 'css/Utility-Results.css' %}" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600&display=swap" rel="stylesheet">
+</head>
+<style TYPE="text/css" MEDIA=all>
+.handsontable th {
+    white-space: normal!important;
+    }
+    body * { font-family: "Playfair Display", serif; margin-left: 0.5%; margin-right: 1%;}
+</style>
+  <div class="navbar">
+    <div class="nav-upper">
+        <span style="padding-right: 1%"><i>DecisionMaker &reg;</i>– the CBCSE Cost-Utility Tool Kit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>© 2019 Teachers College, Columbia University. All rights reserved.</span>
+      </div>
+  <a href="/Home.html">Home</a>
+  <a href="/Home.html#About-Us">About DM</a>
+  <a href="/utility_tool/decisions/decisions_list.html">My Decisions</a>
+  <a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a>
+  <a href="/Resources-Guidance.html">Resources & Guidance</a>
+  <a href="/license2.html">License</a> 
+  <a href="/Contact-Us.html">Contact Us</a>
+  <a href="/Who-We-Are.html">Who We Are</a>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <a href="/utility_tool/users/login.html">Login</a>
+  {% else %}
+     <a href="/logout.html">Logout</a>
+  {% endif %}
+    </div>
+  <div class="mobile-nav">
+    <div class="nav-upper-mobile">
+      <span style="padding-right: 1%"><i>DecisionMaker</i>&reg; – the&nbspCBCSE&nbspCost-Utility&nbspTool&nbspKit&nbsp<wbr>©&nbsp2019&nbspTeachers&nbspCollege,&nbspColumbia&nbspUniversity</span>
+  </div>
+  <div class="menuToggle">
+      <input type="checkbox">
+      <span></span>
+      <span></span>
+      <span></span>
+        <ul class="nav-mobile">
+       <a href="/Home.html"><li class="nav">Home</li></a>
+        <a href="/Home.html#About-Us"><li class="nav">About DM</li></a>
+        <a href="/utility_tool/decisions/decisions_list.html"><li class="nav">My Decisions</li></a>
+        <a href="/utility_tool/decisions/decisions_list.html/stakeholders.html"><li class="nav">My Stakeholders</li></a>
+        <a href="/Resources-Guidance.html"><li class="nav">Resources & Guidance</li></a>
+        <a href="/license2.html"><li class="nav">License</li></a> 
+        <a href="/Contact-Us.html"><li class="nav">Contact Us</li></a>
+        <a href="/Who-We-Are.html"><li class="nav">Who We Are</li></a>  
+        {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                           
+             <a href="/utility_tool/users/login.html"><li class="nav">Login</li></a>
+        {% else %}
+             <a href="/logout.html">Logout</a>
+        {% endif %}
+        </ul>
+        </div>
+      </div>
+      <div>
+<script src="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.css">
+    <div id="page-container">
+      <div class="hero-2" id="Utility-Results">
+          <div class="hero-2-message">
+            <h1 id="not-homepage">Detailed Utility Results</h1>
+          </div>
+      </div>
+     <div id="wrapper" style="text-align: center">
+      <a href="#" title="This page provides details on how DecisionMaker calculates utility values."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>
+      <a href="/Steps.html#Utility" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>    
+     </div>
+     <body>
+        <div id="float-left"><h5 id="font-2">Decision you are working on: {{dec_title}} </h5></div>
+        <div id="float-right"><h5 id="font-2">Logged in as: {{loggedinuser}}</h5></div>
+        {% csrf_token %}
+        <table class="instructions">
+          <tr>
+            <td style="text-align:left">
+            <!--Back to Make a Decision Button, which has to be in a table for some reason I can't figure out-->
+            <a class="btn-general" href="/utility_tool/decisions/solution_options/decision_made.html">Back to Make a Decision</a>
+              </td>
+            </table>
+<!--Coding for Table 1-->
+<h3>Overall Utility Results</h3>
+        <table class="instructions">
+          <tr>
+            <td>
+              Table 1 below ranks the evaluated Solution Options from best to worst in meeting your Evaluation Criteria.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              A Solution Option with an overall score of 10 would, in theory, meet your stakeholders’ criteria perfectly and a Solution Option scoring 0 would not meet their Evaluation Criteria at all.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              If no Solution Options score above 5, or if stakeholders express dissatisfaction with the Solution Options that are ranked highest, you may want to go back and consider additional Solution Options and/or review whether all important considerations were captured in the Evaluation Criteria.
+            </td>
+          </table>
+          <br>
+          <div>
+            <p id="table-figure">Table 1: Solution Options Ranked from Highest to Lowest Overall Utility</p>
+          </div>
+<table id="myTable" class="instructions">
+<thead>
+<th>Solution Option</th>
+<th>Weighted Utility 0-10 <br>Stakeholder Satisfaction</th>
+</thead>        
+{% for u in util_res %}
+      <tr>
+      <td style="text-align: center">{{u.sol_option}}</td>
+      <td style="text-align: center">{{u.weighted_utility|floatformat:"1"}}</td>
+      </tr>
+{% endfor %}
+</table>
+          <div>
+              <!--    <p id="table-figure">Figure 1. Comparison of Total Utility Values, [Total/Average/Marginal] Cost and Cost-utility Ratio</p>-->
+
+              <br><br>
+<!--Coding for Table 2-->
+<h3>Criterion-Level Utility Values</h3>
+<table class="instructions">
+  <tr>
+    <td colspan="2">
+      Table 2 shows:
+    </td>
+  </tr>
+  <tr>
+    <td id="number">
+      I.
+    </td>
+    <td>The importance weight for each Evaluation Criterion. This is calculated from the Importance Scores that you and/or other stakeholders provided for each Evaluation Criterion. It reflects the overall importance assigned to the criterion by all stakeholders who contributed Importance Scores.
+    </td>
+  </tr>
+  <td id="number">
+    II.
+  </td>
+  <td>
+    The evaluation data you entered in an earlier step which is used to calculate the utility values shown for each Solution Option at the level of each Evaluation Criterion. A higher criterion-level utility value (closer to the maximum of 10) indicates that the Solution Option performs well when assessed against the individual Evaluation Criterion.
+  </td>
+</tr>
+</table>
+<i>DecisionMaker &reg;</i> multiplies the importance weight for each Evaluation Criterion by the criterion-level utility values for each Solution Option to obtain the overall utility values shown in Table 1.
+  <div><p id="table-figure">Table 2:  Importance Weight for Each Evaluation Criterion, Evaluation Data and Criterion-level Utility Values for Each Solution Option
+      <!--<a href="/utility_tool/decisions/solution_options/export_ut.html"><input class="btn-general" type="submit" name="save" id="save" value="Export to Excel"/></a>-->
+      <input class="btn-general" type="submit" name="save" id="save" value="Export as CSV"/>
+</p><p></p></div>
+  <!--INSERT TABLE 2 HERE-->
+<div id="example1" class="hot handsontable htColumnHeaders"></div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var dec_id = {{dec_id}};
+$(document).ready(function () {
+      var json = '{{table}}';
+      var sarray = [];
+      var container2 = document.getElementById('example1'), hot;
+      var eva_count = {{eva_count}}; 
+      var sol_count = {{solopt_count}};
+      var archived_pos = [];
+      var deleted_pos = [];
+      justpos = 6;
+      // add solution options to the end of the columns row
+      {% for s in solopt %}                                                                                                                           
+          if ('{{s.archived}}' == 'Y') {
+             archived_pos.push(justpos);
+          }
+          if ('{{s.deleted}}' == 'Y') {
+             archived_pos.push(justpos);
+          }   
+          sol = '{{s.sol_option}}';
+          sol = sol.replace(/&#39;/g,"'"); 
+          sol = sol.replace(/&amp;/g, "&");   
+          sol = 'Criterion-level utility value - ' +  sol;                                                                                           
+          sarray.push(sol);            
+         
+          justpos = justpos + 1; 
+      {% endfor %}
+                                                                                                                                                      
+      json = json.replace(/&quot;/g, '"');
+      json = json.replace(/&#39;/g, "'"); 
+      json = json.replace(/&amp;/g, "&"); 
+      data = JSON.parse(json);  
+      
+      for (var i = 0; i < sarray.length; i++){
+           data[0] = data[0].concat([sarray[i]]);
+      }  
+      
+      var j=1;
+      var y=justpos;
+      {% for e in eva %}             
+           if ('{{e.deleted}}' == 'Y') {
+                   deleted_pos.push(j); 
+            }
+            j++;
+      {% endfor %} 
+      var j=1;
+      {% for e in evam %}             
+          if ('{{e.archived}}' == 'Y') {
+              if (!archived_pos.includes(y)){ 
+                  archived_pos.push(y);
+              }
+          } 
+           //alert('{{e.utility_value}}'); 
+           data[j][y] = '{{e.utility_value |floatformat:"2"}}';
+           //alert(j);
+           //alert(y);            
+           if (y < sol_count) 
+            { y = 6 + sol_count; 
+              j = 1;
+            }
+           else                                                                                                                                       
+            { 
+              if (j < eva_count) 
+                { j++; }
+             else { j = 1;
+                     y++;
+                   } 
+            }
+      {% endfor %}
+      data[0] = data[0].concat('Importance Weight');
+
+      {% for i in eva %}
+         data[j][y] = '{{i.adjusted_weight|floatformat:"2"}}';
+         j++; 
+      {% endfor %}
+       
+       
+      hot = new Handsontable(container2, {
+         beforeCreateCol: function(index, amount) {
+         for (var i = 0; i < amount; i++) {
+         columnsTypes.splice(index + i, 0, 'text');
+         }
+        },                                                                                                                                            
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+        }
+        },
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+         }
+        },
+         data: data,
+         manualColumnResize: true,
+         colWidths: 150,
+         minSpareRows: 1,
+         cells: function(row, col) {
+            var cellProperties = {};
+            cellProperties.readOnly = true;          
+            return cellProperties;
+        },
+        hiddenColumns: {
+        columns: archived_pos,
+        indicators: true
+       },
+       hiddenRows: {
+        rows: deleted_pos,
+        indicators: true
+       },  
+       licenseKey: "e1ccf-05a6d-60e20-84d04-71653",    
+     });
+    // hover text http://jsfiddle.net/8yk14pts/ 
+    // hiding the evaluation measure and unit columns brought from the evaluation table 
+    //hot.updateSettings({
+            //colWidths: [150,150.150,150.100,100,100,100,100,100,150,100,100,100,100,100,100],
+            //});
+    hot.loadData(data);
+    /*j = 1;
+    for (var i = 0; i < hot.countRows(); i++) {
+        if (hot.getDataAtCell(i,j) !== null) { 
+           alert(i);
+           alert(j); 
+           alert(hot.getDataAtCell(i,j));
+        }
+        j=j+1;
+    }*/
+    console.log(JSON.parse(json))
+
+  var exportPlugin = hot.getPlugin('exportFile');
+
+  save.addEventListener('click', function() {
+    //hotvalue = exportPlugin.exportAsString('csv');      
+    ht1 = exportPlugin.downloadFile('csv', {filename: 'utility_results'});
+
+    /*$.ajax({
+        url: "{% url 'utility_results' %}",
+        data: {
+             csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+            'hotvalue' : hotvalue,
+             },                 
+        type: 'POST',   
+        success: function (res) {
+            //alert('success');
+            console.log(res);    
+        },
+        error: function (res) {
+           //alert('failure');  
+           console.log(res);            
+        }
+    });
+    return false; */
+  });
+
+ });
+</script>
+
+<div>
+  <p id="subheader">How the Utility Values in Table 2 are Calculated</p>
+  <p class="instructions"><i>DecisionMaker &reg;</i> uses the data you entered in the Evaluation Data Table to calculate utility. The overall utility value earned by a Solution Option is the sum of the utility scores it earns on each of the Evaluation Criteria (criterion-level unweighted utility values) multiplied by the importance weights assigned to each Evaluation Criterion by stakeholders.</p>
+  <p id="subheader">Criterion-level unweighted utility value</p>
+  <p class="instructions">Each measure you used in your evaluation is rescaled to convert your results to a common utility scale with a minimum of 0 and maximum of 10. The likely lowest score and the likely highest score you entered for each measure are used to set the extremes of the scale and a straight line connects the two points. This assumes that utility changes in direct proportion to the changes in the evaluation measure.
+  <br>
+  <br>
+  When the rating/score on an evaluation measure is<b>positively</b>associated with the utility values (i.e., higher scores are better), the likely lowest score you entered is assumed to provide 0 utility and the likely highest score you entered is assumed to provide a utility value of 10. The criterion-level unweighted utility value for a Solution Option is:</p>
+  <p id="center-align"><img src="{% static "Criterion-1.png" %}" alt="Equation for criteria-level unweighted utility value" style="max-height:50px; width: auto;"></p>
+  <p class="instructions">When the rating/score on an evaluation measure is<b>negatively</b>associated with the utility values (i.e., lower scores are better), the likely lowest score you entered is assumed to provide a utility value of 10 while the likely highest score you entered is now assumed to provide 0 utility. The criterion-level unweighted utility value for a Solution Option is:</p>
+  <p id="center-align"><img src="{% static "Criterion-2.png" %}" alt="Equation for criteria-level unweighted utility value" style="max-height:50px; width: auto;"></p>
+  <p id="subheader">Overall Utility Value</p>
+  <p class="instructions">
+    The overall utility value is the sum of the criterion-level utility values multiplied by the importance weights.
+    <br>
+    <br>
+    For an example of the calculations, please click here: <!--AMRITHA this will need to have the link added--><a class="link" href="/Steps.html#Utility">Utility Values »</a>
+  </p>
+  <table class="instructions">
+  <tr>
+  <td style="text-align: right">
+  <a class="btn-general" href="/utility_tool/decisions/solution_options/decision_made.html">Back to Make a Decision</a>
+  </td>
+  <tr>
+  </table>
+  </body>
+  </div>
+  </html>

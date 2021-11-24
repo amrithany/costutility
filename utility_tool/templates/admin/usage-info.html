@@ -1,0 +1,1061 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style>
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 15%;
+    padding: 5px;                                                                                                                                       
+    padding-left: 40px; 
+    text-align:justify;
+}
+.column2 {
+    float: left;                                                                                                                                        
+    width: 40%;
+    padding: 5px;    
+    padding-left: 40px; 
+    text-align:justify;
+   }
+ body * { font-family: "Playfair Display", serif; }                
+</style>
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <!--<link href="{% static 'css/Style.css' %}" rel="stylesheet"> -->
+<!-- font-family:    'IBM Plex Sans'; -->
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Logged in as {{loggedinuser}}</h4></div>
+        <h2 class="form-signin-heading">Usage Info
+        </h2>
+        <h4 align="center"><a href="export_info.html"><input class="btn btn-primary btn-sm" type="button"  value="Export to Excel" /></a></h4>
+        <br>
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Usage data </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>Number of days since official launch (Aug 31, 2019)</td>
+                    <td>{{end}}</td>
+                    </tr>
+                    <tr>
+                    <td>Number of days from Aug 31 2019 on which there is any user activity at all in DM</td>
+                    <td>{{login31_count}}</td>
+                    </tr>
+                    <tr>
+                    <td> Total number of people ever registered</td>
+                    <td>{{users_count}}</td>                                                                                                                
+                    </tr> 
+                    <tr>
+                    <td> Total number of people currently registered</td>
+                    <td>{{current_users_count}}</td>     
+                    </tr> 
+                    <tr>
+                    <td> Number of unique users who have logged into the tool over the last week </td>
+                    <td>{{users_lastweek_count}}</td>                                                                                                                
+                    </tr>
+                    <tr>
+                    <!-- store the date person logs in -->
+                    <td> Number of unique users who have logged into the tool over the last month </td>
+                    <td>{{users_lastmonth_count}}</td>                                                                                                                    
+                    </tr> 
+                    <tr>
+                    <td>Number of unique users who downloaded demo decisions</td>                                        
+                    <td> {{dist_users_count}} </td>                                                                                                   
+                    </tr>   
+                    <tr>
+                    <!-- today minus 7 --> 
+                    <td> Number of logins over the last week </td>
+                    <td>{{login_lastweek_count}}</td>                                                                                                                
+                    </tr> 
+                    <tr>
+                    <!-- today minus 30 -->  
+                    <td> Number of logins over the last month </td>
+                    <td>{{login_lastmonth_count}}</td>                                                                                                                
+                    </tr>
+                    <tr>
+                    <td> Total number of real, training, and duplications of  real, training, and DEMO decisions created based on ID creation </td>
+                    <td> {{dec_count}} </td>                                                                                                                
+                    </tr>  
+                    <tr>
+                    <td> Total number of "real" decisions created based on ID creation</td>
+                    <td> {{real_dec_count}} </td>                                                                                                                
+                    </tr>
+                    <tr>
+                    <td> Total number of "training" decisions created based on ID creation</td>
+                    <td> {{tr_dec_count}} </td>                                                                                         
+                    </tr>
+                    <tr>
+                    <td> Total number of "test" decisions created based on ID creation</td>
+                    <td> {{test_dec_count}} </td>                                                                                         
+                    </tr>
+            </table>
+        <br>
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Completion of decision steps </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>For Decision Problem step, what % of decision IDs has been touched?</td>
+                    <td>100.0%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Identify Stakeholders step, what % of decision IDs has been touched?</td>
+                    <td>{{perc_std}}%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Solution Options step, what % of decision IDs has been touched?</td>
+                    <td>{{perc_sol}}%</td>
+                    </tr>
+                    <tr>
+                    <td>For Screening Criteria step, what % of decision IDs has been touched?</td>
+                    <td>{{perc_scr}}%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Screen Solution Options step, what % of decision IDs has been touched?</td>
+                    <td>{{perc_mapp}}%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Evaluation Criteria step, what % of decision IDs has been touched?</td>
+                    <td>{{perc_eva}}%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Importance Scores step, what % of decision IDs has been touched?</td>
+                    <td>{{perc_iw}}%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Evaluation Table step, what % of decision IDs has been touched?</td>
+                    <td>{{ave_evm}}%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Costs step, what % of decision IDs has been touched?</td>
+                    <td>{{ave_costs}}%</td>                                                                                                            
+                    </tr>
+                    <tr>
+                    <td>For Make a Decision step, what % of decision IDs has been touched?</td>
+                    <td>{{perc_dm}}%</td>                                                                                                            
+                    </tr>
+            </table>
+       <br>
+           <!-- no of s/h in the system even duplicated across decisions and decision owners -->
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Stakeholders </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>Total number of stakeholders across all directories</td>
+                    <td>{{stdec_count}}</td>
+                    </tr>
+                    <tr>
+                    <td>Average number of stakeholders across all directories</td>
+                    <td>{{ave_stdec}}</td>
+                    </tr>
+                    <tr>                                                                                                                                                                                         
+                    <td>Total # of decisions that invite s/h to participate in at least one of the four activities in assign tasks</td>
+                    <td>{{stdec_participate_count}}</td>
+                    </tr>
+                    <tr>
+                    <td>Total # of "real" decisions that invite s/h to participate in at least one of the four activities in assign tasks</td>
+                    <td>{{stdec_real_participate_count}}</td>
+                    </tr>
+            </table> 
+       <br>
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Solution Options </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>Average number of Solution Options per decision</td>
+                    <td>{{ave_solopt}}</td>
+                    </tr>
+                    <tr>
+                    <td>Average number of Solution Options per "real" decision </td>
+                    <td>{{ave_real_solopt}}</td>
+                    </tr>
+            </table>
+       <br> 
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Screening Criteria </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>Average number of Screening Criteria per decision</td>
+                    <td>{{ave_scrcr}}</td>
+                    </tr>
+                    <tr>
+                    <td>Average number of Screening Criteria per "real" decision</td>
+                    <td>{{ave_real_scrcr}}</td>
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Fits within available budget</td>                                            
+                    <td>{{scrcr1_count}}</td>
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Can be implemented by date required</td>                                            
+                    <td>{{scrcr2_count}}</td>                                                                                                                                                                                   
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Meets privacy standards</td>                                            
+                    <td>{{scrcr3_count}}</td>                                                                                                                                                                                   
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Evidence of effectiveness exists</td>                                            
+                    <td>{{scrcr4_count}}</td>                                                                                                                                                                                   
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Fits within school schedule</td>                                            
+                    <td>{{scrcr5_count}}</td>                                                                                                                                                                                   
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Meets content requirements/ learning objectives</td>                                            
+                    <td>{{scrcr6_count}}</td>                                                                                                                                                                                   
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Meets state code and/or other regulations</td>                                            
+                    <td>{{scrcr7_count}}</td>                                                                                                                                                                                   
+                    </tr>
+                    <tr>
+                    <td>Number of decisions which selects this screening criterion - Serves target population (grade level, ESL etc.) </td>                                            
+                    <td>{{scrcr8_count}}</td>                                                                                                                                                                                   
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Fits within available budget</td>
+                    <td>{{scrcr1_real_count}}</td>
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Can be implemented by date required</td>
+                    <td>{{scrcr2_real_count}}</td>                                                                                                                                                                    
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Meets privacy standards</td>
+                    <td>{{scrcr3_real_count}}</td>                                                                                                                                                                    
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Evidence of effectiveness exists</td>
+                    <td>{{scrcr4_real_count}}</td>                                                                                                                                                                    
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Fits within school schedule</td>
+                    <td>{{scrcr5_real_count}}</td>                                                                                                                                                                    
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Meets content requirements/ learning objectives</td>
+                    <td>{{scrcr6_real_count}}</td>                                                                                                                                                                    
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Meets state code and/or other regulations</td>
+                    <td>{{scrcr7_real_count}}</td>                                                                                                                                                                    
+                    </tr>
+                    <tr>
+                    <td>Number of "real" decisions which selects this screening criterion - Serves target population (grade level, ESL etc.) </td>                                                                      
+                    <td>{{scrcr8_real_count}}</td>                                                                                                                                                                    
+                    </tr>
+            </table> 
+   <br> 
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Evaluation Criteria </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>Average number of Evaluation Criteria per decision</td>
+                    <td>{{ave_evacr}}</td>
+                    </tr>
+                    <tr>
+                    <td>Average number of Evaluation Criteria per "real" decision</td>
+                    <td>{{ave_real_evacr}}</td>
+                    </tr>
+            </table>
+            <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Addresses the identified need </h4></td><td><b>{{evacr_totalcount1}}</b></td></td><td></tr>    
+                    <tr><td>Content meets learning objectives</td>    
+                    <td></td>
+                    <td>{{evacr1_count}}</td>
+                    <tr><td>Number of students in need who can be served</td>
+                    <td></td> 
+                    <td>{{evacr2_count}}</td>
+                    </tr>    
+                    </table>
+
+                     <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Equity </h4></td><td><b>{{evacr_totalcount2}}</b></td><td></td></tr>    
+                    <tr><td>Accessible to target population</td>
+                    <td></td>  
+                    <td>{{evacr3_count}}</td>
+                    </tr><tr><td>Distribution of resources across population to be served</td>
+                    <td></td>
+                    <td>{{evacr4_count}}</td>
+                    </tr><tr><td>Number of students participating</td>
+                    <td></td> 
+                    <td>{{evacr5_count}}</td>
+                    </tr><tr><td>Serves historically underserved groups</td>
+                    <td></td>
+                    <td>{{evacr6_count}}</td>
+                    </tr>    
+                  </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - External recommendations </h4></td><td><b>{{evacr_totalcount3}}</b></td><td></td></tr>   
+                     <tr><td>Recommendations from external experts</td>
+                     <td></td>
+                    <td>{{evacr7_count}}</td>
+                    </tr>                         
+                     <tr><td>Recommendations from external peers</td>
+                     <td></td>
+                    <td>{{evacr8_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of decisions which selects this evaluation criterion - Feasibility of implementation</h4></td><td><b>{{evacr_totalcount4}}</b></td><td></td></tr> 
+                    <tr><td>Accessibility of physical location</td><td></td>
+                    <td>{{evacr9_count}}</td>
+                    </tr>    
+                    <tr><td>Amount of change in personnel resource requirements (e.g., time and number of staff) from the current status</td><td></td>
+                    <td>{{evacr10_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Amount of technical support needed</td><td></td>
+                    <td>{{evacr11_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Amount of training/PD needed</td><td></td>
+                    <td>{{evacr12_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Availability of necessary personnel, facilities, materials and equipment</td><td></td>
+                    <td>{{evacr13_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Availability of technical support to support implementers</td><td></td>
+                    <td>{{evacr14_count}}</td>                                                                                                               
+                    </tr>
+                    <tr>
+                    <td>Availability of training/PD to support implementers</td><td></td>
+                    <td>{{evacr15_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Can be implemented in desired timeline</td><td></td>
+                    <td>{{evacr16_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Capacity/skill level of current teachers/staff to implement option with fidelity</td><td></td>
+                    <td>{{evacr17_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Compatibility with existing systems</td><td></td>
+                    <td>{{evacr18_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Ease of use/ User friendliness</td><td></td>
+                    <td>{{evacr19_count}}</td>
+                    </tr>
+                    <tr>
+                    <td>Effect on teacher/staff workload</td><td></td>
+                    <td>{{evacr20_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Evidence of successful implementation in similar schools/districts/states</td><td></td>
+                    <td>{{evacr21_count}}</td>                                                                                                                         
+                    </tr>
+                    <tr>
+                    <td>Financial sustainability over time</td><td></td>
+                    <td>{{evacr22_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Fit with school calendar/schedule</td><td></td>
+                    <td>{{evacr23_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Likelihood this option will continue to be implemented with fidelity over time</td><td></td>
+                    <td>{{evacr24_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Scalability</td><td></td>
+                    <td>{{evacr25_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Solid plan proposed for financing</td><td></td>
+                    <td>{{evacr26_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Solid plan proposed for implementation</td><td></td>
+                    <td>{{evacr27_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Fit with local context </h4></td><td><b>{{evacr_totalcount5}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Alignment to state/district/school mission and/or vision</td><td></td>
+                    <td>{{evacr28_count}}</td>                  
+                    </tr>
+                    <tr>
+                    <td>Alignment with current school/district/state curriculum</td><td></td>
+                    <td>{{evacr29_count}}</td>                                                                                                                                                                    
+                    </tr>  
+                    <tr>
+                    <td>Alignment with current state/district/school priorities</td><td></td>
+                    <td>{{evacr30_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Appropriate for student/staff demographics</td><td></td>
+                    <td>{{evacr31_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Customizability of solution to local needs</td><td></td>
+                    <td>{{evacr32_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Fit with local cultural values</td><td></td>
+                    <td>{{evacr33_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on central control</td><td></td>
+                    <td>{{evacr34_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on local autonomy</td><td></td>
+                    <td>{{evacr35_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Political value</td><td></td>
+                    <td>{{evacr36_count}}</td>                                                                                                                         
+                    </tr>
+                   <tr>
+                    <td>Viable in current political context</td><td></td>
+                    <td>{{evacr37_count}}</td>
+                    </tr>    
+                    <tr>
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Impact on parent engagement </h4></td><td><b>{{evacr_totalcount6}}</b></td><td></td></tr> 
+                    <td>Number of times parents call school</td><td></td>
+                    <td>{{evacr38_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Number of hours parents help children with homework</td><td></td>
+                    <td>{{evacr39_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Encourages parents to show up to PTA meetings</td><td></td>
+                    <td>{{evacr40_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Number of hours parents read to their child</td><td></td>
+                    <td>{{evacr41_count}}</td>
+                    </tr>    
+                    <tr>
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Impact on student academic performance  </h4></td><td><b>{{evacr_totalcount7}}</b></td><td></td></tr> 
+                    <td>Impact on standardized test scores</td><td></td>
+                    <td>{{evacr42_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on student grades</td><td></td>
+                    <td>{{evacr43_count}}</td>                                                                                                                         
+                    </tr>
+                   <tr>
+                    <td>Impact on college admission</td><td></td>
+                    <td>{{evacr44_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on course completion</td><td></td>
+                    <td>{{evacr45_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on graduation</td><td></td>
+                    <td>{{evacr46_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on progression to higher grade</td><td></td>
+                    <td>{{evacr47_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on progression towards graduation</td><td></td>
+                    <td>{{evacr48_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on closing the achievement gap</td><td></td>
+                    <td>{{evacr49_count}}</td>
+                    </tr>    
+                    <tr>
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Impact on student socio-emotional development </h4></td><td><b>{{evacr_totalcount8}}</b></td><td></td></tr> 
+                    <td>Impact on student sense of belongingness</td><td></td>
+                    <td>{{evacr50_count}}</td>                                                                                                                         
+                    </tr>
+                    <tr>
+                    <td>Impact on incidence of misbehavior</td><td></td>
+                    <td>{{evacr51_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on school climate</td><td></td>
+                    <td>{{evacr52_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on suspensions</td><td></td>
+                    <td>{{evacr53_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Impact on student/staff engagement </h4></td><td><b>{{evacr_totalcount9}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Impact on attendance</td><td></td>
+                    <td>{{evacr54_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on staff absenteeism</td><td></td>
+                    <td>{{evacr55_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on staff/teacher/student effort</td><td></td>
+                    <td>{{evacr56_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on student-teacher interaction</td><td></td>
+                    <td>{{evacr57_count}}</td>                                                                                                                         
+                    </tr>
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Improves teacher performance </h4></td><td><b>{{evacr_totalcount10}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Improves teacher time-on-task</td><td></td>
+                    <td>{{evacr58_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves student time-on-task</td><td></td>
+                    <td>{{evacr59_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves teacher value-added</td><td></td>
+                    <td>{{evacr60_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves teacher pedogogical skills</td><td></td>
+                    <td>{{evacr61_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves teacher content knowledge</td><td></td>
+                    <td>{{evacr62_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Meets required standards and regulations </h4></td><td><b>{{evacr_totalcount11}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Addresses safety concerns</td><td></td>
+                    <td>{{evacr63_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Alignment with state code and other regulations</td><td></td>
+                    <td>{{evacr64_count}}</td>                                                                                                                         
+                    </tr>
+                    <tr>
+                    <td>Compliance with regulations</td><td></td>
+                    <td>{{evacr65_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Meets privacy standards</td><td></td>
+                    <td>{{evacr66_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Content maintains level of rigor/quality of learning</td><td></td>
+                    <td>{{evacr67_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Meets state/district/school standards</td><td></td>
+                    <td>{{evacr68_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Quality of implementation (for programs/strategies/tools already in place) </h4></td><td><b>{{evacr_totalcount12}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Consistency of implementation across sites</td><td></td>
+                    <td>{{evacr69_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Fidelity of implementation</td><td></td>
+                    <td>{{evacr70_count}}</td>
+                    </tr>    
+                    <tr>                                                                                                                              
+                    <td>Level of monitoring conducted</td><td></td>
+                    <td>{{evacr71_count}}</td>
+                    </tr>
+                   <tr>
+                    <td>Quality of technical support provided to implementers</td><td></td>
+                    <td>{{evacr72_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Quality of training delivered</td><td></td>
+                    <td>{{evacr73_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Change in teacher pedagogy</td><td></td>
+                    <td>{{evacr74_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;"> Number of decisions which selects this evaluation criterion - Support from stakeholders </h4></td><td><b>{{evacr_totalcount13}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Board preference/buy-in/support</td><td></td>
+                    <td>{{evacr75_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Community preference/buy-in/support</td><td></td>
+                    <td>{{evacr76_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Parent preference/buy-in/support</td><td></td>
+                    <td>{{evacr77_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Student preference/buy-in/support</td><td></td>
+                    <td>{{evacr78_count}}</td>                                                                                                                         
+                    </tr>
+                    <tr>
+                    <td>Teacher preference/buy-in/support</td><td></td>
+                    <td>{{evacr79_count}}</td>
+                    </tr>
+                    <tr>
+                    <td>Union preference/buy-in/support</td><td></td>
+                    <td>{{evacr80_count}}</td>
+                    </tr>                     
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr/><td> <h4 style="font-weight: bold;color: #000080;"> Number of "real" decisions which selects this evaluation criterion - Addresses the identified need </h4></td><td><b>{{r_evacr_totalcount1}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Content meets learning objectives</td><td></td>
+                    <td>{{evacr1_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Number of students in need who can be served</td><td></td>
+                    <td>{{evacr2_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Equity</h4></td><td><b>{{r_evacr_totalcount2}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Accessible to target population</td><td></td>
+                    <td>{{evacr3_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Distribution of resources across population to be served</td><td></td>
+                    <td>{{evacr4_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Number of students participating</td><td></td>
+                    <td>{{evacr5_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Serves historically underserved groups</td><td></td>
+                    <td>{{evacr6_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - External recommendations</h4></td><td><b>{{r_evacr_totalcount3}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Recommendations from external experts</td><td></td>
+                    <td>{{evacr7_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Recommendations from external peers</td><td></td>
+                    <td>{{evacr8_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Feasibility of implementation</h4></td><td><b>{{r_evacr_totalcount4}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Accessibility of physical location</td><td></td>
+                    <td>{{evacr9_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Amount of change in personnel resource requirements (e.g., time and number of staff) from the current status</td><td></td>
+                    <td>{{evacr10_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Amount of technical support needed</td><td></td>
+                    <td>{{evacr11_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Amount of training/PD needed</td><td></td>
+                    <td>{{evacr12_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Availability of necessary personnel, facilities, materials and equipment</td><td></td>
+                    <td>{{evacr13_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Availability of technical support to support implementers</td><td></td>
+                    <td>{{evacr14_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Availability of training/PD to support implementers</td><td></td>
+                    <td>{{evacr15_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Can be implemented in desired timeline</td><td></td>
+                    <td>{{evacr16_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Capacity/skill level of current teachers/staff to implement option with fidelity</td><td></td>
+                    <td>{{evacr17_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Compatibility with existing systems</td><td></td>
+                    <td>{{evacr18_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Ease of use/ User friendliness</td><td></td>
+                    <td>{{evacr19_real_count}}</td>                                                                                                                                                               
+                    </tr> 
+                    <tr>
+                    <td>Effect on teacher/staff workload</td><td></td>
+                    <td>{{evacr20_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Evidence of successful implementation in similar schools/districts/states</td><td></td>
+                    <td>{{evacr21_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Financial sustainability over time</td><td></td>
+                    <td>{{evacr22_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Fit with school calendar/schedule</td><td></td>
+                    <td>{{evacr23_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Likelihood this option will continue to be implemented with fidelity over time</td><td></td>
+                    <td>{{evacr24_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Scalability</td><td></td>
+                    <td>{{evacr25_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Solid plan proposed for financing</td><td></td>
+                    <td>{{evacr26_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Solid plan proposed for implementation</td><td></td>
+                    <td>{{evacr27_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Fit with local context</h4></td><td><b>{{r_evacr_totalcount5}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Alignment to state/district/school mission and/or vision</td><td></td>
+                    <td>{{evacr28_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Alignment with current school/district/state curriculum</td><td></td>
+                    <td>{{evacr29_real_count}}</td>
+                    </tr> 
+                    <tr>
+                    <td>Alignment with current state/district/school priorities</td><td></td>
+                    <td>{{evacr30_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Appropriate for student/staff demographics</td><td></td>
+                    <td>{{evacr31_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Customizability of solution to local needs</td><td></td>
+                    <td>{{evacr32_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Fit with local cultural values</td><td></td>
+                    <td>{{evacr33_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on central control</td><td></td>
+                    <td>{{evacr34_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on local autonomy</td><td></td>
+                    <td>{{evacr35_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Political value</td><td></td>
+                    <td>{{evacr36_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Viable in current political context</td><td></td>
+                    <td>{{evacr37_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Impact on parent engagement </h4></td><td><b>{{r_evacr_totalcount6}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Number of times parents call school</td><td></td>
+                    <td>{{evacr38_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Number of hours parents help children with homework</td><td></td>
+                    <td>{{evacr39_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Encourages parents to show up to PTA meetings</td><td></td>
+                    <td>{{evacr40_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Number of hours parents read to their child</td><td></td>
+                    <td>{{evacr41_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Impact on student academic performance</h4></td><td><b>{{r_evacr_totalcount7}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Impact on standardized test scores</td><td></td>
+                    <td>{{evacr42_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on student grades</td><td></td>
+                    <td>{{evacr43_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on college admission</td><td></td>
+                    <td>{{evacr44_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on course completion</td><td></td>
+                    <td>{{evacr45_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on graduation</td><td></td>
+                    <td>{{evacr46_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on progression to higher grade</td><td></td>
+                    <td>{{evacr47_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on progression towards graduation</td><td></td>
+                    <td>{{evacr48_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on closing the achievement gap</td><td></td>
+                    <td>{{evacr49_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Impact on student socio-emotional development</h4></td><td><b>{{r_evacr_totalcount8}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Impact on student sense of belongingness</td><td></td>
+                    <td>{{evacr50_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on incidence of misbehavior</td><td></td>
+                    <td>{{evacr51_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on school climate</td><td></td>
+                    <td>{{evacr52_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on suspensions</td><td></td>
+                    <td>{{evacr53_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Impact on student/staff engagement</h4></td><td><b>{{r_evacr_totalcount9}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Impact on attendance</td><td></td>
+                    <td>{{evacr54_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on staff absenteeism</td><td></td>
+                    <td>{{evacr55_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on staff/teacher/student effort</td><td></td>
+                    <td>{{evacr56_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Impact on student-teacher interaction</td><td></td>
+                    <td>{{evacr57_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Improves teacher performance</h4></td><td><b>{{r_evacr_totalcount10}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Improves teacher time-on-task</td><td></td>
+                    <td>{{evacr58_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves student time-on-task</td><td></td>
+                    <td>{{evacr59_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves teacher value-added</td><td></td>
+                    <td>{{evacr60_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves teacher pedogogical skills</td><td></td>
+                    <td>{{evacr61_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Improves teacher content knowledge</td><td></td>
+                    <td>{{evacr62_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Meets required standards and regulations</h4></td><td><b>{{r_evacr_totalcount11}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Addresses safety concerns</td><td></td>
+                    <td>{{evacr63_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Alignment with state code and other regulations</td><td></td>
+                    <td>{{evacr64_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Compliance with regulations</td><td></td>
+                    <td>{{evacr65_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Meets privacy standards</td><td></td>
+                    <td>{{evacr66_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Content maintains level of rigor/quality of learning</td><td></td>
+                    <td>{{evacr67_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Meets state/district/school standards</td><td></td>
+                    <td>{{evacr68_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Quality of implementation (for programs/strategies/tools already in place)</h4></td><td><b>{{r_evacr_totalcount12}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Consistency of implementation across sites</td><td></td>
+                    <td>{{evacr69_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Fidelity of implementation</td><td></td>
+                    <td>{{evacr70_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Level of monitoring conducted</td><td></td>
+                    <td>{{evacr71_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Quality of technical support provided to implementers</td><td></td>
+                    <td>{{evacr72_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Quality of training delivered</td><td></td>
+                    <td>{{evacr73_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Change in teacher pedagogy</td><td></td>
+                    <td>{{evacr74_real_count}}</td>
+                    </tr>    
+                    </table>
+             <br>      
+                    <table class="table table-condensed">
+                    <tr><td> <h4 style="font-weight: bold;color: #000080;">Number of "real" decisions which selects this evaluation criterion - Support from stakeholders</h4></td><td><b>{{r_evacr_totalcount13}}</b></td><td></td></tr> 
+                    <tr>
+                    <td>Board preference/buy-in/support</td><td></td>
+                    <td>{{evacr75_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Community preference/buy-in/support</td><td></td>
+                    <td>{{evacr76_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Parent preference/buy-in/support</td><td></td>
+                    <td>{{evacr77_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Student preference/buy-in/support</td><td></td>
+                    <td>{{evacr78_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Teacher preference/buy-in/support</td><td></td>
+                    <td>{{evacr79_real_count}}</td>
+                    </tr>    
+                    <tr>
+                    <td>Union preference/buy-in/support</td><td></td>
+                    <td>{{evacr80_real_count}}</td>
+                    </tr>    
+            </table> 
+       <br>
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Importance Scores </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>In what % of decisions does the PA change the votes from the default of 10 per person?</td>
+                    <td>{{ave_iw}}%</td>
+                    </tr>
+                    <tr>
+                    <td>In what % of "real" decisions does the PA change the votes from the default of 10 per person?</td>
+                    <td>{{ave_real_iw}}%</td>
+                    </tr>
+            </table> 
+       <br>
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Evaluation Measures Table and Evaluation Data Tables </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>In what % of decisions created has the PA filled out the Evaluation Data Table? </td>
+                    <td>{{ave_evm}}%</td>
+                    </tr>
+                    <tr>
+                    <td>In what % of "real" decisions created has the PA filled out the Evaluation Data Table? </td>                                                           
+                    <td>{{ave_real_evm}}%</td>
+                    </tr>
+            </table> 
+       <br>
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Costs </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>In what % of decisions created have the cost table been filled out? </td>
+                    <td>{{ave_costs}}%</td>
+                    </tr>
+                    <tr>
+                    <td>In what % of "real" decisions created have the cost table been filled out? </td>
+                    <td>{{ave_real_costs}}%</td>
+                    </tr>
+            </table>
+       <br>
+            <h4 style="font-weight: bold;color: #447a9a;" align="center"> Make a Decision </h4>
+            <table class="table table-condensed">
+                    <tr>
+                    <td>In what % of decisions does the PA choose at least one solution option for the question "Which option(s) did you choose?"</td>
+                    <td>{{ave_decmade}}%</td>
+                    </tr>
+                    <tr>
+                    <td>In what % of "real" decisions does the PA choose at least one solution option for the question "Which option(s) did you choose?"</td>
+                    <td>{{ave_real_decmade}}%</td>
+                    </tr>      
+                  <!--  <tr>
+                    <td>If only one solution option is selected, in what % of these "real" decisions does PA choose the one that has the highest utility values, the one with the lowest cost, or the one with the lowest cost-utility ratio?</td>
+                    <td</td>
+                    </tr>-->
+            </table>   
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var loggedinuser = "{{loggedinuser}}";
+                       $(document).ready(function()
+                         {
+                            $("tr:even").css("background-color", "#F0FFFF");
+                            $("tr:odd").css("background-color", "#DCDCDC");
+                         });
+
+                    </script> 
+</div>
+</body>
+{% endblock %}
+

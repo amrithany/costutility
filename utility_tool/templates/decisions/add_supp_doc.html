@@ -1,0 +1,414 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;                                                                                                                                                                                       
+       }
+       body * { font-family: "Playfair Display", serif; }
+</style>
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid">
+             <h2 class="form-signin-heading">Supporting Documents</h2>
+            <font color="blue">     
+                <b>Step 1:</b><p>Use this page to store documents (e.g., Word, PDF, Excel) or links to websites related to the decision you are currently working on.  
+            <br><p></p>
+            <p>Note that any stakeholders who you invite to participate in this decision via <i>DecisionMaker</i>&reg; will be able to view all these items by clicking on the "Supporting Documents" button at the flowchart.
+            <br><p></p>  
+            </font>
+            <br><p></p> 
+             <form method="post" enctype="multipart/form-data">  
+                 {% csrf_token %}
+
+                 <h4 style="font-weight: bold;color: #447a9a;"> I. Decision Problem </h4>       
+                <font color="blue"> <p> 
+                 Use this to provide any background information to this decision problem such as a needs assessment, relevant data or a summary analysis that captures the issue you are trying to address.
+                </font>
+                 {{ sdform1.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black"> 
+                 {% for form in sdform1 %}
+                 {{ form.id }}
+                 <font color="red"> {{ form.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form.filename}}</td> 
+                      <td>{{form.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                       <td><input class="btn btn-light btn-sm" type="submit" name="additional1" value="+"/></td>
+                 {% endif %}  
+                   </tr>
+                   <br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform2.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form2 in sdform2 %}                                                                                                                                                                       
+                 {{ form2.id }}
+                 <font color="red"> {{ form2.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form2.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form2.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><spain style="float:right;"><input class="btn btn-light btn-sm" type="submit" name="additional2" value="+"/></span></td>
+                 {% endif %}  
+                  </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit1" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> II. Identify Stakeholders </h4>       
+                 <font color="blue"> <p> 
+                 You can use this space to store your list of stakeholders or any other information related to stakeholders.
+                 </font>
+
+                 {{ sdform3.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black">
+                 {% for form3 in sdform3 %}
+                 {{ form3.id }}
+                 <font color="red"> {{ form3.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form3.filename}}</td> 
+                      <td>{{form3.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional3" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform4.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form4 in sdform4 %}                                                                                                                                                                      
+                 {{ form4.id }}
+                 <font color="red"> {{ form4.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form4.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form4.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional4" value="+"/></td>
+                 {% endif %}  
+                  </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit2" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> III. Solution Options </h4>       
+                 <font color="blue"> <p> If there are items related to individual Solution Options to share with stakeholders, you can upload them in the Solution Options page but if you have other more general items about Solution Options, you can store them here.
+                 </font>
+                 {{ sdform5.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black">
+                 {% for form5 in sdform5 %}
+                 {{ form5.id }}
+                 <font color="red"> {{ form5.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form5.filename}}</td> 
+                      <td>{{form5.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional5" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+
+                 {{ sdform6.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form6 in sdform6 %}                                                                                                                                                                      
+                 {{ form6.id }}
+                 <font color="red"> {{ form6.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form6.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form6.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional6" value="+"/></td>
+                 {% endif %}  
+                   </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit3" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>                 
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> IV. Screening Criteria </h4>       
+                 {{ sdform7.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black">
+                 {% for form7 in sdform7 %}
+                 {{ form7.id }}
+                 <font color="red"> {{ form7.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form7.filename}}</td> 
+                      <td>{{form7.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional7" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+
+                 {{ sdform8.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form8 in sdform8 %}                                                                                                                                                                      
+                 {{ form8.id }}
+                 <font color="red"> {{ form8.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form8.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form8.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional8" value="+"/></td>
+                 {% endif %}  
+                   </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit4" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> V. Screen Solution Options </h4>       
+                 {{ sdform9.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black">
+                 {% for form9 in sdform9 %}
+                 {{ form9.id }}
+                 <font color="red"> {{ form9.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form9.filename}}</td> 
+                      <td>{{form9.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional9" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform10.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form10 in sdform10 %}                                                                                                                                                                      
+                 {{ form10.id }}
+                 <font color="red"> {{ form10.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form10.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form10.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional10" value="+"/></td>
+                 {% endif %}  
+                  </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit5" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> VI. Evaluation Criteria </h4>       
+                 {{ sdform11.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black">
+                 {% for form11 in sdform11 %}
+                 {{ form11.id }}
+                 <font color="red"> {{ form11.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form11.filename}}</td> 
+                      <td>{{form11.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional11" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform12.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form12 in sdform12 %}                                                                                                                                                                      
+                 {{ form12.id }}
+                 <font color="red"> {{ form12.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form12.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form12.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional12" value="+"/></td>
+                 {% endif %}  
+                  </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit6" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> VII. Importance Scores </h4>       
+                 {{ sdform13.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black"> 
+                 {% for form13 in sdform13 %}
+                 {{ form13.id }}
+                 <font color="red"> {{ form13.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form13.filename}}</td> 
+                      <td>{{form13.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional13" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform14.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form14 in sdform14 %}                                                                                                                                                                      
+                 {{ form14.id }}
+                 <font color="red"> {{ form14.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form14.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form14.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional14" value="+"/></td>
+                 {% endif %}  
+                  </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit7" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> VIII. Evidence-gathering to evaluate options </h4>       
+                 {{ sdform15.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black">
+                 {% for form15 in sdform15 %}
+                 {{ form15.id }}
+                 <font color="red"> {{ form15.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form15.filename}}</td> 
+                      <td>{{form15.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional15" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform16.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form16 in sdform16 %}                                                                                                                                                                      
+                 {{ form16.id }}
+                 <font color="red"> {{ form16.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form16.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form16.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional16" value="+"/></td>
+                 {% endif %}  
+                  </tr></table>
+                 {% endfor %}                 
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit8" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> IX. Costs </h4>       
+                 {{ sdform17.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black"> 
+                 {% for form17 in sdform17 %}
+                 {{ form17.id }}
+                 <font color="red"> {{ form17.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form17.filename}}</td> 
+                      <td>{{form17.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional17" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform18.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form18 in sdform18 %}                                                                                                                                                                      
+                 {{ form18.id }}
+                 <font color="red"> {{ form18.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form18.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form18.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional18" value="+"/></td>
+                 {% endif %}  
+                   </tr></table>
+                 {% endfor %}
+                 <br>
+                       {% if shared != "Y"  %} 
+                 <div style="text-align: center;"><input class="btn btn-success" type="submit" name="submit9" value="Save"/></div>
+                 {% endif %}  
+                 <br>
+                </div>
+                 <br>
+                 <h4 style="font-weight: bold;color: #447a9a;"> X. Make a Decision </h4>       
+                 {{ sdform19.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 <div style="border-bottom: thin dotted black">
+                 {% for form19 in sdform19 %}
+                 {{ form19.id }}
+                 <font color="red"> {{ form19.errors }} </font>
+                  <table>
+                  <tr><td>Description of file:&nbsp;&nbsp;{{form19.filename}}</td> 
+                      <td>{{form19.file_attachment}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional19" value="+"/></td>
+                 {% endif %}  
+                  </tr><br>
+                   </table> 
+                  {% endfor %}  
+                 {{ sdform20.management_form }}
+                 <br><b><font color="red">{{err}} </font></b>
+                 {% for form20 in sdform20 %}                                                                                                                                                                      
+                 {{ form20.id }}
+                 <font color="red"> {{ form20.errors }} </font>
+                  <table>
+                  <tr><td>Name of website:&nbsp;&nbsp;{{form20.linkname}}</td> 
+                      <td>&nbsp;Link:&nbsp;&nbsp;{{form20.link}}</td>
+                       {% if shared != "Y"  %} 
+                      <td><input class="btn btn-light btn-sm" type="submit" name="additional20" value="+"/></td>
+                 {% endif %}  
+                  </tr></table>
+                 {% endfor %}
+                 <br>
+                 <div style="text-align: center;">
+                 {% if shared != "Y"  %}
+                 <input class="btn btn-success" type="submit" name="submit9" value="Save"/></div>                      
+                 {% endif %}  
+                 <br>
+                </div>
+                <br>
+           <span style="float:right;">
+          {% if shared == "Y"  %}
+            <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"> <input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Decis
+ion Flowchart"/></a>
+           {% else %}
+             <input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Flowchart">
+           {% endif %} 
+         </span> 
+       </form>  
+</div>    
+</div>
+</div>
+</body>
+{% endblock %}
+

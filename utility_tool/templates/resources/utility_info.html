@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                           
+<div class="hero-unit">
+<br>
+<br>
+<b>Utility Results: </b><font color="blue">What is utility and how should I interpret it?</font>
+<br><br>
+In <i>DecisionMaker</i>, utility is a measure of stakeholder satisfaction or “usefulness” reported on a scale of 0-10. A utility value of 0 would indicate that the Solution Option provides no stakeholder satisfaction while a value of 10 would indicate the perfect solution. 
+<br><br>Utility is based on subjective and/or objective valuations of each Solution Option. Users indicate how well each Solution Option performs against each Evaluation Criterion and also how important each of these Evaluation Criteria is relative to the others. We multiply criterion-level utility values derived from the performance rating/score earned by each Solution Option by the importance weights that stakeholders have assigned to the Evaluation Criteria, and sum these to obtain overall utility values for each Solution Option. We assume that utility increases or decreases in a straight line between the highest and lowest likely values for each evaluation measure used.  
+<br><br>The term “utility” was introduced in 1738 by Daniel Bernoulli, a Swiss mathematician and physicist, to refer to the total satisfaction received by a consumer from consuming a good or service. Philosophers such as Jeremy Bentham defined utility as the “property in any object, whereby it tends to produce benefit, advantage, pleasure, good, or happiness” (1789, I.4.). Utility is hard to measure in practice but economists have developed sophisticated ways to calculate expected utility using a combination of decision-maker preferences and probabilities of outcomes. Henry Levin, an economist of education, illustrated practical applications of utility analysis in education starting in 1980.
+<br><br>
+<b><font color="blue">How the Utility Values are Calculated</b></font>
+<br><br><i>DecisionMaker</i> uses the data you entered in the Evaluation Measures table to calculate utility. The overall utility value earned by a Solution Option is the sum of the utility scores it earns on each of the Evaluation Criteria (Criterion-level unweighted utility values) multiplied by the importance weights assigned by stakeholders to the criteria.   
+<br><br><b><font color="blue">Example</b></font>
+<br><br>Suppose you, as the principal of Everglades Elementary School, need to identify an educational strategy to help K-3 students improve reading comprehension. You are deliberating between two reading programs A and B. You invite your school’s Reading Specialists and all the K-3 teachers to participate in the decision as stakeholders. As a team, they develop a list of three Evaluation Criteria and assign Importance Scores to each of them. Your AP helps you identify an evaluation method for each Evaluation Criterion and collect data to assess how well Program A and Program B perform against it (see table below).
+<p style="text-align:center;">
+<br><br><img src="{% static "ut0.PNG" %}" alt="Table" /> </p>
+<br><br><b><font color="blue">Criterion-level unweighted utility value</b></font>
+<br><br>Each measure you used in your evaluation is rescaled to convert your results to a common utility scale with a minimum of 0 and a maximum of 10. The likely lowest score and the likely highest score you entered for each measure are used to set the extremes of the scale, and a straight line connects the two points. This assumes that utility changes in direct proportion to the changes in the evaluation measure.
+<br><br>When the rating/score on an evaluation measure is positively associated with the utility values (i.e., higher scores are better), the likely lowest score you entered is assumed to provide 0 utility and the likely highest score you entered is assumed to provide a utility value of 10. The criterion-level unweighted utility value for a Solution Option is:
+<p style="text-align:center;">
+<br><br><img src="{% static "ut1.PNG" %}" alt="Equation1" /> </p>
+<br><br>When the rating/score on an evaluation measure is negatively associated with the utility values (i.e., lower scores are better), the likely lowest score you entered is assumed to provide a utility value of 10 while the likely highest score you entered is now assumed to provide 0 utility. The criterion-level unweighted utility value for a Solution Option is:
+<p style="text-align:center;">
+<br><br><img src="{% static "ut2.PNG" %}" alt="Equation2" /> </p>  
+<br><br>Take the criterion-level unweighted utility value of Program A for “evidence of effectiveness in improving reading comprehension” as an example.  The evaluation measure is the change in % of students who perform below grade level in reading. Clearly, you want fewer students to be below grade level in reading, so the evaluation measure in this case is negatively associated with utility.
+<br><br>The likely lowest score is -20 (i.e., a 20 percentage point reduction in the number of students who perform below grade level). 
+<br><br>The likely highest score is 10 (i.e., a 10 percentage point increase in the number of students who perform below grade level). Lower scores are better. The likely lowest score of -20 is assigned a utility value of 10 and the likely highest score of 10 is assigned a utility value of 0. 
+<br><br>A straight line is used to connect the two points, under the assumption that utility changes in direct proportion to the changes in the evaluation measure (see figure below). The score/rating of -10 for Program A is transformed into a utility value of 6.7 using the following formula.
+<br><br><p style="text-align:center;">Utility value = 10 * (-10 - (-20))/(10 - (-20)) = 6.7
+<br><br><img src="{% static "ut3.PNG" %}" alt="Utility graph" /> </p>
+<br><br><b><font color="blue">Overall Utility Value</b></font>
+<br><br>The overall utility value is the sum of the criterion-level utility values multiplied by the importance weights. The overall utility values for Program A and Program B are calculated using the following formula.
+<br><br>Overall utility value for Program A = (6.7 *0.17) + (9 * 0.33) + (8.5 * 0.50) = 8.36
+<br><br>Overall utility value for Program B = (5 * 0.17) + (6 * 0.33) + (5.8 * 0.5) = 5.73
+<br><br><b><a href="https://www.amazon.com/Cost-Effectiveness-Primer-New-Perspectives-Evaluation/dp/0803921535" target="_blank">Cost-effectiveness: A Primer</a></b> by Henry M. Levin (1983) provides examples of how utility can be derived for educational programs or strategies, and the results combined with cost estimates to provide cost-utility ratios.
+<br><br>
+{% if dec_id != 0 %}
+    <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+{% endif %}   
+<a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+</div>
+{% endblock %}

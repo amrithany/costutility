@@ -1,0 +1,180 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style>
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 15%;
+    padding: 5px;                                                                                                                                       
+    padding-left: 40px; 
+    text-align:justify;
+}
+.column2 {
+    float: left;                                                                                                                                        
+    width: 40%;
+    padding: 5px;    
+    padding-left: 40px; 
+    text-align:justify;
+   }
+ body * { font-family: "Playfair Display", serif; }                
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <!--<link href="{% static 'css/Style.css' %}" rel="stylesheet"> -->
+<!-- font-family:    'IBM Plex Sans'; -->
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Logged in as {{loggedinuser}}</h4></div>
+    <div align="right" id="extra-content"><a href="/utility_tool/admin/usage-info.html"><input class="btn btn-danger btn-sm" type="button" name="button" value="Admin"/></a></div>
+    <div class="table-responsive">
+        <h2 class="form-signin-heading">My Decisions
+           <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+           <a href="/Steps.html#Decision-Making" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>
+        </h2>
+        <div id="myDIV">  
+        <h5 style="border: 2px solid grey; padding-left: 15px;">
+            <br> This is the list of decisions you have created or in which you have been invited to participate. 
+            <br><br> The person who sets up a decision in <i>DecisionMaker</i> is the Project Administrator.
+            <br><br> An asterisk * in front of the Decision ID indicates that you are not the Project Administrator but are being invited to participate in this decision as a stakeholder.
+            <br><br>Throughout DecisionMaker™, hovering over and/or clicking on the “i” icons will provide you with additional information. Clicking on the book icons will take you to a relevant Resources & Guidance page.
+            <br><br></h5>
+         </div>
+            <p></p>
+            <font color="blue">    
+                <b>Step 1:</b><p>To create a new decision to work on, click here: <a href="/utility_tool/decisions/add_decision.html"> <input class="btn btn-primary btn-sm" type="button" name="add" id="add" value="Add New Decision to Make"/></a></p>
+                <p></p>
+                <b>Step 2:</b><p>To select an existing decision to work on, check the box next to the relevant decision and click here: <input class="btn btn-success btn-sm" type="button" name="add" id="solopt" value="Go to Decision Flowchart" onclick="PasstoSol();"/> </p>
+                <p></p>
+                <b>Other actions:</b>
+              <input class="btn btn-primary btn-sm" type="button"  id="edit" value="View / Edit Decision Problem" onclick="PasstoEdit();" />
+              <input class="btn btn-primary btn-sm" type="button" name="delete" value="Delete Decision" onclick="PasstoDel();" />                      
+              <input class="btn btn-primary btn-sm" type="button" name="duplicate" value="Duplicate Decision" onclick="PasstoDupl();" />
+            <p></p>
+            </font>
+            <table class="table table-condensed">
+                <thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Created by</th>
+                    <th>Created on (UTC)</th>
+                    <th>Updated on (UTC)</th><br />
+                    {% localtime on %}
+                    {% for dec in alldecisions %}
+                    <!--<tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">-->
+                    <tr>
+                                <td><input type="checkbox" id="{{dec.id}}" value="unchecked" onclick="setId(this, '{{dec.created_by}}');"  style="margin-left:auto; margin-right:auto;"></td>
+                            {% if dec.created_by == loggedinuser %}
+		                       <td>{{dec.id}}</td>
+                            {% else %}   
+                               <td> *{{dec.id}}</td>
+                            {% endif %}   
+                            <td>{{dec.short_title}}</td>
+                            <td>{{dec.created_by}}</td>
+                            <td>{{dec.created_date}}</td>
+                            <td>{{dec.updated_date}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endlocaltime %}
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var passvar = 000;
+                     var loggedinuser = "{{loggedinuser}}";
+                       $(document).ready(function()
+                         {
+                            $("tr:even").css("background-color", "#F0FFFF");
+                            $("tr:odd").css("background-color", "#DCDCDC");
+                         });
+
+                       $("#extra-content2").hide(); 
+                       if (loggedinuser == 'PA'){
+                           $("#extra-content").show();
+                       }
+                       else {
+                           $("#extra-content").hide();
+                       }
+
+                       $(function() {$('input[type=checkbox]').attr('checked', false)});                      
+                       window.onhashchange = function() {
+                         if (window.innerDocClick) {
+                           window.innerDocClick = false;
+                         } else {
+                           if (window.location.hash != '#undefined') {
+                              goBack();
+                           } else {
+                             history.pushState("", document.title, window.location.pathname);
+                             location.reload();
+                            }
+                          }
+                        }              
+
+                     function setId(chkBox, created_by){
+                          var inputs = document.getElementsByTagName("input");
+                          dec_created_by = created_by;
+
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                   if (inputs[i].id != chkBox.id) {
+                                   inputs[i].checked = false;
+                                }}
+                                //else { inputs[i].checked = true;}
+                          }
+                          passvar = chkBox.id;
+                       }
+
+                       //function PasstoView () {
+                          //if (passvar == 000){
+                             //alert('Select a Decision Problem to view');}
+                          //else {
+                             //document.location.href = "/utility_tool/decisions/" + passvar +"/view_decision.html";}
+                       //}
+
+                       function PasstoEdit () {
+                          if (passvar == 000){
+                             alert('Select a Decision Problem to edit');}
+                          else {
+                             document.location.href = "/utility_tool/decisions/" + passvar + "/edit_decision.html";}
+                       }
+
+                       function PasstoDupl () {
+                          if (passvar == 000){
+                             alert('Select a Decision Problem to duplicate');}
+                          else {
+                              if (loggedinuser == dec_created_by) {  
+                                 document.location.href = "/utility_tool/decisions/" + passvar + "/dupl_decision.html";}
+                              else {alert('You are not the Decision Owner. You cannot duplicate this decision!');} 
+                          }}
+
+                       function PasstoDel () {
+                           if (passvar == 000){
+                                 alert('Select a Decision Problem to delete');}
+                           else {
+                               if (loggedinuser == dec_created_by) { 
+                                  if (confirm('Are you sure you want to delete this decision problem? All the solution options, criteria and other settings associated with this decision problem  will be deleted too.')) {
+                                    document.location.href = "/utility_tool/decisions/" + passvar + "/delete_decision.html";
+                                  }
+                              } else { alert('You are not the Decision Owner. You cannot delete this decision!');}
+                        }}    
+
+                       function PasstoSol () {
+                          if (passvar == 000){
+                             alert('Select a Decision to work on');}
+                          else {
+                             document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html";}
+                       }
+
+                       $( "#myDIV" ).hide();                                                                                                                                                                                         
+                          $( "#button" ).click(function() {
+                          $( "#myDIV" ).toggle();
+                        });
+                    </script> 
+               </thead>
+            </table>
+             <span style="float:right;"><input class="btn btn-success btn-sm" type="button" name="add" id="solopt" value="Go to Decision Flowchart" onclick="PasstoSol();"/></span>
+    </div>
+</div>
+</body>
+{% endblock %}
+

@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                           
+<div class="hero-unit">
+    <br>
+    <br>
+<b>Identify Stakeholders:</b><font color="blue"> Resources to help you identify which stakeholders to include and how</font>
+<br> <br>
+Stakeholders are people who may be affected by a decision. In <i>DecisionMaker</i>, stakeholders are more specifically those who are invited to participate in making the decision being addressed. Relevant stakeholders will vary depending on what the decision is about, but potential stakeholders in educational contexts include:
+ <br> <br>
+ &emsp;&emsp;<b><font color="blue">School, district, college/university or state level administrative leaders:</font></b> <br>
+&emsp;&emsp;&emsp;&emsp;Commissioner <br>
+&emsp;&emsp;&emsp;&emsp;President/Chancellor <br>
+&emsp;&emsp;&emsp;&emsp;Superintendents and Assistant Superintendents <br>
+&emsp;&emsp;&emsp;&emsp;Division Chiefs <br>
+&emsp;&emsp;&emsp;&emsp;Department Chairs/Heads/Directors <br>
+&emsp;&emsp;&emsp;&emsp;Principals and Assistant Principals
+ <br> <br>
+ &emsp;&emsp;<b><font color="blue">School or college/university staff:</font></b> <br>
+&emsp;&emsp;&emsp;&emsp;Faculty/Teachers and other instructional staff <br>
+&emsp;&emsp;&emsp;&emsp;Instructional coaches <br>
+&emsp;&emsp;&emsp;&emsp;Guidance Counselors <br>
+&emsp;&emsp;&emsp;&emsp;Administrative and other support staff <br>
+ <br>
+ &emsp;&emsp;<b><font color="blue">Others:</b></font> <br> 
+&emsp;&emsp;&emsp;&emsp;School, District or State Education Board members <br>
+&emsp;&emsp;&emsp;&emsp;Parents <br>
+&emsp;&emsp;&emsp;&emsp;Students <br>
+&emsp;&emsp;&emsp;&emsp;Community members <br>
+&emsp;&emsp;&emsp;&emsp;Community partners <br>
+&emsp;&emsp;&emsp;&emsp;Colleges  <br>
+&emsp;&emsp;&emsp;&emsp;Employers <br>
+ <br>
+ The National Research Council of the <a href="http://www.nationalacademies.org/nasem/" target="_blank">National Academies</a> provides a list of questions that are relevant to the inclusion of stakeholders in environmental decisions. Many of the same issues are relevant to education decision-making. Click <a href="https://www.nap.edu/catalog/12434/public-participation-in-environmental-assessment-and-decision-making" target="_blank">here</a> to download the free PDF as a guest, and refer to page 194 to reference this set of questions.  Chapter 8 of the document provides a full discussion of issues related to stakeholder participation in decision-making.
+
+<br><br>
+{% if whereamI == 'aboutmaker' %}                                                                                                                                                                                
+<a href="/utility_tool/resources/about_maker.html"><input class="btn btn-success" type="button" name="cancel" value="Back to About DecisionMaker"></a>
+{% else %}  
+    {% if dec_id != 0 %}
+        <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+    {% endif %}   
+    <a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+    {% endif %}    
+</div>
+{% endblock %}

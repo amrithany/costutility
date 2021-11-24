@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                           
+<div class="hero-unit">
+    <br>
+    <br>
+    <b>Decision Problem:</b><font color="blue"> Resources to help you identify the problem, define your goals, and define the decision problem</font>
+<br><br>
+<i>DecisionMaker</i> will help you address decision problems in which a choice needs to be made between several alternative educational strategies, programs or tools. You can also use it for other types of decisions such as which budget items to continue funding, how much to scale up a promising strategy or program, or which candidate to hire from among a number of potential candidates. 
+<br><br>
+<i>Examples of decision problems to which DecisionMaker can be applied include:</i>
+<br><br>
+<b><font color="blue">School decisions</font></b>
+<br>
+1.  Which Social and Emotional Learning (SEL) curriculum should our school purchase?<br>
+2.  What is the best strategy for providing out-of-school (OOS) instruction for our students who are out of school for discipline or health reasons?<br>
+3.  Is an existing after-school program worth continuing to fund at our school?<br>
+<br>
+
+<b><font color="blue">School District decisions</font></b>
+<br>
+1.  Which elementary literacy program is most appropriate for our students whose reading skills are below the 750 lexile level?<br>
+2.  Should we scale up a promising Gifted and Talented Identification program to a few grades at all schools or to all grades at a few schools?<br>
+3.  Which digital device should we provide district-wide for our students and teachers?<br>
+4.  What professional development should we provide teachers in order to improve pedagogical practices targeted at helping our K-2 African American students improve their math achievement?
+<br><br>
+<b><font color="blue">State Education Agency decisions</font></b>
+<br>
+1.  What is the best way to improve computer education in our state to meet the demands of the 21st Century?<br>
+2.  Should we have a centralized or distributed student information system across our districts?<br>
+3.  Which standardized tests should we require across the state?<br><br>
+<b><font color="blue">University/college decisions</font></b>
+<br>
+1. Which instructional technology tool should we integrate into our classes?<br>
+2. How do we best serve students who need remediation in math?<br>
+3. What strategy should we pursue to improve on-time graduation for at-risk students?<br><br> 
+<b><font color="blue">Resources to help you articulate problems</font></b>
+<br>
+<a href="https://www.cde.state.co.us/uip/rootcauseanalysis" target="_blank">Root Cause Analysis, Colorado Department of Education</a>
+<br>
+ <a href="https://eric.ed.gov/?id=ED480880" target="_blank">School Leader's Guide to Root Cause Analysis: Using Data to Dissolve Problems.  Preuss, Paul G. (2003)</a>
+<br><br>
+{% if whereamI == 'aboutmaker' %}                                                                                                                                                                                
+<a href="/utility_tool/resources/about_maker.html"><input class="btn btn-success" type="button" name="cancel" value="Back to About DecisionMaker"></a>
+{% else %}  
+    {% if dec_id != 0 %}
+        <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+    {% endif %}   
+    
+    <a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+{% endif %}    
+</div>
+{% endblock %}

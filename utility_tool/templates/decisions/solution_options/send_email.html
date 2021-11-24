@@ -1,0 +1,428 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style>
+     body * { font-family: "Playfair Display", serif; }
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="form1">
+    <form id="form1" method="post"  enctype="multipart/form-data">
+        <h3 class="form-signin-heading">Send Email to Stakeholders</h3>
+        <font color="blue">
+            <b>Step 1:</b><p>If you are ready to invite stakeholders to participate in this decision, select the stakeholders you want to email now and enter the date by which you want the stakeholders to complete their assigned task. 
+            <p></p>
+            <b>Step 2:</b><p>Click on the appropriate button to send an automatic email to each stakeholder you selected to participate in the relevant task. 
+            <p></p>
+            Click <a href="{% static 'Draft email.docx' %}" target="_blank"><b><u><font color="green">here</font></u></b></a> to read what the email will say.
+            <p></p>
+        </font>
+           </br>
+           <h4 style="font-weight: bold;color: #447a9a;" align="center"> Invite Stakeholders to Suggest Solution Options </h4>
+           <b><font color="red">{{ sol_err }} </font></b>
+       Requested completion Date (please enter in mm/dd/yyyy format): <input type="text" id="sol_date" name="sol_date">
+           <span style="float:right;">
+           <input class="btn btn-primary btn-sm" type="submit" name="solopt" value="Send Emails to Invite Stakeholders to Suggest Solution Options"/>
+           </span>
+           <table class="table table-condensed">
+                <thead>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Requested completion Date</th>
+                    <th style="text-align: center;"> Check All <input type="checkbox" id="checkAll"></th>
+                 </thead>
+                 <tbody>
+                 {% csrf_token %}        
+                    {% localtime on %}
+                    {% for st in stdec_solopt %}
+                      <tr>
+                      <td>{{st.name}}</td>
+                      <td>{{st.email}}</td>
+                      <td>{{st.solopt_date}}</td>
+                      <td style="text-align: center;"><input type="checkbox" name="chk_solopt" id="{{st.id}}" value="{{st.id}}"  onclick="setId(this);"> </td>
+                      </tr>
+    {% endfor %}                                                                                                                    
+    {% endlocaltime %}
+    </tbody>
+    </table>
+     </br>
+          </br>
+          <h4 style="font-weight: bold;color: #447a9a;" align="center"> Invite Stakeholders to Provide Screening Criteria </h4>
+           Requested completion Date: <input type="text" id="scr_date" name="scr_date">
+           <span style="float:right;">
+           <input class="btn btn-primary btn-sm" type="submit" name="scrcr" value="Send Emails to Invite Stakeholders to Provide Screening Criteria"/>
+           </span>
+           <table class="table table-condensed">
+                <thead>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Requested completion Date</th>
+                    <th style="text-align: center;"> Check All <input type="checkbox" id="checkAll2"></th> 
+                 </thead>
+                 <tbody>
+                 {% csrf_token %}
+                    {% localtime on %}
+                    {% for st in stdec_scrcr %}
+                      <tr>
+                      <td>{{st.name}}</td>
+                      <td>{{st.email}}</td>
+                      <td>{{st.scrcr_date}}</td> 
+                      <td style="text-align: center;"><input type="checkbox" name="chk_scrcr" id="{{st.id}}" value="{{st.id}}"  onclick="setId2(this);"> </td>
+                      </tr>
+    {% endfor %}                                                                                                                    
+    {% endlocaltime %}
+    </tbody>
+    </table>
+    </br>
+           </br>
+           <h4 style="font-weight: bold;color: #447a9a;" align="center"> Invite Stakeholders to Provide Evaluation Criteria </h4>
+           Requested completion Date: <input type="text" id="eva_date" name="eva_date">
+           <span style="float:right;">
+           <input class="btn btn-primary btn-sm" type="submit" name="evacr" value="Send Emails to Invite Stakeholders to Provide Evaluation Criteria"/>
+           </span>
+           <table class="table table-condensed">
+                <thead>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Requested completion Date</th>
+                    <th style="text-align: center;"> Check All <input type="checkbox" id="checkAll3"></th>
+                 </thead>
+                 <tbody>
+                 {% csrf_token %}
+                    {% localtime on %}
+                    {% for st in stdec_evacr %}
+                      <tr>
+                      <td>{{st.name}}</td>
+                      <td>{{st.email}}</td>
+                      <td>{{st.evacr_date}}</td>
+                      <td style="text-align: center;"><input type="checkbox" name="chk_evacr" id="{{st.id}}" value="{{st.id}}"  onclick="setId3(this);"> </td> 
+                      </tr>
+    {% endfor %}                                                                                                                    
+    {% endlocaltime %}
+    </tbody>
+    </table>
+    </br>
+           </br>
+           <font color="blue"><p>Make sure you have a list of Solution Options and Evaluation Criteria in place <b><u>before</u></b> inviting stakeholders to contribute Importance Scores.  
+           </p></font><p>
+           <h4 style="font-weight: bold;color: #447a9a;" align="center"> Invite Stakeholders to Contribute Importance Scores </h4> 
+           Requested completion Date: <input type="text" id="iw_date" name="iw_date">
+           <span style="float:right;">
+           <input class="btn btn-primary btn-sm" type="submit" name="iw" value="Send Emails to Invite Stakeholders to Contribute Importance Scores"/>
+           </span>
+           <table class="table table-condensed">
+                <thead>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Requested completion Date</th>
+                    <th style="text-align: center;"> Check All <input type="checkbox" id="checkAll4"></th>  
+                 </thead>
+                 <tbody>
+                 {% csrf_token %}
+                    {% localtime on %}
+                    {% for st in stdec_iw %}
+                      <tr>
+                      <td>{{st.name}}</td>
+                      <td>{{st.email}}</td>
+                      <td>{{st.iw_date}}</td>
+                      <td style="text-align: center;"><input type="checkbox" name="chk_iw" id="{{st.id}}" value="{{st.id}}"  onclick="setId4(this);"> </td>
+                      </tr>
+    {% endfor %}                                                                                                                    
+    {% endlocaltime %}
+    </tbody>
+    </table>
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var selected_solopt = [];
+                     var selected_scrcr = [];
+                     var selected_evacr = [];
+                     var selected_iw = []; 
+                     var passvar = '{{ dec_id }}';
+
+                     $("#checkAll").click(function () {
+                           $("input[name=chk_solopt]").not(this).prop('checked', this.checked);
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].name == 'chk_solopt'){
+                                   if (inputs[i].checked) {
+                                   selected_solopt.push(inputs[i].id);
+                                   }
+                                   else {
+                                   selected_solopt.splice(selected_solopt.indexOf(inputs[i].id), 1 );    
+                                  }
+                                  }
+                           }
+                     });
+
+                     function setId(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+
+                             //if (inputs[i].type == 'checkbox'){
+                              if (inputs[i].name == 'chk_solopt'){
+                                //alert(inputs[i].name);
+                                if (chkBox.checked) {
+                                  if (inputs[i].id == chkBox.id) {
+                                       selected_solopt.push(chkBox.id);
+                                  }}
+                                // remove the id from the list if the deleted checkbox is unchecked
+                                else {
+                                  if (inputs[i].id == chkBox.id) { 
+                                  selected_solopt.splice(selected_solopt.indexOf(chkBox.id), 1 );    
+                                }}
+                                }
+                          }
+                     }
+
+                     $("input[name='solopt']").click(function(e){
+                        e.preventDefault();
+                        if (selected_solopt === undefined || selected_solopt.length == 0) {
+                           alert('Please select one or more Stakeholders to Invite to Suggest Solution Options.');
+                        } else {         
+                        var sdate = new Date($('#sol_date').val());
+                        if (sdate == 'Invalid Date') {
+                        alert('Please enter a valid Requested completion Date'); }
+                        else {
+                        //alert('Sending Email...');
+                        day = sdate.getDate();
+                        month = sdate.getMonth() + 1;
+                        year = sdate.getFullYear();
+                        changed_date = [month, day, year].join('/');
+                        if (selected_solopt != []){
+                            $.ajax({
+                             type:"POST",
+                             url:"{% url 'send_email' %}",
+                             data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                'selected_solopt':JSON.stringify(selected_solopt),
+                                'id': '{{st.id}}',
+                                'sol_date':changed_date,
+                                },
+                              success: function(){
+                                alert('Emails to Invite Stakeholders to Suggest Solution Options sent successfully.');
+                                window.location.reload();
+                              },
+                              error: function(){
+                               //alert('failure');
+                             }   
+                         });
+                        }}}});
+
+                     $("#checkAll2").click(function () {
+                           $("input[name=chk_scrcr]").not(this).prop('checked', this.checked);
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].name == 'chk_scrcr'){
+                                   if (inputs[i].checked) {
+                                   selected_scrcr.push(inputs[i].id);
+                                   }
+                                   else {
+                                   selected_scrcr.splice(selected_scrcr.indexOf(inputs[i].id), 1 );    
+                                  }
+                                  }
+                           }
+                     });
+
+                     $("#checkAll3").click(function () {
+                           $("input[name=chk_evacr]").not(this).prop('checked', this.checked);
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].name == 'chk_evacr'){
+                                   if (inputs[i].checked) {
+                                   selected_evacr.push(inputs[i].id);
+                                   }
+                                   else {
+                                   selected_evacr.splice(selected_evacr.indexOf(inputs[i].id), 1 );    
+                                  }
+                                  }
+                           }
+                     });
+
+                     $("#checkAll4").click(function () {
+                           $("input[name=chk_iw]").not(this).prop('checked', this.checked);
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].name == 'chk_iw'){
+                                   if (inputs[i].checked) {
+                                   selected_iw.push(inputs[i].id);
+                                   }
+                                   else {
+                                   selected_iw.splice(selected_iw.indexOf(inputs[i].id), 1 );    
+                                  }
+                                  }
+                           }
+                     });                     
+
+                     function setId2(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             //if (inputs[i].type == 'checkbox'){
+                             if (inputs[i].name == 'chk_scrcr'){
+                                if (chkBox.checked) {
+                                  if (inputs[i].id == chkBox.id) {
+                                       selected_scrcr.push(chkBox.id);
+                                  }}
+                                // remove the id from the list if the deleted checkbox is unchecked
+                                else {
+                                  if (inputs[i].id == chkBox.id) { 
+                                  selected_scrcr.splice(selected_scrcr.indexOf(chkBox.id), 1 );    
+                                }}
+                                }
+                          }
+                     }
+
+                     function setId3(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             //if (inputs[i].type == 'checkbox'){
+                             if (inputs[i].name == 'chk_evacr'){ 
+                                if (chkBox.checked) {
+                                  if (inputs[i].id == chkBox.id) {
+                                       selected_evacr.push(chkBox.id);
+                                  }}
+                                // remove the id from the list if the deleted checkbox is unchecked
+                                else {
+                                  if (inputs[i].id == chkBox.id) { 
+                                  selected_evacr.splice(selected_evacr.indexOf(chkBox.id), 1 );    
+                                }}
+                                }
+                          }
+                     }
+
+                     function setId4(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             //if (inputs[i].type == 'checkbox'){
+                              if (inputs[i].name == 'chk_iw'){
+                                if (chkBox.checked) {
+                                  if (inputs[i].id == chkBox.id) {
+                                       selected_iw.push(chkBox.id);
+                                  }}
+                                // remove the id from the list if the deleted checkbox is unchecked
+                                else {
+                                  if (inputs[i].id == chkBox.id) { 
+                                  selected_iw.splice(selected_iw.indexOf(chkBox.id), 1 );    
+                                }}
+                                }
+                          }
+                     }
+
+                     $("input[name='scrcr']").click(function(e){
+                        e.preventDefault();
+                        if (selected_scrcr === undefined || selected_scrcr.length == 0) {
+                           alert('Please select one or more Stakeholders to Invite to Provide Screening Criteria.');
+                        } else {         
+                        var sdate = new Date($('#scr_date').val());
+                        if (sdate == 'Invalid Date') {
+                        alert('Please enter a valid Requested completion Date'); }
+                        else {
+                        //alert('Sending Email...');
+                        day = sdate.getDate();
+                        month = sdate.getMonth() + 1;
+                        year = sdate.getFullYear();
+                        changed_date = [month, day, year].join('/');
+                        if (selected_scrcr != []){
+                            $.ajax({
+                             type:"POST",
+                             url:"{% url 'send_email' %}",
+                             data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                'selected_scrcr':JSON.stringify(selected_scrcr),
+                                'id': '{{st.id}}',
+                                'scr_date':changed_date,
+                                },
+                              success: function(){
+                                alert('Emails to Invite Stakeholders to Provide Screening Criteria sent successfully.');
+                                window.location.reload();
+                              },
+                              error: function(){
+                               //alert('failure');
+                             }   
+                         });
+                        }}}});
+
+                     $("input[name='evacr']").click(function(e){
+                        e.preventDefault();
+                        if (selected_evacr === undefined || selected_evacr.length == 0) {
+                           alert('Please select one or more Stakeholders to Invite to Provide Evaluation Criteria.');
+                        } else {         
+                        var sdate = new Date($('#eva_date').val());
+                        if (sdate == 'Invalid Date') {
+                        alert('Please enter a valid Requested completion Date'); }
+                        else {
+                        //alert('Sending Email...');
+                        day = sdate.getDate();
+                        month = sdate.getMonth() + 1;
+                        year = sdate.getFullYear();
+                        changed_date = [month, day, year].join('/');
+                        if (selected_evacr != []){
+                            $.ajax({
+                             type:"POST",
+                             url:"{% url 'send_email' %}",
+                             data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                'selected_evacr':JSON.stringify(selected_evacr),
+                                'id': '{{st.id}}',
+                                'eva_date':changed_date,
+                                },
+                              success: function(){
+                                alert('Emails to Invite Stakeholders to Provide Evaluation Criteria sent successfully.');
+                                window.location.reload();
+                              },
+                              error: function(){
+                               //alert('failure');
+                             }   
+                         });
+                        }}}});
+
+                     $("input[name='iw']").click(function(e){
+                        e.preventDefault();
+                        if (selected_iw === undefined || selected_iw.length == 0) {
+                           alert('Please select one or more Stakeholders to Invite to Contribute Importance Scores.');
+                        } else {         
+                        var sdate = new Date($('#iw_date').val());
+                        if (sdate == 'Invalid Date') {
+                        alert('Please enter a valid Requested completion Date'); }
+                        else {
+                        //alert('Sending Email...');
+                        day = sdate.getDate();
+                        month = sdate.getMonth() + 1;
+                        year = sdate.getFullYear();
+                        changed_date = [month, day, year].join('/');
+                        if (selected_iw != []){
+                            $.ajax({
+                             type:"POST",
+                             url:"{% url 'send_email' %}",
+                             data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                'selected_iw':JSON.stringify(selected_iw),
+                                'id': '{{st.id}}',
+                                'iw_date':changed_date,
+                                },
+                              success: function(){
+                                alert('Emails to Invite Stakeholders to Contribute Importance Scores sent successfully.');
+                                window.location.reload();
+                              },
+                              error: function(){
+                               //alert('failure');
+                             }   
+                         });
+                        }}}});
+                  </script> 
+                     
+    </br>
+    <span style="float:right;">        
+    <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="cancel" id="cancel" value="Back to Decision Flowchart"/></a>    
+    </span>      
+    </form> 
+    </div>
+</div>
+</body>
+{% endblock %}
+
+
+

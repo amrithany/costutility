@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!-- saved from url=(0113)https://www.pythonanywhere.com/user/amritha/files/home/amritha/costutility/utility_tool/templates/Contact-Us.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% load static %}
+<style>
+ul#one {
+  margin-top: -2%;
+  padding-left: 2%;
+}
+.hero {
+    background: url("{% static "pencil_graph.jpg" %}") center;
+    background-size: cover;
+    padding: 5em 0;
+    z-index: -2;
+    position: relative;
+}
+
+  .hero:after {
+      background-color: white;
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.2;
+  }
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  }
+
+.hero-message {
+  max-width: 100%;
+  position: relative;
+}
+
+.hero-message > h1#not-homepage {
+  display: block;
+  text-align: center;
+  text-shadow: 2px 2px 20px white;
+}
+
+
+img {
+      border: 2px solid #ddd;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+}
+img:hover {
+      box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);                                                                                     
+    } 
+
+</style>
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/Style.css' %}" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+</head>
+<div id="page-container">
+<div class="nav-upper">
+    <p id="nav-upper"><i>DecisionMaker</i>&reg; – the CBCSE Cost-Utility Tool Kit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>© 2019 Teachers College, Columbia University. All rights reserved.</p>
+  <ul class="nav">
+  <li class="nav"><a href="Home.html">Home</a></li>
+  <li class="nav"><a href="Home.html#About-Us">About DM</a></li>
+  <li class="nav"><a href="tutorials.html">Tutorials</a></li>
+  <li class="nav"><a href="/utility_tool/decisions/decisions_list.html">My Decisions</a></li>     
+  <li class="nav"><a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a></li>
+  <li class="nav"><a href="Resources-Guidance.html">Resources & Guidance</a></li>
+   <li class="nav"><a href="license2.html">License</a></li>
+  <li class="nav"><a href="Contact-Us.html">Contact Us</a></li>
+  <li class="nav"><a href="Who-We-Are.html">Who We Are</a></li>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <li class="nav"><a href="/utility_tool/users/login.html">Login</a></li>
+  {% else %}
+     <li class="nav"><a href="/logout.html">Logout</a></li> 
+  {% endif %}
+</ul>
+</div>
+<div class="hero flex-center">
+  <div class="hero-message">
+      <h1 id="not-homepage">Cost Analysis Tutorial</h1>
+    </div>
+  </div>
+<div class="body">
+    <h5 id="line">In this video, Dr. Rob Shand of the CAP Project provides an overview of cost analysis, why it is useful, and the different types of cost analysis. He also uses an example of digital math tools to demonstrate the difference between expenditures and economic costs.
+        <br><br><a href="https://vimeo.com/436502191/bb034f79b0" target="_blank">
+        <img src="{% static 'Cost1.jpg' %}" alt="Introduction of Cost Analysis"></a>                          
+
+    </h5>
+</div>
+<br>
+</div>
+</body></html>

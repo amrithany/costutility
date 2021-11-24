@@ -1,0 +1,123 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Logged in as {{loggedinuser}}</h4></div>
+    <div class="table-responsive">
+    <form id="form1" method="post"  enctype="multipart/form-data">
+       {% csrf_token %}
+        <h2 class="form-signin-heading">My Directory of Stakeholders</h2>
+        <h5 style="border: 2px solid grey;padding-left: 15px;">
+            <br>Stakeholders are people who should be involved in the decisions you are making or who may be affected by the decisions, such as administrators, board members, teachers, parents, and students
+            <br><br>This is your master list of possible stakeholders to invite to participate in decisions
+            <br><br>Each time you create a new decision, you will have the opportunity to invite some or all of these people to participate in any of the following steps of the decision process: suggesting Solution Options, screening criteria, and evaluation criteria; and contributing Importance Scores. You will be able to choose who will be invited to do what for each decision 
+            <br><br>To build your stakeholder list, you can either add people individually by clicking on the blue “Add Stakeholders” button or you can click on the orange “Import list from Excel” button to obtain an Excel template which you can fill out and upload 
+            <br><br>To invite stakeholders to participate in decisions via <i>DecisionMaker</i>, you will need their names and email addresses. Of course, you can also engage stakeholders offline in meetings, hallways and phone calls and then input the information yourself
+
+            <br><br></h5> <br> 
+            <a href="/utility_tool/stakeholders/add_stakeholder.html"> <input class="btn btn-primary" type="button" name="add" id="add" value="Add New Stakeholders" /></a>
+            <input class="btn btn-primary" type="button" name="add" id="view" value="View / Edit Stakeholder" onclick="PasstoView();" />
+            <input class="btn btn-primary" type="button" name="delete" value="Delete Stakeholder" onclick="PasstoDel();" />
+            <!--<a href="/utility_tool/stakeholders/add_st_privs.html"> <input class="btn btn-primary" type="button" name="add" id="priv" value="Add Privileges" /></a>-->
+            <a href="/utility_tool/stakeholders/import_excel.html"><input class="btn btn-warning" type="button" name="excel" id="excel" value="Import list from Excel"/></a>
+            <a href="/utility_tool/stakeholders/export_stakeholders.html"><input class="btn btn-warning" type="button" name="excel" id="excel" value="Export Stakeholders"/></a>
+            <table class="table table-condensed"> 
+            {% if whereamI == "menu" %}
+            <br><input class="btn btn-success" type="submit" name="submit" value="Add Stakeholders to current Decision"/>&nbsp; 
+               <a href="/utility_tool/decisions/solution_options/assign_tasks.html"><input class="btn btn-success" type="button" name="assign" value="Assign Tasks"/></a>
+            {% endif %}
+            <br><br> 
+                <thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Title</th>
+                    <th>Organization</th>
+                    <th>Email</th>
+                    {% localtime on %}
+                    {% for st in stakeholders %}
+                            <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">
+                            <td><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="id"  onclick="setId(this);"  style="margin-left:auto; margin-right:auto;"></td>
+		                    <td>{{st.id}}</td>
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                            <td>{{st.email}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endlocaltime %}
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var passvar = 000;
+                     var selected = [];
+                     var whereamI = '{{whereamI}}';
+
+                       /*$(function() {$('input[type=checkbox]').attr('checked', false)});                      
+                       window.onhashchange = function() {
+                         if (window.innerDocClick) {
+                           window.innerDocClick = false;
+                         } else {
+                           if (window.location.hash != '#undefined') {
+                              goBack();
+                           } else {
+                             history.pushState("", document.title, window.location.pathname);
+                             location.reload();
+                            }
+                          }
+                        }              
+
+                     function setId(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id != chkBox.id) {
+                                   inputs[i].checked = false;
+                                }
+                                else { inputs[i].checked = true;}
+                             }
+                          }
+                          passvar = chkBox.id;
+                       }*/
+
+
+                     function setId(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id == chkBox.id) {
+                                       selected.push(chkBox.id);
+                                   }
+                             }
+                          }
+                          passvar = chkBox.id;
+                     }  
+
+
+                       function PasstoView () {
+                          if (passvar == 000){
+                             alert('Select a Stakeholder to edit');}
+                          else {
+                             document.location.href = "/utility_tool/stakeholders/" + passvar +"/edit_stakeholder.html";}
+                       }
+
+                       function PasstoDel () {
+                          if (passvar == 000){
+                             alert('Select a Stakeholder to delete');}
+                          else {
+                             if (confirm('Are you sure you want to delete this stakeholder (ID - ' + passvar + ')?')) {
+                             document.location.href = "/utility_tool/stakeholders/" + passvar +"/delete_stakeholder.html";
+                             }
+                          }  
+                       }
+                    </script> 
+               </thead>
+            </table>
+    </form>
+    </div>
+</div>
+{% endblock %}
+

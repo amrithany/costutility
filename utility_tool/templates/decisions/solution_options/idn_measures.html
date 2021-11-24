@@ -1,0 +1,445 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css" MEDIA=all>
+.handsontable th {
+    white-space: normal!important;
+    }
+
+    body .handsontable .htAutocompleteArrow {
+             color: black;                                                                                                                                                                                           
+             }   
+    body * { font-family: "Playfair Display", serif; }         
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+<div class="container-fluid">
+<form method="post"  enctype="multipart/form-data">
+{% csrf_token %}    
+<script src="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.css">
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>         
+<h2 class="form-signin-heading">Identifying Evaluation Measures and Data to Collect
+    <a  href="#" title="On this page, the Project Administrator should enter ways to assess how well the Solution Options meet each of the Evaluation Criteria. This page is view-only for stakeholders." ><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>    
+    <a href="/Steps.html#Evidence-Gathering" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a> 
+</h2>
+<p></p>
+<font color="blue">
+For each Evaluation Criterion, you need a way to measure and score how well each Solution Option performs.  This page is designed to help you think through how you will assess each of the Solution Options against each of your Evaluation Criteria.  If you have already completed this, <input class="btn btn-success btn-sm" type="submit" id="measures" name="save" value="Skip to the Next Step"/>
+<br><p></p>
+<b>Step 1:</b><p> For each Solution Option you are considering, describe what information you will use to assess it against each Evaluation Criterion. In the <i>“Common evaluation measure you can use across all options”</i> column, <i>DecisionMaker</i> may show a suggestion that will work for you, but you may have better ideas. Click <a id="button" href="#"><b><u><font color="green">here</font></u></b></a> for examples of information you might use. <a href="{% static 'Evaluation Measures and Results.pdf' %}" target="_blank"><b><u><font color="green">This list</font></u></b></a> may also help you.
+<br><p></p>
+            <div id="myDIV">                                                                                                                              
+                <h4 style="text-align:left"><font color="maroon">   
+                        <br>For example, if your Evaluation Criterion is <b>“Impact on student math achievement,”</b> you might:
+                        <br><br>·         Find existing data at your education agency such as course grades that teachers assign, average student scores on school-administered tests, or percent of students achieving proficiency on standardized test scores.
+                        <br><br>.         Search for studies that investigated the Solution Options you are interested in and measured impact on math achievement.  See <a href="/Steps.html#Evidence-Gathering"><b><u><font color="green">here</font></u></b></a> for suggestions on how to do this and how to assess whether the information you find is credible and relevant in your context.
+                        <br><br> ·         Collect new data/information to evaluate the options.  For example, you might design a pilot study to test each tool and use pre- and post-tests to assess changes in student math performance.
+                        <br><br> If one of your Evaluation Criteria is <b>“Capacity/skill level of current teachers/staff to implement option with fidelity,”</b> you could ask teachers and instructional coaches to review each of the tools and respond to a brief survey asking them to indicate on a scale of 0-10  the likelihood they could implement each tool with fidelity.
+                <br><br></font></h4>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">                                                                                                                                                                     
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>
+             <p></p>   
+<b>Step 2:</b><p>You need a common evaluation measure you can use across all Solution Options. You can use the measures suggested by <i>DecisionMaker</i> if any already appear in the relevant column, write over the top of the text to change it, or enter your own ideas if the cells are blank. 
+<br><p></p>
+If  the kinds of information you can collect are different for each Solution Option, you need to figure out a way to put them on a common scale for comparability. Click <a id="button2" href="#"><b><u><font color="green">here</font></u></b></a> for an example.
+            <div id="myDIV2">
+                <h4 style="text-align:left"><font color="maroon">   
+                        <br> Ideally, the measure for each Evaluation Criterion will be the <u>same</u> for all Solution Options so you can easily compare them, e.g., an effect size, but this may not always be possible. If, for example, you are evaluating 5 different digital math tools against the criterion <b>“ Impact on student math achievement,”</b> you may have found studies for 2 that show student improvements in STAR assessment scores, 2 that show improvements in teacher-assigned grades and one for which there are no data.  In these cases, you will need to find a way to put them on a common scale.  You could rate each tool on a scale of 0 - 10 based on the strength of the evidence and the amount of student improvement seen.  For the Solution Option with no data, you could score it zero due to lack of evidence. Alternatively, you could invite one or more math teachers/coaches to review the tools and the available evidence of impact and judge where Option 5 should be scored relative to the others. This is a subjective assessment based on the decision-maker’s judgement and informed by the available evidence.
+                <br><br></font></h4>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">                                                                                                                                                                     
+                   $( "#myDIV2" ).hide();
+                   $( "#button2" ).click(function() {
+                       $( "#myDIV2" ).toggle();
+                   });
+             </script>
+             <p></p>
+<b>Step 3:</b><p>In the last column, indicate the data that you need to collect on the common measure to evaluate each Solution Option against the Evaluation Criterion. Again, you can use <i>DecisionMaker</i>’s suggestions, write over the top of the text to change it, or enter your own ideas if the cells are blank. 
+<br><p></p>
+{% if loggedinuser == created_by %}
+<b>Step 4:</b><p><input class="btn btn-success btn-sm" type="submit" name="save2" id="save2" value="Save"/> your data frequently.
+<br><p></p>   
+{% endif %}
+<b>Other Actions:</b><p>
+Save and <input class="btn btn-primary btn-sm" type="button" name="export"  value="Export to Excel" onclick="exportFunc()" />
+<br><p></p>
+{% if loggedinuser == created_by %}
+<b>Note:</b><p> If the table disappears, you have entered an illegal character (e.g. " ). Click on <a href="/utility_tool/decisions/solution_options/restore_idn.html"><input class="btn btn-success btn-sm" type="button" id="restore" name="restore" value="Restore table"/></a> and continue without that character.
+<br><p></p>
+{% endif %}
+</font>
+<br>
+<b>Evaluation Measures Table <br>
+<font color="red">{{ err }} </font></b><br>
+<div id="example1" class="hot handsontable htColumnHeaders"></div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var dec_id = {{dec_id}};
+var loggedinuser = '{{loggedinuser}}';
+var created_by = '{{created_by}}';
+
+function exportFunc() {
+  var json = '{{table}}';
+  if (json == 'doesnotexist') {
+     alert('Please save the table before you try to export it.');
+  } else {  window.location.href = "/utility_tool/decisions/solution_options/export_idn.html"; }
+}
+
+$(document).ready(function () {
+        var json = '{{table}}';
+        var sarray = [];
+        var carray = [];
+        var sugarray = [];
+        var darray = [];
+        var archived_pos = [];
+        var deleted_pos = [];
+        var orig_eva_array =[];
+        var container2 = document.getElementById('example1'), hot;
+        var columnsTypes = ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']; 
+        var data = [['Evaluation Criterion','Common evaluation measure you can use across all options', 'Data to collect']];  
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        var loggedinuser = '{{loggedinuser}}';
+        var created_by = '{{created_by}}';
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+ $("input[type='submit']").click(function(){
+    var buttonid = this.id;
+
+    $.ajax({
+        url: "{% url 'idn_measures' %}",
+        data: {'getdata': JSON.stringify(hot.getData())},
+        dataType: 'json',
+        type: 'POST',   
+        success: function (res) {
+            console.log(res);    
+        },
+        error: function (res) {
+           if (buttonid == 'save2') {
+              window.location.reload();
+           } else {   
+              window.location.href = "/utility_tool/decisions/solution_options/add_measures.html";
+           }
+           console.log(res);            
+        }
+    });
+    return false;
+});
+
+/*var idleTime = 0;
+if (idleTime < 6) { // 20 minutes
+   setInterval(get_fb, 60000); 
+}
+else { 
+   idleTime = idleTime + 1; 
+}*/
+
+function save_idn(){
+    //alert('in here');
+    //alert(hot.getData());
+    $.ajax({
+        url: "{% url 'idn_measures' %}",
+        data: {'getdata': JSON.stringify(hot.getData())},
+        dataType: 'json',
+        type: 'POST',   
+        success: function (res) {
+            console.log(res);    
+        },
+        error: function (res) {
+           console.log(res);            
+        }
+    });
+    return false;
+}
+
+// when you are setting up the table for the first time
+if (json == 'doesnotexist') {
+      // read all the solution options and append them to the FIRST ROW of the data array  
+      justpos = 3; 
+      {% for s in solopt %}                                                                                                                                                                                     
+         if ('{{s.archived}}' == 'Y') {
+             archived_pos.push(justpos);                                                                                                                                                                             
+          }  
+         if ('{{s.deleted}}' == 'Y') {
+            archived_pos.push(justpos);                                                                                                                                                                         
+         }  
+         //if ('{{s.archived}}' == 'N') { 
+            sol = '{{s.sol_option}}';
+            sol = sol.replace(/&#39;/g,"'");  
+            sol = sol.replace(/,/g, ";");
+            sol = sol.replace(/&amp;/g, "&"); 
+            sol = 'Describe the information you will use to evaluate  ' +  sol + '  against this criterion and where you will get it from.';       
+            sarray.push(sol);
+         //}    
+           justpos = justpos + 1; 
+      {% endfor %}
+
+      for (var i = 0; i < sarray.length; i++){
+           data[0] = data[0].concat([sarray[i]]);
+      }  
+
+      pos2 = 1; 
+      // read all the evaluation criteria and push them to the FIRST COLUMN of the data array
+      {% for e in evacr %}
+          if ('{{e.deleted}}' == 'Y'){ 
+            deleted_pos.push(pos2);
+           } 
+           //if ('{{e.deleted}}' !== 'Y'){
+              sugg_evam = '{{e.suggested_evam}}';
+              data_unit = '{{e.data}}';  
+              crit1 = '{{e.criterion}}';
+              crit2 = '{{e.criterion2}}';
+              //sugg_evam = sugg_evam.replace(/,(?!["{}[\]])/g, "");
+              //data_unit = data_unit.replace(/,(?!["{}[\]])/g, "");
+              sugg_evam = sugg_evam.replace(/&#39;/g,"'");                                                                                                                                                                                   
+              data_unit = data_unit.replace(/&#39;/g,"'");         
+              //crit1 = crit1.replace(/,(?!["{}[\]])/g, "");
+              //crit2 = crit2.replace(/,(?!["{}[\]])/g, "");
+              crit1 = crit1.replace(/&#39;/g,"'");                                                                                                                                                       
+              crit2 = crit2.replace(/&#39;/g,"'");    
+              crit1 = crit1.replace(/,/g, ";");  
+              crit2 = crit2.replace(/,/g, ";");
+              crit1 = crit1.replace(/&amp;/g, "&");
+              crit2 = crit2.replace(/&amp;/g, "&");   
+              sugg_evam = sugg_evam.replace(/,/g, ";");  
+              data_unit = data_unit.replace(/,/g, ";");  
+              sugg_evam = sugg_evam.replace(/&amp;/g, "&");
+              data_unit = data_unit.replace(/&amp;/g, "&");
+              combined = crit1 + ': ' + crit2;           
+              if (('{{e.criterion2}}' !== 'None') &&  ('{{e.criterion2}}' !== '')){
+                  data.push([combined,sugg_evam,data_unit]);
+              } else { 
+                  data.push([crit1,sugg_evam,data_unit]);    
+             }
+           pos2 = pos2 + 1;                //}     
+      {% endfor %}
+
+// if the table has already been saved once
+} else {
+     // read all the solution options and append them to the FIRST ROW of the data array                                                              
+      justpos = 3;
+      {% for s in solopt %} 
+      if ('{{s.archived}}' == 'Y') {
+         archived_pos.push(justpos);
+      }
+      if ('{{s.deleted}}' == 'Y') {
+          archived_pos.push(justpos);                                                                                                                                                                         
+      }   
+      //else {    
+            sol = '{{s.sol_option}}';
+            sol = sol.replace(/&#39;/g,"'");  
+            sol = sol.replace(/,/g, ";");  
+            //sol = sol.replace(/&amp;/g, "&");
+            sol  = 'Describe the information you will use to evaluate  ' +  sol + '  against this criterion and where you will get it from.';   
+            sarray.push(sol);
+      //}   
+      justpos = justpos + 1; 
+      {% endfor %}
+
+    // read all the evaluation criteria and UPDATE FIRST COLUMN of the data array 
+      json = json.replace(/&quot;/g, '"');
+      json = json.replace(/&amp;/g, "&");
+      json = json.replace(/\n/g, " ");
+      data = JSON.parse(json);
+      // position of first option
+      pos = 3;
+      for (var i = 0; i < sarray.length; i++){
+          data[0][pos] = sarray[i];
+          pos = pos + 1;
+      }
+      // read all the criteria and hide the ones with deleted set to Y
+      pos2 = 1; 
+      {% for e in evacr %}
+      //alert('{{e.criterion}}');
+      //alert('{{e.deleted}}');
+      if ('{{e.deleted}}' == 'Y'){ 
+          deleted_pos.push(pos2);
+          //alert(pos2);
+      } 
+      //else {   
+          //if ('{{e.criterion}}' != ''){
+              crit1 = '{{e.criterion}}';
+              crit1 = crit1.replace(/&#39;/g,"'");  
+              crit1 = crit1.replace(/,/g, ";");  
+              crit2 = '{{e.criterion2}}';
+              crit2 = crit2.replace(/&#39;/g,"'");         
+              crit2 = crit2.replace(/,/g, ";");  
+              crit1 = crit1.replace(/&amp;/g, "&");
+              crit2 = crit2.replace(/&amp;/g, "&");
+              combined = crit1 + ': ' + crit2; 
+              if (('{{e.criterion2}}' !== 'None') &&  ('{{e.criterion2}}' !== '')){
+                  carray.push([combined]);
+              } else { carray.push([crit1]); 
+                       //alert('{{e.criterion}}');
+              }
+              sugarray.push('{{e.suggested_evam}}');
+              darray.push('{{e.data}}');  
+              orig_eva_array.push('{{e.orig_eva_id}}'); 
+          //}
+      //}   
+      pos2 = pos2 + 1;  
+      {% endfor %}        
+      
+      pos = 1;
+      sarraylength = sarray.length + 3;
+      //alert(data[5][0]);
+      for (var i = 0; i < carray.length; i++){
+          eva_before_change = data[pos][0];
+          data[pos][0] = carray[i];
+          if (data[pos][1] == null || orig_eva_array[i] == 'None'){
+            data[pos][1] = sugarray[i];
+          }
+          if (data[pos][2] == null || orig_eva_array[i] == 'None'){                                                                                                                   
+            data[pos][2] = darray[i];
+          }
+          data_unit = data[pos][2]; 
+          data_measure = data[pos][1];
+          //alert(data_measure);
+          //stripped = data_unit.replace(/,(?!["{}[\]])/g, "");
+          stripped = data_unit.replace(/,/g, ";");   
+          stripped = stripped.replace(/&#39;/g,"'"); 
+          stripped = stripped.replace(/&amp;/g, "&");
+          stripped = stripped.replace(/\n/g, " ");
+          data[pos][2] = stripped;
+          //alert(data[pos][2]);
+          //stripped = data_measure.replace(/,(?!["{}[\]])/g, "");
+          stripped = data_measure.replace(/,/g, ";");   
+          stripped = stripped.replace(/&#39;/g,"'"); 
+          stripped = stripped.replace(/&amp;/g, "&");
+          stripped = stripped.replace(/\n/g, " "); 
+          data[pos][1] = stripped;
+          for (var j = 3; j < sarraylength; j++){
+                if (eva_before_change == "") {
+                   data[pos][j] = ""; }
+                else {  
+                if (data[pos][j] != null) {
+                      col3 = data[pos][j];
+                      //stripped = col3.replace(/,(?!["{}[\]])/g, ""); 
+                      stripped = col3.replace(/,/g, ";");    
+                      stripped = stripped.replace(/&#39;/g,"'"); 
+                      //stripped = sripped.replace(/&amp;/g, "&");
+                      stripped = stripped.replace(/\n/g, " ");
+                      data[pos][j] = stripped;
+                }}
+          }
+
+          pos = pos + 1;
+      }
+
+}
+      function optionRenderer(instance, td, row, col, prop, value, cellProperties) {
+          Handsontable.renderers.TextRenderer.apply(this, arguments);
+          td.style.fontWeight = 'bold';
+          td.style.color = 'blue';
+          td.style.background = '#ADD8E6';
+      }
+
+
+      hot = new Handsontable(container2, {
+         beforeCreateCol: function(index, amount) {
+         for (var i = 0; i < amount; i++) {
+         columnsTypes.splice(index + i, 0, 'text');
+         }
+        },
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+         }
+        },
+         data: data,
+         colWidths: [170,250,250,250,250,250,250,250,250,250],
+         manualColumnResize: true,
+         minSpareRows: 20,
+         allowInsertRow: false,
+         allowInsertColumn: false,
+         allowRemoveRow: false,
+         allowRemoveColumn: false, 
+         cells: function(row, col) {
+            var cellProperties = {};
+            if (row === 0) {
+             cellProperties.readOnly = true;
+             cellProperties.renderer = optionRenderer;   
+             } 
+           else if (col === 0) {
+             cellProperties.readOnly = true;
+             }   
+          return cellProperties;
+        },
+       hiddenColumns: {
+        columns: archived_pos,
+        indicators: true
+       },
+       hiddenRows: {
+        rows: deleted_pos,
+        indicators: true
+       },    
+       licenseKey: "e1ccf-05a6d-60e20-84d04-71653",                
+     });
+    hot.loadData(data);
+    console.log(JSON.parse(json))
+
+    if (loggedinuser != created_by) {
+       hot.updateSettings({
+          readOnly: true
+       });
+    }
+
+    hot.addHook('afterChange', function(changes, src){
+    let row = changes[0][0];
+    let col = changes[0][1];
+    let val = changes[0][3];
+    let parsed = val.replace(/,/g, ";");
+    
+    // val.replace(/,/g, " ");
+    if(src !== 'myChange'){
+        hot.setDataAtCell(row, col, parsed, 'myChange')
+    }
+   })
+ 
+    hot.render();   
+    save_idn();
+});
+
+/*function PasstoExport () {
+  if (confirm('Have you saved the table?')) {
+     document.location.href = "/utility_tool/decisions/solution_options/export_idn.html";
+  } else { alert('Please save the table.');}
+}*/
+</script>
+<br>
+<span style="float:right;">
+{% if loggedinuser == created_by %}
+ <input class="btn btn-success btn-sm" type="submit" name="save" id="save" value="Next Step"/>
+{% else %}
+<a href="/utility_tool/decisions/solution_options/add_measures.html"><input class="btn btn-success btn-sm" type="button" name="goto"  value="Next Step"/></a>
+{% endif %} 
+</span>
+</form>
+</div>
+</div>
+</body>
+{% endblock %}

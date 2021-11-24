@@ -1,0 +1,582 @@
+/*Splash image*/
+.hero-2#Flowchart {
+  background: url("Banner-Flowchart.jpg") center;
+  background-size: cover;
+  position: relative;
+}
+/*
+@media screen and (min-width: 3840px) {
+.hero-2#Flowchart {
+  background: url("Banner-Flowchart-Large.jpg") center;
+  background-size: cover;
+  position: relative;
+}
+}*/
+
+.hero-2#Flowchart:after {
+  background-color: white;
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.4;
+            }
+/*info and book icons*/
+.buttons-container {
+  text-align: center;
+  margin-bottom: 5%;
+}
+
+.divider{
+    width:3%;
+    height:auto;
+    display:inline-block;
+}
+
+@media screen and (max-width: 500px) {
+  .divider {
+    display: none;
+  }
+}
+
+/*Summary Report and Supporting Documents Buttons*/
+.buttons-container a {
+  text-decoration: none;
+}
+
+/*Intro, Decision, Logged In*/
+
+#float-left {
+  float: left;
+}
+
+#float-right {
+  float: right;
+}
+
+
+/*Tablet*/
+@media screen and (min-width: 500px) and (max-width: 850px) {
+  #float-left {
+  float: none;
+  padding-bottom: 5%
+}
+
+#float-right {
+float: none;
+padding-bottom: 5%;
+}
+
+}
+
+@media screen and (max-width: 500px) {
+
+  #float-left {
+  float: none;
+  padding-bottom: 5%;
+  font-size: .8em;
+  }
+
+  #float-right {
+  float: none;
+  padding-bottom: 5%;
+  font-size: .8em;
+}
+
+}
+
+
+/*Flowchart*/
+.empty {
+  border: 3px solid #4D8FAF;
+  background-color: white;
+}
+
+.filled {
+  background-color: #4D8FAF;
+  border: 3px solid #4D8FAF;
+}
+
+.stakeholder {
+  background-color: #b9d3e0;
+  border: 3px solid #b9d3e0;
+}
+
+.gray {
+  background-color: gray;
+  border: 3px solid gray;
+}
+
+/*Flowchart Laptop Screen*/
+@media screen and (min-width: 850px) {
+.arrow {
+  display: none;
+  }
+
+.circle {
+  display: grid;
+  background: url("Decision-Making-Arrows.png") no-repeat center;
+  background-size: 22%;
+  position: relative;
+  width: 100%;
+  height: 45vw;
+  padding: 0;
+  border-radius: 0%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3%;
+    /*  border: solid 2px black;*/
+      }
+
+  .item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 50%;
+    width: 9vw;
+    height: 9vw;
+    padding: 0;
+  }
+
+  .item#one {
+    transform: rotate(-90deg) translate(180%)  rotate(90deg);
+    grid-area: item-1;
+  }
+
+  .item#two {
+    transform: rotate(-54deg) translate(180%)  rotate(54deg);
+    grid-area: item-2;
+  }
+
+  .item#three {
+    transform: rotate(-18deg) translate(180%)  rotate(18deg);
+    grid-area: item-3;
+  }
+
+  .item#four {
+    transform: rotate(18deg) translate(180%)  rotate(-18deg);
+    grid-area: item-4;
+  }
+
+  .item#five {
+    transform: rotate(54deg) translate(180%) rotate(-54deg);
+    grid-area: item-5;
+  }
+  .item#six {
+    transform: rotate(90deg) translate(180%) rotate(-90deg);
+    grid-area: item-6;
+  }
+  .item#seven {
+    transform: rotate(126deg) translate(180%)  rotate(-126deg);
+    grid-area: item-7;
+  }
+
+  .item#eight {
+    transform: rotate(162deg) translate(190%)  rotate(-162deg);
+    grid-area: item-8;
+  }
+
+  .item#nine {
+    transform: rotate(198deg) translate(180%) rotate(-198deg);
+    grid-area: item-9;
+  }
+
+  .item#ten {
+    transform: rotate(234deg) translate(180%) rotate(-234deg);
+    grid-area: item-10;
+  }
+}
+
+/*Flowchart iPad Screen*/
+@media screen and (min-width: 500px) and (max-width: 850px) {
+  .arrow {
+    display: none;
+    }
+    .circle {
+      display: grid;
+      background: url("Decision-Making-Arrows.png") no-repeat center;
+      background-size: 28%;
+      position: relative;
+      width: 100%;
+      padding-top: 0;
+      border-radius: 0%;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 3%;
+      height: 55vw;
+
+    }
+.item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 50%;
+  width: 11vw;
+  height: 11vw;
+  padding: 0;
+}
+
+.item#one {
+  transform: rotate(-90deg) translate(180%)  rotate(90deg);
+  grid-area: item-1;
+}
+
+.item#two {
+  transform: rotate(-54deg) translate(180%)  rotate(54deg);
+  grid-area: item-2;
+}
+
+.item#three {
+  transform: rotate(-18deg) translate(180%)  rotate(18deg);
+  grid-area: item-3;
+}
+
+.item#four {
+  transform: rotate(18deg) translate(180%)  rotate(-18deg);
+  grid-area: item-4;
+}
+
+.item#five {
+  transform: rotate(54deg) translate(180%) rotate(-54deg);
+  grid-area: item-5;
+}
+.item#six {
+  transform: rotate(90deg) translate(180%) rotate(-90deg);
+  grid-area: item-6;
+}
+.item#seven {
+  transform: rotate(126deg) translate(180%)  rotate(-126deg);
+  grid-area: item-7;
+}
+
+.item#eight {
+  transform: rotate(162deg) translate(190%)  rotate(-162deg);
+  grid-area: item-8;
+}
+
+.item#nine {
+  transform: rotate(198deg) translate(180%) rotate(-198deg);
+  grid-area: item-9;
+}
+
+.item#ten {
+  transform: rotate(234deg) translate(180%) rotate(-234deg);
+  grid-area: item-10;
+}
+
+}
+
+/*Flowchart Mobile Screen*/
+@media screen and (max-width: 500px) {
+  .circle {
+    display: grid;
+    position: relative;
+    background: none;
+    height: 200vw;
+    border-radius: 0%;
+    /*list-style: none;
+    box-sizing: none;
+    /*margin: 0 auto 0;*/
+    grid-template-columns: 1fr .5fr 1fr;
+    grid-row-gap: 4%;
+    grid-template-rows: repeat(5, 15%);
+    grid-template-areas:
+    "item-1 arrow-1 item-2"
+    "item-3 arrow-2 item-4"
+    "item-5 arrow-3 item-6"
+    "item-7 arrow-4 item-8"
+    "item-9 arrow-5 item-10"
+  }
+
+/*items*/
+  .item#one {
+    transform: none;
+    grid-area: item-1;
+  }
+  .item#two {
+    transform: none;
+    grid-area: item-2;
+  }
+  .item#three {
+    transform: none;
+    grid-area: item-3;
+  }
+  .item#four {
+    transform: none;
+    grid-area: item-4;
+  }
+  .item#five {
+    transform: none;
+    grid-area: item-5;
+  }
+  .item#six {
+  transform: none;
+    grid-area: item-6;
+  }
+  .item#seven {
+  transform: none;
+    grid-area: item-7;
+  }
+  .item#eight {
+    transform: none;
+    grid-area: item-8;
+  }
+  .item#nine {
+    transform: none;
+    grid-area: item-9;
+  }
+  .item#ten {
+    transform: none;
+    grid-area: item-10;
+  }
+  .item {
+    align-items: center;
+    justify-content: center;
+    display: inline-flex;
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 0;
+    border-radius: 50%;
+    width: 7em;
+    height: 7em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+
+  .arrow {
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 2.5em;
+      overflow: hidden;
+      line-height:0;
+      padding: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      color: black;
+    }
+
+  .arrow#one {
+    grid-area: arrow-1;
+  }
+
+  .arrow#two {
+    grid-area: arrow-2;
+  }
+
+  .arrow#three {
+    grid-area: arrow-3;
+  }
+
+  .arrow#four {
+    grid-area: arrow-4;
+  }
+
+  .arrow#five {
+    grid-area: arrow-5;
+  }
+}
+
+.circle a {
+  text-align: center;
+}
+
+.item:hover {
+    opacity: .6;
+  }
+
+
+/*Horizontal Accordions*/
+@media screen and (min-width: 500px) {
+.accordions-container {
+  display: grid;
+  grid-column-gap: 1%;
+  padding-bottom: 5%;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: .5fr;
+  grid-template-areas:
+  "accordion-1 accordion-6"
+  "panel-1 panel-6"
+  "accordion-2 accordion-7"
+  "panel-2 panel-7"
+  "accordion-3 accordion-8"
+  "panel-3 panel-8"
+  "accordion-4 accordion-9"
+  "panel-4 panel-9"
+  "accordion-5 accordion-10"
+  "panel-5 panel-10"
+}
+/*.accordions-container {
+margin-top: 8%;
+  display: grid;
+  grid-column-gap: 1%;
+  grid-row-gap: 4%;
+  padding-bottom: 20%;
+  margin-bottom: 5%;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: .5fr;
+  grid-template-areas:
+  "accordion-1 accordion-2 accordion-3 accordion-4 accordion-5"
+  "panel-1 panel-2 panel-3 panel-4 panel-5"
+  "accordion-6 accordion-7 accordion-8 accordion-9 accordion-10"
+  "panel-6 panel-7 panel-8 panel-9 panel-10"
+}*/
+}
+
+@media screen and (max-width: 500px) {
+  .accordions-container {
+    display: grid;
+    grid-column-gap: 1%;
+    grid-row-gap: 0%;
+    margin-bottom: 5%;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+    "accordion-1"
+    "panel-1"
+    "accordion-2"
+    "panel-2"
+    "accordion-3"
+    "panel-3"
+    "accordion-4"
+    "panel-4"
+    "accordion-5"
+    "panel-5"
+    "accordion-6"
+    "panel-6"
+    "accordion-7"
+    "panel-7"
+    "accordion-8"
+    "panel-8"
+    "accordion-9"
+    "panel-9"
+    "accordion-10"
+    "panel-10"
+  }
+}
+.accordion {
+  font-family: "Playfair Display", serif;
+  color: white;
+  cursor: pointer;
+  padding: 9px 15px;
+  min-height: 50px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: .8em;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc;
+}
+
+.accordion:after {
+  content: '\002B';
+  color: white;
+  font-weight: 500;
+  font-size: 1em;
+  font-family: "Muli", sans-serif;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+  font-weight: 500;
+  font-size: 1em;
+  font-family: "Muli", sans-serif;
+  color: white;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  font-size: .8em;
+}
+
+.accordion#one{
+  grid-area: accordion-1;
+  background-color: #4785a7;
+}
+.panel#one {
+  grid-area: panel-1;
+}
+
+.accordion#two{
+  grid-area: accordion-2;
+  background-color: #4f8fb1;
+}
+
+.panel#two {
+  grid-area: panel-2;
+}
+
+.accordion#three{
+  grid-area: accordion-3;
+  background-color: #5e98b6;
+}
+.panel#three {
+  grid-area: panel-3;
+}
+.accordion#four{
+  grid-area: accordion-4;
+  background-color: #6da1bc;
+}
+.panel#four {
+  grid-area: panel-4;
+}
+.accordion#five{
+  grid-area: accordion-5;
+  background-color: #7aa9c4;
+}
+.panel#five {
+  grid-area: panel-5;
+}
+.accordion#six{
+  grid-area: accordion-6;
+  background-color: #7aa9c4;
+}
+.panel#six {
+  grid-area: panel-6;
+}
+.accordion#seven{
+  grid-area: accordion-7;
+  background-color: #6da1bc;
+}
+.panel#seven {
+  grid-area: panel-7;
+}
+.accordion#eight{
+  grid-area: accordion-8;
+  background-color: #5e98b6;
+}
+.panel#eight: {
+  grid-area: panel-8;
+}
+.accordion#nine{
+  grid-area: accordion-9;
+  background-color: #4f8fb1;
+}
+.panel#nine {
+  grid-area: panel-9;
+}
+.accordion#ten{
+  grid-area: accordion-10;
+  background-color: #4785a7;
+  }
+.panel#ten {
+  grid-area: panel-10
+  }

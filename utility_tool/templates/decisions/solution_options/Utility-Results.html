@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <html lang="en" >
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="Header.css">
+  <link rel="stylesheet" type="text/css" href="Utility-Results.css">
+  <link rel="stylesheet" type="text/css" href="Style.css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-upper">
+    <span style="padding-right: 1%"><i>DecisionMaker</i><sup style="font-size: 0.2em">TM</sup> – the CBCSE Cost-Utility Tool Kit © 2019 Teachers College, Columbia University</span>
+      </div>
+    <a href="https://www.decisionmakertool.org/Home.html">Home</a>
+    <a href="https://www.decisionmakertool.org/Home.html#About-Us">About DM</a>
+    <a href="https://www.decisionmakertool.org/utility_tool/decisions/decisions_list.html">My Decisions</a>
+    <a href="https://www.decisionmakertool.org/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a>
+    <a href="https://www.decisionmakertool.org/Resources-Guidance.html">Resources & Guidance</a>
+    <a href="https://www.decisionmakertool.org/Contact-Us.html">Contact Us</a>
+    <a href="https://www.decisionmakertool.org/Who-We-Are.html">Who We Are</a>
+    <a href="https://www.decisionmakertool.org/utility_tool/users/login.html">Login</a>
+    </div>
+  <div class="mobile-nav">
+    <div class="nav-upper-mobile">
+      <span style="padding-right: 1%"><i>DecisionMaker</i><sup style="font-size: 0.5em">TM</sup> – the&nbspCBCSE&nbspCost-Utility&nbspTool&nbspKit&nbsp<wbr>©&nbsp2019&nbspTeachers&nbspCollege,&nbspColumbia&nbspUniversity</span>
+  </div>
+  <div class="menuToggle">
+      <input type="checkbox">
+      <span></span>
+      <span></span>
+      <span></span>
+        <ul class="nav-mobile">
+          <a href="https://www.decisionmakertool.org/Home.html"><li class="nav">Home</li></a>
+          <a href="https://www.decisionmakertool.org/Home.html#About-Us"><li class="nav">About DM</li></a>
+          <a href="https://www.decisionmakertool.org/utility_tool/decisions/decisions_list.html"><li class="nav">My Decisions</li></a>
+          <a href="https://www.decisionmakertool.org/utility_tool/stakeholders/stakeholders.html"><li class="nav">My Stakeholders</li></a>
+          <a href="https://www.decisionmakertool.org/Resources-Guidance.html"><li class="nav">Resources & Guidance</li></a>
+          <a href="https://www.decisionmakertool.org/Contact-Us.html"><li class="nav">Contact Us</li></a>
+          <a href="https://www.decisionmakertool.org/Who-We-Are.html"><li class="nav">Who We Are</li></a>
+          <a href="https://www.decisionmakertool.org/utility_tool/users/login.html"><li class="nav">Login</li></a>
+        </ul>
+        </div>
+      </div>
+      <div>
+    <div id="page-container">
+    <body>
+      <div class="hero-2" id="Utility-Results">
+          <div class="hero-2-message">
+            <h1 id="not-homepage">Detailed Utility Results</h1>
+          </div>
+      </div>
+    <div class="body">
+      <!--Icons are centered starting here in this div wrapper--><div style="text-align: center">
+      <!--This is the Info Icon Code-->  <div onclick="myFunction()" class="icon-container-info tooltip">
+          <img src="Info-Icon.png" style="width: 70%">
+      <!--This is the Info hover Text--><span class="tooltiptext">Click here to view/hide more information</span>
+        </div>
+      <!--This is the R&G icon code-->  <div class="icon-container-book tooltip">
+          <a href="Resources-Guidance.html"><img src="Book-Icon.png" style="width: 70%"></a>
+        <!--This is R&G hover text-->  <span class="tooltiptext">Click here for Resources & Guidance</span>
+          </div>
+    </div><!--icons end here-->
+  <!--This is the box that displays when you click the "i"--><div id="more-info" style="display:none">
+      <div id="more-info-message">
+      <p>This page provides details on how DecisionMaker calculates utility values.</p>
+        </div>
+      </div><!--"i" box code ends here-->
+        <!--Here is my own formatting for the Decision You Are Working On/Logged In As text-->
+        <div id="float-left"><h5 id="font-2">Decision you are working on:</h5></div>
+        <div id="float-right"><h5 id="font-2">Logged in as:</h5></div>
+        <!--Decision/Logged In as ends here-->
+
+        <table class="instructions">
+          <tr>
+            <td style="text-align: left">
+            <!--Back to Make a Decision Button, which has to be in a table for some reason I can't figure out-->
+            <a class="btn-general" href="#">Back to Make a Decision</a>
+              </td>
+            </table>
+<!--Coding for Table 1-->
+<h3>Overall Utility Results</h3>
+        <table class="instructions">
+          <tr>
+            <td>
+              Table 1 below ranks the evaluated Solution Options from best to worst in meeting your Evaluation Criteria.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              A Solution Option with an overall score of 10 would, in theory, meet your stakeholders’ criteria perfectly and a Solution Option scoring 0 would not meet their Evaluation Criteria at all.
+            </td>
+          </tr>
+          <tr>
+            <td>
+              If no Solution Options score above 5, or if stakeholders express dissatisfaction with the Solution Options that are ranked highest, you may want to go back and consider additional Solution Options and/or review whether all important considerations were captured in the Evaluation Criteria.
+            </td>
+          </table>
+          <br>
+          <div>
+            <p id="table-figure">Table 1: Solution Options Ranked from Highest to Lowest Overall Utility</p>
+          </div>
+          <div>
+            <p id="table-figure">Figure 1. Comparison of Total Utility Values, [Total/Average/Marginal] Cost and Cost-utility Ratio</p>
+<!--AMRITHA: these were Fiona's notes about this Figure: [Insert three separate bar charts, one for the total utility values, one for cost and one for the cost-utility ratio. You may put them side by side if it is not difficult to program, but please make sure that each of them has a different y-axis].-->
+
+
+<!--Coding for Table 2-->
+<h3>Criterion-Level Utility Values</h3>
+<table class="instructions">
+  <tr>
+    <td colspan="2">
+      Table 2 below shows the following:
+    </td>
+  </tr>
+  <tr>
+    <td id="number">
+      I.
+    </td>
+    <td>The importance weight for each Evaluation Criterion. This is calculated from the Importance Scores that you and/or other stakeholders provided for each Evaluation Criterion. It reflects the overall importance assigned to the criterion by all stakeholders who contributed Importance Scores.
+    </td>
+  </tr>
+  <td id="number">
+    II.
+  </td>
+  <td>
+    The evaluation data you entered in an earlier step which is used to calculate the utility values shown for each Solution Option at the level of each Evaluation Criterion. A higher criterion-level utility value (closer to the maximum of 10) indicates that the Solution Option performs well when assessed against the individual Evaluation Criterion.
+  </td>
+</tr>
+<tr>
+  <td colspan="2"><i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> multiplies the importance weight for each Evaluation Criterion by the criterion-level utility values for each Solution Option to obtain the overall utility values shown in Table 1.
+    </td>
+  </tr>
+  </table>
+  <div><p id="table-figure">Table 2:  Importance Weight for Each Evaluation Criterion, Evaluation Data and Criterion-level Utility Values for Each Solution Option</p></div>
+
+  <!--INSERT TABLE 2 HERE-->
+
+<div>
+  <p id="subheader">How the Utility Values in Table 2 are Calculated</p>
+  <p class="instructions"><i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> uses the data you entered in the Evaluation Data Table to calculate utility. The overall utility value earned by a Solution Option is the sum of the utility scores it earns on each of the Evaluation Criteria (criterion-level unweighted utility values) multiplied by the importance weights assigned to each Evaluation Criterion by stakeholders.</p>
+  <p id="subheader">Criterion-level unweighted utility value</p>
+  <p class="instructions">Each measure you used in your evaluation is rescaled to convert your results to a common utility scale with a minimum of 0 and maximum of 10. The likely lowest score and the likely highest score you entered for each measure are used to set the extremes of the scale and a straight line connects the two points. This assumes that utility changes in direct proportion to the changes in the evaluation measure.
+  <br>
+  <br>
+  When the rating/score on an evaluation measure is <span style="font-weight: 700">positively</span> associated with the utility values (i.e., higher scores are better), the likely lowest score you entered is assumed to provide 0 utility and the likely highest score you entered is assumed to provide a utility value of 10. The criterion-level unweighted utility value for a Solution Option is:</p>
+  <p id="center-align"><img src="Criterion-1.png" alt="Equation for criteria-level unweighted utility value" style="max-height:50px; width: auto;"></p>
+  <p class="instructions">When the rating/score on an evaluation measure is <span style="font-weight: 700">negatively</span> associated with the utility values (i.e., lower scores are better), the likely lowest score you entered is assumed to provide a utility value of 10 while the likely highest score you entered is now assumed to provide 0 utility. The criterion-level unweighted utility value for a Solution Option is:</p>
+  <p id="center-align"><img src="Criterion-2.png" alt="Equation for criteria-level unweighted utility value" style="max-height:50px; width: auto;"></p>
+  <p id="subheader">Overall Utility Value</p>
+  <p class="instructions">
+    The overall utility value is the sum of the criterion-level utility values multiplied by the importance weights.
+    <br>
+    <br>
+    For an example of the calculations, please click here: <!--AMRITHA this will need to have the link added--><a class="link" href="#">Utility Values »</a>
+  </p>
+
+
+
+
+
+        <!--AMRITHA the only way I could get the "save and back to flowchart" button to look the same here as up top was to wrap it in the same table class, so the stand-alone button needs this table class--><table class="instructions">
+          <tr>
+            <td style="text-align: right">
+              <a class="btn-general" href="#">Back to Make a Decision</a>
+              </td>
+              <tr>
+                </table>
+                      </div>
+                      <script>
+                    function myFunction() {
+                      var x = document.getElementById("more-info");
+                      if (x.style.display === "none") {
+                        x.style.display = "block";
+                      } else {
+                        x.style.display = "none";
+                      }
+                    }
+                    </script>
+      </html>

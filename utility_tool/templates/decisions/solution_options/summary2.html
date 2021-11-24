@@ -1,0 +1,151 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<div class="hero-unit">
+<div style="color:#0000FF" align="right"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+<div class="container">
+<form class="form-signin span8"  method="post"  enctype="multipart/form-data">
+{% csrf_token %}    
+<script src="{% static 'js/handsontable.full.js' %}"></script>
+<link href="{% static 'css/handsontable.full.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap.min.js' %}"></script>         
+<br>
+<h2 class="form-signin-heading">Importance Scores</h2><br>
+<div id="example1" class="hot1 handsontable htColumnHeaders"></div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var dec_id = {{dec_id}};
+
+function goback() {
+  document.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html"; 
+}
+
+
+$(document).ready(function () {
+
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+ 
+ $("input[name='save']").click(function(){
+    $.ajax({
+        url: "{% url 'handsontable' %}",
+        data: {'getdata': JSON.stringify(hot.getData())},
+        dataType: 'json',
+        type: 'POST',   
+        success: function (res) {
+            console.log(res);    
+        },
+        error: function (res) {
+            console.log(res);            
+        }
+    });
+    return false;
+});
+
+  //var json = '{{mapping}}';
+  //if (json == 'doesnotexist') {
+      var data=[];
+      var sarray = [];
+      var carray = [];
+      var earray = [];
+
+      {% for e in evacr %}
+         sarray.push('{{e.criterion}}');
+      {% endfor %}
+
+      {% for s in scores %}  
+         earray.push('{{s.score}}');
+      {% endfor %}
+       
+      {% for n in st %}  
+         carray.push('{{n.created_by}}');
+      {% endfor %} 
+  
+      data = [
+        ['', sarray[0],sarray[1], sarray[2], sarray[3], sarray[4], sarray[5], sarray[6], sarray[7]],
+        [carray[0],earray[0],earray[1], earray[2], earray[3],,,,],
+        [carray[1],earray[4], earray[5], earray[6], earray[7],,,,],
+        [carray[2],earray[8], earray[9], earray[10], earray[11],,,,],
+        [carray[3],,,,,,,,,,],
+        [carray[4],,,,,,,,,,],
+        [carray[5],,,,,,,,,,],
+        [carray[6],,,,,,,,,,],
+        [carray[7],,,,,,,,,,]
+      ];
+  /*}
+  else {
+      json = json.replace(/&quot;/g, '"');
+      data = JSON.parse(json); 
+  }
+      var
+      container2 = document.getElementById('example1'),
+      hot;
+ 
+      var columnsTypes = ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']; 
+*/
+      hot1 = new Handsontable(example1, {
+        data: data,
+        colWidths: 200,
+       // renderer: 'html'
+       });
+
+//hot1.setDataAtCell(2, 1, '<input id="test" type="range"  min="1" max="100" onchange="updateTextInput(this.value);"/><input type="text" id="textInput" value=""/>')
+ 
+      /*hot = new Handsontable(container2, {
+         beforeCreateCol: function(index, amount) {
+         for (var i = 0; i < amount; i++) {
+         columnsTypes.splice(index + i, 0, 'text');
+         }
+        },
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+         }
+        },
+        cells: function(row, col) {
+        var cellProperties;
+        if (row === 0) {
+          cellProperties = {
+            type: 'text' // force text type for first row
+        }} else {
+          if (col != 0) {  
+          cellProperties = {
+            type: 'dropdown', 
+            source: ['Yes','No', 'Need more info.', 'Depends on' ,'NA']
+        }}}
+          return cellProperties;
+        }, 
+        data: data,
+        colWidths: [150, 150, 150, 150, 150, 150, 150, 150, 150, 150],
+        manualColumnResize: true,
+        minSpareRows: 1,
+        contextMenu: true,
+     });
+    console.log(JSON.parse(json))*/
+});
+
+    function updateTextInput(val) {
+        $('#textInput').val(val); 
+    }
+
+</script>
+<br><input class="btn btn-primary" type="submit" name="save" value="Save"/>
+<input class="btn btn-success" type="button" name="cancel" value="Go to Decision Flowchart" onclick="goback();"/>
+</form>
+</div>
+</div>
+{% endblock %}

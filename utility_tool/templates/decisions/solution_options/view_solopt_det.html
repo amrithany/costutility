@@ -1,0 +1,79 @@
+{% extends 'Header-Footer-without-topbar.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+    body * { font-family: "Playfair Display", serif; }
+</style>
+
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="soloptform">
+             <form method="post" id="soloptform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Solution Option Details</h2>
+             <!--<br><input class="btn btn-primary" type="submit" name="submit" value="Save"/>               
+             <input class="btn btn-primary" type="button" name="cancel2" value="Back to Solution Options" onclick="goback2();"/> 
+             <input class="btn btn-primary" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>-->
+                 {% csrf_token %}
+                 {{ soloptform.management_form }}
+                      {% for form in soloptform %}
+                       <div style="border-bottom: thin dotted black">
+                       <br>
+                       {{ form.id }}
+                       {{ form.errors }} 
+                       <b>{{forloop.counter}}. </b> &nbsp; 
+                       Option: {{ form.sol_option }} 
+                       <br>
+                       * Source of idea <a href="#" title="Where did you get the idea for this Solution Option? e.g., Principal Smith, What Works Clearinghouse, Education Week, Inside Higher Ed, CGCS conference, etc."><img src="{% static "info_am1.PNG" %}" alt="Book" /></a>: {{form.source}}
+                       <br>
+                       <button type="button" class="btn btn-basic active" data-toggle="collapse" data-target="#demo{{ form.prefix }}">Solution Option Details</button>
+                       <div  id="demo{{ form.prefix }}" class="collapse">
+                       <br>         
+                       Details: {{form.option_details}}
+                       <br><br>
+                       <table>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename1}}</td>
+                               <td>{{form.file_attachment1}}</td></tr>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename2}}</td>
+                               <td>{{form.file_attachment2}}</td></tr>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename3}}</td>
+                               <td>{{form.file_attachment3}}</td></tr>
+                           <tr><td>Description of file:&nbsp;&nbsp;{{form.filename4}}</td>
+                               <td>{{form.file_attachment4}}</td></tr>
+                           <tr></tr>
+                           <tr></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname1}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link1}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname2}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link2}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname3}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link3}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname4}}</td>
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link4}}</td></tr>
+                       </table> 
+                         <br>     
+                      </div>
+                      <br>
+                      </div>
+                      {% endfor %}
+                  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                  <script type="text/javascript">
+                    var passvar = '{{ dec_id }}';
+
+                    function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                    }
+ 
+                    function goback2() {
+                         document.location.href = "/utility_tool/decisions/solution_options/add_solopt.html"; 
+                    }
+                  </script> 
+         
+</form>
+</div>
+</div>
+</body>
+
+{% endblock %}
+

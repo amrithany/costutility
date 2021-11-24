@@ -1,0 +1,942 @@
+{% load static %}
+<!-- saved from url=(0107)https://www.pythonanywhere.com/user/amritha/files/home/amritha/costutility/utility_tool/templates/Home.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body> 
+<style>
+/*Splash Image Layout*/
+  /*Laptop Screen*/
+@media screen and (min-width:500px) and (max-width:1824px){
+.hero {
+  background: url("{% static "Homepage-Image.jpg"%}") center;
+  background-size: cover;
+  padding: 5em 0;
+  /* grid styles */
+ display: grid;
+ grid-template-columns: minmax(240px, 1fr);
+ align-content: center;
+}
+
+.hero > h1, h2 {
+  text-align: center;
+  text-shadow: white 1px 0 30px;
+  margin: 2%;
+}
+.hero > a {
+  background-color: #305970;
+  text-decoration: none;
+  color: white;
+  border-radius: 12px;
+  text-align: center;
+  transition: all .3s;
+  padding: 1% 3%;
+  margin-top: 5%;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+  font-family: 'Alegreya Sans SC', sans-serif;
+  font-size: 1.7em;
+  font-weight: 200;
+  letter-spacing:.08em;
+  }
+}
+.hero > a:hover {
+  opacity: .8;
+}
+  /*iPad Screen*/
+@media screen and (min-width:500px) and (max-width: 768px) {
+.hero {
+   background: url("Homepage-Image.jpg") center;
+   background-size: cover;
+   padding: 5em 0;
+   display: grid;
+   grid-template-columns: minmax(240px, 1fr);
+   align-content: center;
+ }
+
+ .hero > h1, h2 {
+   text-align: center;
+   text-shadow: white 1px 0 30px;
+   margin: 2%;
+ }
+
+  .hero > a {
+    background-color: #305970;
+    text-decoration: none;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    transition: all .3s;
+    padding: 1% 3%;
+    margin-top: 5%;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-size: 1.5em;
+    font-weight: 200;
+    letter-spacing:.08em;
+    }
+}
+
+  /*Mobile Screen*/
+@media screen and (max-width:500px){
+  .hero {
+    background: url("{% static "Homepage-Image-Mobile.jpg"%}") center;
+    background-size: cover;
+    padding: 3em 0;
+    /* grid styles */
+   display: grid;
+   grid-template-columns: minmax(240px, 1fr);
+   align-content: center;
+  }
+  .hero > h1, h2 {
+    text-align: center;
+    text-shadow: white 1px 0 30px;
+    margin: 2%;
+  }
+  .hero > a {
+    background-color: #305970;
+    text-decoration: none;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    transition: all .3s;
+    padding: 3% 4%;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-size: 1.5em;
+    font-weight: 200;
+    letter-spacing:.05em;
+  }
+}
+  /*Large Screens*/
+@media screen and (min-width:1824px){
+  .hero {
+    background: url("{% static "Homepage-Image.jpg"%}") center;
+    background-size: cover;
+    padding: 5em 0;
+    /* grid styles */
+   display: grid;
+   grid-template-columns: minmax(240px, 1fr);
+   align-content: center;
+  }
+
+  .hero > h1, h2 {
+    text-align: center;
+    text-shadow: white 1px 0 30px;
+    margin: 2%;
+  }
+  .hero > a {
+    background-color: #305970;
+    text-decoration: none;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+    transition: all .3s;
+    padding: 1% 3%;
+    margin-top: 5%;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-size: 1.7em;
+    font-weight: 200;
+    letter-spacing:.08em;
+    }
+  }
+
+/*"About DecisionMaker" Layout*/
+  /*Large Screens*/
+@media screen and (min-width:1824px) {
+main {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: repeat(5, 1fr);
+  }
+article {
+  grid-column: 1 / span 5;
+  }
+figure {
+  float: right;
+  max-width: 30%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: #305970;
+  font-size: 1em;
+  line-height: 2;
+  font-family: "Playfair Display", serif;
+  margin: 0.5em;
+  padding-left: 4%;
+  padding-bottom: 4%;
+  }
+img.scaled {
+  max-width: 100%;
+  }
+}
+  /*Laptop Screens*/
+@media screen and (min-width:768px) and (max-width:1824px) {
+main {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: repeat(5, 1fr);
+  }
+article {
+  grid-column: 1 / span 5;
+  }
+figure {
+  float: right;
+  width: 40%;
+  text-align: center;
+  font-size: 1em;
+  color: #305970;
+  line-height: 2;
+  font-family: "Playfair Display", serif;
+  /*margin: 0.5em;*/
+  padding-left: 4%;
+  padding-bottom: 4%;
+  }
+img.scaled {
+  width: 100%;
+  }
+}
+
+  /*Mobile Screens*/
+@media screen and (max-width:768px) {
+main {
+  display: grid;
+  grid-gap: 2em;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+  "image"
+  "article"
+}
+article {
+  grid-area: article;
+}
+figure {
+  grid-area: image;
+  float: none;
+  display: block;
+  min-width: 90%;
+  text-align: center;
+  line-height: 2;
+  color: #305970;
+  font-size: 1em;
+  font-family: "Playfair Display", serif;
+  margin: auto;
+  padding: 2%;
+}
+img.scaled {
+  max-width: 100%;
+}
+}
+
+
+.grid-3 {
+  display: grid;
+  padding-top: 5%;
+  grid-column-gap: 2%;
+  grid-template-columns: repeat (4, 1fr);
+  grid-template-areas:
+  "column-1 column-2 column-3 column-4"
+  "caption-1 caption-2 caption-3 caption-4"
+}
+@media screen and (max-width:768px) {
+  .grid-3{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+  grid-row-gap: 2%;
+  padding-bottom: 5%;
+  grid-template-areas:
+  "column-1 caption-1"
+  "column-2 caption-2"
+  "column-3 caption-3"
+  "column-4 caption-4"
+}
+img.icon-2 {
+  /*margin-left: auto;
+  margin-right: auto;*/
+  width: 200px;
+  height: auto;
+}
+.caption-1 {
+  grid-area: caption-1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.caption-2 {
+  grid-area: caption-2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.caption-3 {
+  grid-area: caption-3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.caption-4 {
+  grid-area: caption-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+}
+.column-1 {
+  grid-area: column-1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-1 {
+  grid-area: caption-1;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+.column-2 {
+  grid-area: column-2;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-2 {
+  grid-area: caption-2;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+.column-3 {
+  grid-area: column-3;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-3 {
+  grid-area: caption-3;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+.column-4 {
+  grid-area: column-4;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.caption-4 {
+  grid-area: caption-4;
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+img.icon-2 {
+  /*margin-left: auto;
+  margin-right: auto;*/
+  max-height: auto;
+  max-width: 90%;
+}
+
+/*"Steps of the Decision-Making Process" Layout*/
+/*Main Grid Styling and Layout*/
+  /*Mobile Screen*/
+@media screen and (max-width:768px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(autofit);
+    /*grid-template-rows: repeat(autofit, minmax(50px, 1fr)) ;*/
+    grid-template-columns: .5fr .3fr .3fr .5fr;
+    /*margin-left: 3%;*/
+    grid-template-areas:
+    ". item-n1 item-1. "
+    "item-2 item-2 item-2 item-2"
+    ". item-n2 item-3 ."
+    "item-4 item-4 item-4 item-4"
+    ". item-n3 item-5 ."
+    "item-6 item-6 item-6 item-6"
+    ". item-n4 item-7 ."
+    "item-8 item-8 item-8 item-8"
+    ". item-n5 item-9  ."
+    "item-10 item-10 item-10 item-10"
+    ". item-n6 item-11  ."
+    "item-12 item-12 item-12 item-12"
+    ". item-n7 item-13  ."
+    "item-14 item-14 item-14 item-14"
+    ". item-n8 item-15  ."
+    "item-16 item-16 item-16 item-16"
+    ". item-n9 item-17  ."
+    "item-18 item-18 item-18 item-18"
+    ". item-n10 item-19  ."
+    "item-20 item-20 item-20 item-20"
+    }
+  img.icon {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    display: block;
+    padding: 5% 0;
+  }
+}
+/*Laptop Screen*/
+@media screen and (min-width: 768px) and (max-width: 1824px) {
+    .grid {
+      display: grid;
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: .3fr .3fr .05fr 3fr;
+      /*margin-left: 3%;*/
+      grid-template-areas:
+      "item-n1 item-1  . item-2"
+      "item-n2 item-3  . item-4"
+      "item-n3 item-5  . item-6"
+      "item-n4 item-7  . item-8"
+      "item-n5 item-9  . item-10"
+      "item-n6 item-11  . item-12"
+      "item-n7 item-13  . item-14"
+      "item-n8 item-15  . item-16"
+      "item-n9 item-17  . item-18"
+      "item-n10 item-19  . item-20"
+    }
+  }
+/*Large Screens*/
+@media screen and (min-width: 1824px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(auto, 100px);
+    grid-template-columns: minmax(100px, 150px) minmax(100px, 150px).05fr 3fr;
+    /*margin-left: 3%;*/
+    grid-template-areas:
+    "item-n1 item-1  . item-2"
+    "item-n2 item-3  . item-4"
+    "item-n3 item-5  . item-6"
+    "item-n4 item-7  . item-8"
+    "item-n5 item-9  . item-10"
+    "item-n6 item-11  . item-12"
+    "item-n7 item-13  . item-14"
+    "item-n8 item-15  . item-16"
+    "item-n9 item-17  . item-18"
+    "item-n10 item-19  . item-20"
+    }
+  }
+  /*Mobile Screens*/
+/*.grid {
+      display: grid;
+      grid-template-rows: repeat(20, 100px);
+      grid-template-columns: .5fr .3fr .3fr .5fr;
+      margin-left: 3%;
+      grid-template-areas:
+      ". item-n1 item-1. "
+      "item-2 item-2 item-2 item-2"
+      ". item-n2 item-3 ."
+      "item-4 item-4 item-4 item-4"
+      ". item-n3 item-5 ."
+      "item-6 item-6 item-6 item-6"
+      ". item-n4 item-7 ."
+      "item-8 item-8 item-8 item-8"
+      ". item-n5 item-9  ."
+      "item-10 item-10 item-10 item-10"
+      ". item-n6 item-11  ."
+      "item-12 item-12 item-12 item-12"
+      ". item-n7 item-13  ."
+      "item-14 item-14 item-14 item-14"
+      ". item-n8 item-15  ."
+      "item-16 item-16 item-16 item-16"
+      ". item-n9 item-17  ."
+      "item-18 item-18 item-18 item-18"
+      ". item-n10 item-19  ."
+      "item-20 item-20 item-20 item-20"
+    }*/
+  /*Laptop Screens*/
+/*@media screen and (min-width: 768px) and (max-width: 1824px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(10, 100px);
+    grid-template-columns: .3fr .3fr .05fr 3fr;
+    /*margin-left: 3%;*/
+    /*grid-template-areas:
+    "item-n1 item-1  . item-2"
+    "item-n2 item-3  . item-4"
+    "item-n3 item-5  . item-6"
+    "item-n4 item-7  . item-8"
+    "item-n5 item-9  . item-10"
+    "item-n6 item-11  . item-12"
+    "item-n7 item-13  . item-14"
+    "item-n8 item-15  . item-16"
+    "item-n9 item-17  . item-18"
+    "item-n10 item-19  . item-20"
+    }
+  }*/
+
+  /*Large Screens*/
+/*@media screen and (min-width: 1824px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(10, 100px);
+    grid-template-columns: minmax(100px, 150px) minmax(100px, 150px).05fr 3fr;
+    /*margin-left: 3%;*/
+    /*grid-template-areas:
+    "item-n1 item-1  . item-2"
+    "item-n2 item-3  . item-4"
+    "item-n3 item-5  . item-6"
+    "item-n4 item-7  . item-8"
+    "item-n5 item-9  . item-10"
+    "item-n6 item-11  . item-12"
+    "item-n7 item-13  . item-14"
+    "item-n8 item-15  . item-16"
+    "item-n9 item-17  . item-18"
+    "item-n10 item-19  . item-20"
+    }
+  }*/
+
+img.icon {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  display: block;
+}
+.decision-icon {
+  grid-area: item-1;
+  background-color: #4785a7;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.decision-number {
+    grid-area: item-n1;
+    background-color: #4785a7;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.decision {
+  grid-area: item-2;
+  display: flex;
+  align-items: center;
+  }
+.stakeholders-icon {
+  grid-area: item-3;
+  background-color: #4f8fb1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.stakeholders-number {
+    grid-area: item-n2;
+    background-color: #4f8fb1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.stakeholders {
+  grid-area: item-4;
+  display: flex;
+  align-items: center;
+  }
+.solution-options-icon {
+  grid-area: item-5;
+  background-color: #5e98b6;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.solution-options-number {
+    grid-area: item-n3;
+    background-color: #5e98b6;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.solution-options {
+  grid-area: item-6;
+  display: flex;
+  align-items: center;
+  }
+.screening-criteria-icon {
+  grid-area: item-7;
+  background-color: #6da1bc;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.screening-criteria-number {
+    grid-area: item-n4;
+    background-color: #6da1bc;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.screening-criteria {
+  grid-area: item-8;
+  display: flex;
+  align-items: center;
+  }
+.mapping-icon {
+  grid-area: item-9;
+  background-color: #7aa9c4;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.mapping-number {
+    grid-area: item-n5;
+    background-color: #7aa9c4;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.mapping {
+  grid-area: item-10;
+  display: flex;
+  align-items: center;
+  }
+.evaluation-criteria-icon {
+  grid-area: item-11;
+  background-color: #7aa9c4;
+  /*background-color: #89b2cb;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.evaluation-criteria-number {
+    grid-area: item-n6;
+    background-color: #7aa9c4;
+    /*background-color: #89b2cb;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.evaluation-criteria {
+  grid-area: item-12;
+  display: flex;
+  align-items: center;
+  }
+.relative-importance-icon {
+  grid-area: item-13;
+  background-color: #6da1bc;
+  /*background-color: #95bbcf;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.relative-importance-number {
+    grid-area: item-n7;
+    background-color: #6da1bc;
+    /*background-color: #95bbcf;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.relative-importance {
+  grid-area: item-14;
+  display: flex;
+  align-items: center;
+  }
+.evaluation-measures-icon {
+  grid-area: item-15;
+  background-color: #5e98b6;
+  /*background-color: #a3c4d4;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.evaluation-measures-number {
+    grid-area: item-n8;
+    background-color: #5e98b6;
+    /*background-color: #a3c4d4;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.evaluation-measures {
+  grid-area: item-16;
+  display: flex;
+  align-items: center;
+  }
+.cost-icon {
+  grid-area: item-17;
+  background-color: #4f8fb1;
+  /*background-color: #b1ccd7;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.cost-number {
+    grid-area: item-n9;
+    background-color: #4f8fb1;
+    /*background-color: #b1ccd7;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.cost {
+  grid-area: item-18;
+  display: flex;
+  align-items: center;
+  }
+.solution-icon {
+  grid-area: item-19;
+  background-color: #4785a7;
+  /*background-color: #bed5dc;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.solution-number {
+  grid-area: item-n10;
+  background-color: #4785a7;
+  /*background-color: #bed5dc;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.solution {
+  grid-area: item-20;
+  display: flex;
+  align-items: center;
+  }
+
+</style>
+
+
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <link href="{% static 'css/Style.css' %}" rel="stylesheet">
+ <link href="{% static 'css/Header.css' %}" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:100" rel="stylesheet">
+
+<div id="page-container">
+<div class="nav-upper">
+  <p id="nav-upper"><i>DecisionMaker</i><sup style="font-size: 0.2em">TM</sup> – the CBCSE Cost-Utility Tool Kit © 2019 Teachers College, Columbia University</p>
+<ul class="nav">
+  <li class="nav"><a class="active" href="Home.html">Home</a></li>
+  <li class="nav"><a href="Home.html#About-Us">About DM</a></li>
+  <li class="nav"><a href="/utility_tool/decisions/decisions_list.html">My Decisions</a></li>
+  <li class="nav"><a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a></li>
+  <li class="nav"><a href="Resources-Guidance.html">Resources & Guidance</a></li>
+  <li class="nav"><a href="Contact-Us.html">Contact Us</a></li>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <li class="nav"><a href="/utility_tool/users/login.html">Login</a></li>
+  {% else %}
+     <li class="nav"><a href="/logout.html">Logout</a></li> 
+  {% endif %}
+</ul>
+</div>
+<section class="hero">
+    <h1><i>Decision­Maker</i><sup style="font-size: .4em; letter-spacing: .1em">TM</sup></h1>
+    <h2>An online tool to help educators make evidence-based decisions</h2>
+    <a href="/utility_tool/users/register.html">register</a>
+</section>
+<div class="body">
+  <a name="About-Us">&nbsp;</a>
+  <br>
+<h3>About <i>DecisionMaker</i><sup style="font-size:.5em">TM</sup></h3>
+<main>
+  <article>
+    <figure>
+      <p><img class="scaled" src="{% static "Decision Making Circle.png" %}" alt="Decision Making" style="max-width:100%">
+        </p><figcaption><i>DecisionMaker</i><sup style="font-size: .1em">TM</sup> provides a decision-making framework which you will navigate by clicking on icons in a flowchart, iterating steps as needed.</figcaption>
+      </figure>
+    <p><i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> facilitates school, district, or state education agency decisions that involve a choice between alternative educational activities, strategies, and interventions. Examples may include the following:
+      </p><ul>
+        <li class="body-list">Choosing among several math curricula</li>
+        <li class="body-list">Selecting digital devices</li>
+        <li class="body-list">Allocating resources amongst competing priorities</li>
+        <li class="body-list">Deciding the best scale up/scale down scenario for an existing program</li>
+        <li class="body-list">Identifying which literacy programs best meet ESSA evidence requirements</li>
+        <li class="body-list">Choosing which school site will host a summer program</li>
+        <li class="body-list">Deciding where to invest professional development funds</li>
+      </ul>
+<p>You can use <i>DecisionMaker</i><sup style="font-size:.4em">TM</sup> to work through a decision alone or in collaboration with stakeholders. Decision-makers identify those factors most important in distinguishing between alternative Solution Options and gather evidence to determine which one(s) best meet(s) stakeholder needs.
+<br>
+</p><p>By juxtaposing the stakeholder value of each Solution Option - its “utility” - against its costs, <i>DecisionMaker</i><sup style="font-size: 0.4em">TM</sup> allows you to review the trade-offs between monetary investments and stakeholder satisfaction.
+<br>
+</p><p>Revisiting the decision after implementation to assess whether performance meets expectations helps meet ESSA requirements for ongoing efforts to examine the effects of activities, strategies, or interventions and to assess how well they work in the decision-maker’s own context.
+<br>
+</p><p>CBCSE worked with many current education decision-makers and practitioners to adapt the cost-utility decision-making framework for educational contexts and to develop <i>DecisionMaker</i><sup style="font-size: 0.4em">TM</sup>:
+</p></article>
+</main>
+<div class="grid-3">
+  <div class="column-1">
+  <img class="icon-2" src="{% static "State.png" %}" alt-"state"="">
+</div>
+<div class="caption-1">
+  <p id="caption">A state education agency</p>
+</div>
+<div class="column-2">
+  <img class="icon-2" src="{% static "School-District.png" %}" alt="School-District">
+</div>
+<div class="caption-2">
+  <p id="caption">Three school districts</p>
+</div>
+<div class="column-3">
+  <img class="icon-2" src="{% static "School.png" %}" alt="School">
+  </div>
+  <div class="caption-3">
+    <p id="caption">Three individual schools</p>
+  </div>
+  <div class="column-4">
+    <img class="icon-2" src="{% static "School-Leaders.png" %}" alt="School-Leaders">
+  </div>
+  <div class="caption-4">
+    <p id="caption">Many current and aspiring school leaders in a principal preparation program</p>
+  </div>
+</div>
+<br>
+</div>
+<hr>
+<div class="body">
+  <br>
+<h3>Steps in the Decision-Making Process</h3>
+<br>
+<p>The steps listed below link to <a class="link" href="/utility_tool/templates/Resources-Guidance.html">Resources &amp; Guidance&nbsp;»</a>, which can help you practically work through a decision. You can access these steps after you register and log in. You can also reach the Resources &amp; Guidance page from the navigation bar at the top of each page.</p>
+<br>
+<br>
+<div class="grid">
+  <div class="decision-icon">
+      <img class="icon" src="{% static "Decision-1.png" %}" alt="Decision" style="max-width:70px">
+    </div>
+  <div class="decision-number">
+    <p class="number">I.</p>
+  </div>
+  <div class="decision">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Identify the decision to be made&nbsp; »</a></p>
+        {% else %}
+        <p id="left-align"><a class="steps" href="Steps.html#Decision-Making">Identify the decision to be made&nbsp; »</a></p>
+        {% endif %}
+  </div>
+  <div class="stakeholders-icon">
+        <img class="icon" src="{% static "Stakeholders-1.png" %}" alt="Stakeholders" style="max-width:70px">
+    </div>
+  <div class="stakeholders-number">
+    <p class="number">II.</p>
+  </div>
+<div class="stakeholders">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Identify stakeholders to participate in the decision-making process&nbsp; »</a></p>
+        {% else %}  
+    <p id="left-align"><a class="steps" href="Steps.html#Identify-Stakeholders">Identify stakeholders to participate in the decision-making process&nbsp; »</a></p>
+      {% endif %} 
+  </div>
+  <div class="solution-options-icon">
+      <img class="icon" src="{% static "Solution Options-1.png" %}" alt="Solution Options" style="max-width:70px">
+    </div>
+  <div class="solution-options-number">
+    <p class="number">III.</p>
+  </div>
+ <div class="solution-options">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Identify Solution Options&nbsp; »</a></p>
+        {% else %}  
+        <p id="left-align"><a class="steps" href="Steps.html#Solution-Options">Identify Solution Options&nbsp; »</a></p>
+    {% endif %} 
+  </div>
+  <div class="screening-criteria-icon">
+      <img class="icon" src="{% static "Screening Criteria-1.png" %}" alt="Screening Criteria" style="max-width:70px">
+  </div>
+  <div class="screening-criteria-number">
+    <p class="number">IV.</p>
+  </div>
+<div class="screening-criteria">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Identify Screening Criteria&nbsp; »</a></p>
+        {% else %}                                                                                                                                  
+        <p id="left-align"><a class="steps" href="Steps.html#Screening-Criteria">Identify Screening Criteria&nbsp; »</a></p>
+    {% endif %}
+  </div>
+  <div class="mapping-icon">
+    <img class="icon" src="{% static "Mapping-1.png" %}" alt="Mapping" style="max-width:70px">
+    </div>
+  <div class="mapping-number">
+    <p class="number">V.</p>
+  </div>
+<div class="mapping">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Screen Solution Options to create a shortlist of viable possibilities&nbsp;»</a></p>
+        {% else %}  
+        <p id="left-align"><a class="steps" href="Steps.html#Screen-Solution-Options">Screen Solution Options to create a shortlist of viable possibilities&nbsp; »</a></p>
+    {% endif %} 
+  </div>
+  <div class="evaluation-criteria-icon">
+      <img class="icon" src="{% static "Evaluation Criteria-1.png" %}" alt="Evaluation Criteria" style="max-width: 50px">
+  </div>
+  <div class="evaluation-criteria-number">
+    <p class="number">VI.</p>
+  </div>
+ <div class="evaluation-criteria">
+    {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                       
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Create a list of Evaluation Criteria, i.e., factors that will influence the decision&nbsp; »</a></p>
+        {% else %}  
+        <p id="left-align"><a class="steps" href="Steps.html#Evaluation-Criteria">Create a list of Evaluation Criteria, i.e., factors that will influence the decision&nbsp; »</a></p>
+    {% endif %} 
+  </div>
+  <div class="relative-importance-icon">
+      <img class="icon" src="{% static "Relative Importance-1.png" %}" alt="Relative Importance" style="max-width:70px">
+    </div>
+  <div class="relative-importance-number">
+    <p class="number">VII.</p>
+  </div>
+<div class="relative-importance">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Assign "Importance Scores" to each criterion&nbsp; »</a></p>
+        {% else %}  
+        <p id="left-align"><a class="steps" href="Steps.html#Importance-Scores">Assign "Importance Scores" to each criterion&nbsp; »</a></p>
+     {% endif %} 
+  </div>
+  <div class="evaluation-measures-icon">
+    <img class="icon" src="{% static "Evaluation Measures-1.png" %}" alt="Evaluation Measures" style="max-width:50px">
+  </div>
+  <div class="evaluation-measures-number">
+    <p class="number">VIII.</p>
+  </div>
+ <div class="evaluation-measures">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Gather evidence to evaluate your Solution Options&nbsp; »</a></p>
+        {% else %}  
+        <p id="left-align"><a class="steps" href="Steps.html#Evidence-Gathering">Gather evidence to evaluate your Solution Options&nbsp; »</a></p>
+    {% endif %}
+ </div>
+  <div class="cost-icon">
+    <img class="icon" src="{% static "Cost-1.png" %}" alt="Cost" style="max-width:70px">
+    </div>
+  <div class="cost-number">
+    <p class="number">IX.</p>
+  </div>
+<div class="cost">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Estimate the costs per participant of implementing each Solution Option&nbsp; »</a></p>
+        {% else %}  
+         <p id="left-align"><a class="steps" href="Steps.html#Costs">Estimate the costs per participant of implementing each Solution Option&nbsp; »</a></p>
+      {% endif %} 
+  </div>
+  <div class="solution-icon">
+      <img class="icon" src="{% static "Solution-1.png" %}" alt="Solution" style="max-width:70px">
+    </div>
+  <div class="solution-number">
+    <p class="number">X.</p>
+  </div>
+<div class="solution">
+      {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}                                     
+        <p id="left-align"><a class="steps" href="/utility_tool/decisions/nouser_message.html">Use the resulting cost and “utility” values to inform your decision&nbsp; »</a></p>
+        {% else %}  
+        <p id="left-align"><a class="steps" href="Steps.html#Make-Decision">Use the resulting cost and “utility” values to inform your decision&nbsp; »</a></p>
+    {% endif %} 
+  </div>
+</div>
+<br>
+<p>The decision-making framework used in <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> is based on Multiattribute Utility Theory (MAUT) as developed by Edwards (1971); Edwards, Guttentag and Snapper (1975); and Edwards and Newman (1982). The <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> User Manual includes details about the methods.</p>
+</div>
+<br>
+<footer>
+  <p id="footer">Developed by <a class="footer-link" href="https://www.cbcse.org/" target="_blank">CBCSE&nbsp;»</a> at <a class="footer-link" href="https://www.tc.columbia.edu/" target="_blank">Teachers College, Columbia University&nbsp;»</a> with the generous support of the <a class="footer-link" href="http://wtgrantfoundation.org/" target="_blank">William T. Grant Foundation&nbsp;»</a>, <i>DecisionMaker</i><sup style="font-size:.1em">TM</sup> is freely available to all educators to facilitate collaborative and evidence-based decision-making in education.</p>
+  </footer>
+  </div>
+
+</body></html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<!-- saved from url=(0113)https://www.pythonanywhere.com/user/amritha/files/home/amritha/costutility/utility_tool/templates/Contact-Us.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% load static %}
+<style>
+ul#one {
+  margin-top: -2%;
+  padding-left: 2%;
+}
+.hero {
+    background: url("{% static "License.jpg" %}") center;
+    background-size: cover;
+    padding: 5em 0;
+    z-index: -2;
+    position: relative;
+}
+
+  .hero:after {
+      background-color: white;
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.2;
+  }
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  }
+
+.hero-message {
+  max-width: 100%;
+  position: relative;
+}
+
+.hero-message > h1#not-homepage {
+  display: block;
+  text-align: center;
+  text-shadow: 2px 2px 20px white;
+}
+</style>
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/Style.css' %}" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+</head>
+<div id="page-container">
+<div class="nav-upper">
+    <p id="nav-upper"><i>DecisionMaker</i>&reg;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>© 2019 Teachers College, Columbia University. All rights reserved.</p>
+  <ul class="nav">
+  <li class="nav"><a href="Home.html">Home</a></li>
+  <li class="nav"><a href="Home.html#About-Us">About DM</a></li>
+  <li class="nav"><a href="tutorials.html">Tutorials</a></li>
+  <li class="nav"><a href="/utility_tool/decisions/decisions_list.html">My Decisions</a></li>     
+  <li class="nav"><a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a></li>
+  <li class="nav"><a href="Resources-Guidance.html">Resources & Guidance</a></li>
+   <li class="nav"><a href="license2.html">License</a></li>
+  <li class="nav"><a href="Contact-Us.html">Contact Us</a></li>
+  <li class="nav"><a href="Who-We-Are.html">Who We Are</a></li>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <li class="nav"><a href="/utility_tool/users/login.html">Login</a></li>
+  {% else %}
+     <li class="nav"><a href="/logout.html">Logout</a></li> 
+  {% endif %}
+</ul>
+</div>
+<div class="hero flex-center">
+  <div class="hero-message">
+      <h1 id="not-homepage">License</h1>
+    </div>
+  </div>
+    <div class="body">
+        <br>     <br> 
+    <h4> For the purpose of the license agreement, are you signing as a public institution or a private institution/Individual? </h4>
+    <h5><li class="body-list"> <a href="https://amritha.pythonanywhere.com/static/DM Online Public Institution Tool Kit License.pdf">Public Institution</a></li></h5> 
+    <h5><li class="body-list"> <a href="https://amritha.pythonanywhere.com/static/DM Online Private Institution Tool Kit License.pdf">Private Institution</a></li></h5>
+    </div> 
+    </div>
+<br>
+</div>
+</body></html>

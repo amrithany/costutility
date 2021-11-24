@@ -1,0 +1,183 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }   
+                                                                                                                                                                                                                 
+</style>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left">
+         <h4>Decision you are working on: {{dec_title}}</h4>
+    </div>
+    <div class="container-fluid">
+             <form id="decform" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             <h2 class="form-signin-heading">Setup for Assigning Importance Scores</h2>
+             <h5 style="border: 2px solid grey;padding-left: 15px;">
+                 <br>By default, <i>DecisionMaker</i> is set up assuming you will enter only one set of Importance Scores that represent the scores of one person or the consensus of a group after a discussion 
+
+                 <br><br>Use this page to change this default setting if you are inviting one or more stakeholders to contribute scores individually 
+
+                 <br><br><i>DecisionMaker</i> will average the individual scores and report them out for you. You can keep track of scores contributed by clicking on the green “View Summary Table” button 
+
+                 <br><br>If you invite stakeholders to contribute Importance Scores, you can allow the scores of certain stakeholders to count more heavily in the final importance weight by giving different numbers of “votes” to different people
+                 <li type="square" style="color: #888;padding-left: 15px;">For example, you may want to give a student representative voice in which criteria are most important, while at the same time making sure that a teacher’s inputs count more heavily in the final Importance Scores</li>
+                 <br>If you choose to assign different votes to different stakeholders, click on the blue button “Save and Add/View Votes for Stakeholders” 
+
+                 <br><br></h5>    <br>
+             <!--Will you be providing a single Importance Score on behalf of all stakeholders or do you want stakeholders to each contribute their own Importance Scores (which will then be averaged)?<br>
+             &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="group_yn1" id="Group" value="Y" onchange="handleChange();"> Single Importance Score on behalf of all stakeholders <br>
+             &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="group_yn1" id="Individual" value="N" onchange="handleChange();"> Individual scores from stakeholders <br><br>-->
+             Are you inviting stakeholders to contribute importance scores for this decision online via DecisionMaker?<br>
+             &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="group_yn1" id="Individual" value="N" onchange="handleChange();"> Yes<br>
+             &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="group_yn1" id="Group" value="Y" onchange="handleChange();"> No<br><br>
+             <div id="showhide">
+             Do you want to assign different votes to different stakeholders? <br>
+             &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="votes_yn1" id="Y" value="Y" onchange="handleChange2();"> Yes <br>
+             &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="votes_yn1" id="N" value="N" onchange="handleChange2();"> No <br>
+             <br />
+             </div>
+ 
+         <!-- Provide a button to click to submit the form. -->
+         <input class="btn btn-primary" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>
+         <input class="btn btn-primary" type="submit" name="votes" id="votes" value="Save and Add / View Votes for Stakeholders"/>
+         <input class="btn btn-primary" type="submit" name="scores" id="scores" value="Save and Add Importance Scores"/>
+         <a href="/utility_tool/decisions/solution_options/summary.html"><input class="btn btn-success" type="button" name="summary" value="View Summary Table"/></a>
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+           $(document).ready(function () {
+            var group = '{{group_yn}}';  
+            var votes1 = '{{votes_yn}}';
+
+            if (group == 'Y') {                                                                                                                   
+                $("#Group").prop("checked", true);
+                $("#showhide").hide();
+            } else {    
+                $("#Individual").prop("checked", true);
+                $("#showhide").show();
+            }
+
+            if (votes1 == 'Y') {                                                                                                                   
+                $("#Y").prop("checked", true);
+                $("#votes").show();
+            } else {    
+                $("#N").prop("checked", true);
+                $("#votes").hide();   
+            }  
+            });       
+
+            function handleChange() {
+               var radioValue = $("input[name='group_yn1']:checked").val();
+                if (radioValue == 'Y') {                                                                                                                   
+                    $("#Group").prop("checked", true);
+                    $("#showhide").hide();
+                } else {    
+                    $("#Individual").prop("checked", true);
+                    $("#showhide").show();
+                }
+            } 
+
+            function handleChange2() {
+               var radioValue2 = $("input[name='votes_yn1']:checked").val();
+                if (radioValue2 == 'Y') {                                                                                                                   
+                    $("#Y").prop("checked", true);
+                    $("#votes").show();
+                } else {    
+                    $("#N").prop("checked", true);
+                    $("#votes").hide(); 
+                } 
+            } 
+
+            $('#submit').off('click');
+
+            $("#submit").on('click', function (e) {
+               e.preventDefault();
+               var radioValue = $("input[name='group_yn1']:checked").val();
+               var radioValue2 = $("input[name='votes_yn1']:checked").val(); 
+       
+               $.ajax({
+                 type:"POST",
+                 url:"{% url 'pa_setup' %}",
+                 data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        'group_yn':radioValue,
+                        'votes_yn':radioValue2
+                        },
+                  success: function(){
+                  //alert('success');
+                  //window.location.reload();
+                  window.location.href = "/utility_tool/decisions/" + {{dec_id}} + "/menu.html"; 
+                  },
+                  error: function(){
+                  //alert('failure');
+                  }    
+                });
+                return false;
+         
+             });
+
+
+            $('#scores').off('click');
+            $("#scores").on('click', function (e) {
+               e.preventDefault();
+               var radioValue = $("input[name='group_yn1']:checked").val();
+               var radioValue2 = $("input[name='votes_yn1']:checked").val(); 
+       
+               $.ajax({
+                 type:"POST",
+                 url:"{% url 'pa_setup' %}",
+                 data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        'group_yn':radioValue,
+                        'votes_yn':radioValue2
+                        },
+                  success: function(){
+                  //alert('success');
+                  //window.location.reload();
+                  window.location.href = "/utility_tool/decisions/solution_options/add_scores.html"; 
+                  },
+                  error: function(){
+                  //alert('failure');
+                  }    
+                });
+                return false;
+         
+             });   
+
+
+            $('#votes').off('click');
+            $("#votes").on('click', function (e) {
+               e.preventDefault();
+               var radioValue = $("input[name='group_yn1']:checked").val();
+               var radioValue2 = $("input[name='votes_yn1']:checked").val(); 
+       
+               $.ajax({
+                 type:"POST",
+                 url:"{% url 'pa_setup' %}",
+                 data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        'group_yn':radioValue,
+                        'votes_yn':radioValue2
+                        },
+                  success: function(){
+                  //alert('success');
+                  //window.location.reload();
+                  window.location.href = "/utility_tool/decisions/solution_options/add_iw_votes.html"; 
+                  },
+                  error: function(){
+                  //alert('failure');
+                  }    
+                });
+                return false;
+         
+             });  
+         </script> 
+         </form>
+      </div>
+</div>
+
+
+{% endblock %}

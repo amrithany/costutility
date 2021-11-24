@@ -1,0 +1,58 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<div class="hero-unit">
+    <div class="container">
+             <form method="post" id="scrcrform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Screening Criteria Details</h2>
+             <!-- Provide a button to click to submit the form. -->
+             <br><input class="btn btn-primary" type="submit" name="submit" value="Save & Return to Decision Flowchart"/>               
+             <input class="btn btn-primary" type="submit" name="submit2" value="Save & Return to Screening Criteria"/> 
+             <input class="btn btn-primary" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+                 {% csrf_token %}
+                 {{ scrcrform.management_form }}
+                      {% for form in scrcrform %}                                                                                                                                                               
+                       <div style="border-bottom: thin dotted black">
+                       <br>
+                       {{ form.id }}
+                       {{ form.errors }}  
+                       Criterion: {{ form.criterion }} 
+                       <br>
+                       Details:&nbsp;&nbsp;&nbsp; {{form.scr_details}}
+                       <br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename1}} {{form.file_attachment1}}
+                       <br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename2}} {{form.file_attachment2}}                                                                                                          
+                        <br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename3}} {{form.file_attachment3}}                                                                                                          
+                         <br>
+                       File:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.filename4}} {{form.file_attachment4}}                                                                                                          
+                         <br>
+                       Link:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname1}} {{form.link1}}
+                       <br> 
+                       Link:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname2}} {{form.link2}}
+                         <br>         
+                       Link:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname3}} {{form.link3}}
+                         <br>         
+                       Link:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{form.linkname4}} {{form.link4}}
+                         <br>    
+                      </div>
+                      {% endfor %}
+                         
+                  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                  <script type="text/javascript">
+                    var passvar = '{{ dec_id }}';
+
+                    function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                    }
+                  </script> 
+         
+</form>
+</div>
+</div>
+
+
+{% endblock %}
+

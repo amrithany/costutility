@@ -1,0 +1,248 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style type="text/css">
+body .handsontable .blue {                                                                                                                      
+      color: black;
+      background: #ADD8E6;
+}
+
+body .handsontable .green {
+      color: black;
+      background: #90EE90;
+}  
+</style>
+
+</style><script src="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.css">
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+<div class="container-fluid">
+<form  method="post"  enctype="multipart/form-data">
+{% csrf_token %}    
+<script src="{% static 'js/bootstrap.min.js' %}"></script>         
+<br>
+<h2 class="form-signin-heading">Map Solution Options against Screening Criteria</h2>
+<h5 style="border: 2px solid grey;padding-left: 15px;">
+    <br> Use the table below to help you decide which Solution Options to keep for further evaluation
+    <br><br> At the RHS of each empty cell, you can click on the faint grey triangle for a dropdown menu to select whether the option in that column meets the screening criterion in that row. You can select Yes/ No/ Need more info/ NA
+    <br><br> When you have completed this table, you can use the green row at the top of the table to go back to “Solution Options” and archive any options you want to remove from further consideration. If you change your mind later, you can bring archived options back from the Solution Options screen 
+    <br><br></h5>
+<br><input class="btn btn-primary" type="submit" name="save" id="save" value="Save and Back to Flowchart"/>
+<input class="btn btn-primary" type="submit" name="solopt" id="solopt" value="Save and Go to Solution Options"/>
+<input class="btn btn-primary" type="submit" name="scr" id="scr" value="Save and Go to Screening Criteria"/> 
+<br>
+<br><div id="example1" class="hot handsontable htColumnHeaders"></div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var dec_id = {{dec_id}};
+
+$(document).ready(function () {
+
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+ 
+ $("input[type='submit']").click(function(){
+    var buttonid = this.id;
+    $.ajax({
+        url: "{% url 'handsontable' %}",
+        data: {'getdata': JSON.stringify(hot.getData())},
+        dataType: 'json',
+        type: 'POST',   
+        success: function (res) {
+            window.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html";
+            console.log(res);    
+        },
+        error: function (res) {
+            if (buttonid == 'save') {
+               window.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html";   
+            } else if (buttonid == 'solopt') {
+               window.location.href = "/utility_tool/decisions/solution_options/add_solopt_det.html";
+            } else if (buttonid == 'scr') {
+               window.location.href = "/utility_tool/decisions/solution_options/add_scr_criteria.html";
+            }
+            console.log(res);            
+        }
+    });
+    return false;
+});
+
+  var json = '{{mapping}}';
+  var data=[['']]; 
+  var sarray = [];
+  var sarray2 = [];
+  var carray = [];
+  var scount = '{{scrcr_count}}';
+  
+  //alert(scount);
+  if (json == 'doesnotexist') {
+      data.push(['','Keep Option or Archive it','Keep Option','Keep Option','Keep Option','Keep Option','Keep Option','Keep Option','Keep Option','Keep Option','Keep Option']); 
+      sarray.push('');
+      {% for s in solopt %}
+         sarray.push('Option: {{s.sol_option}}');
+         sarray2.push('{{s.archived}}'); 
+      {% endfor %}
+      
+      pos = 2;
+      for (var i = 0; i < sarray.length; i++){
+          data[0] = data[0].concat([sarray[i]]);
+          if (sarray2[i] == 'Y'){
+             data[1][pos] = 'Archive it';
+          } else {
+             data[1][pos] = 'Keep Option';
+          }    
+          pos = pos + 1;
+      }
+
+      {% for c in scrcr %}
+      data.push(['{{c.id}}', 'Criterion: {{c.criterion}}']);
+      {% endfor %} 
+      //data.push(['Keep Option or Archive it','Keep Option','Keep Option','Keep Option','Keep Option','Keep Option','Keep Option']); 
+      /*
+      for (var i = scount; i < 16; i++){
+        data.push([]);
+      } 
+      data[16][1] = 'Keep Option or Archive it';
+      data[16][2] = 'Keep Option';
+      data[16][3] = 'Keep Option';
+      data[16][4] = 'Keep Option';
+      data[16][5] = 'Keep Option';
+      data[16][6] = 'Keep Option';
+      data[16][7] = 'Keep Option';
+      */
+  }
+  else {
+      json = json.replace(/&quot;/g, '"');
+      data = JSON.parse(json); 
+     // read all the solution options and append them to the FIRST ROW of the data array                                                              
+      {% for s in solopt %}     
+         sarray.push('Option: {{s.sol_option}}');
+         sarray2.push('{{s.archived}}'); 
+      {% endfor %}
+  
+      // position of first option
+      pos = 2;
+      for (var i = 0; i < sarray.length; i++){
+          data[0][pos] = sarray[i];
+          if (data[1][pos] == undefined) {
+             // all new options should have Keep Option set 
+             data[1][pos] = 'Keep Option';
+          } else {
+            if (sarray2[i] == 'Y'){
+                data[1][pos] = 'Archive it';
+            } else {
+                data[1][pos] = 'Keep Option';
+            }    
+          }    
+          pos = pos + 1;
+      }      
+      //data[16][1] = 'Keep Option or Archive it'; 
+ 
+      // read all the criteria and UPDATE FIRST COLUMN of the data array 
+      
+      {% for c in scrcr %}
+      carray.push(['{{c.id}}','Criterion: {{c.criterion}}']);
+      {% endfor %}
+     
+      pos = 2;
+      for (var i = 0; i < carray.length; i++){
+           data[pos][0] = carray[i][0];
+           data[pos][1]= carray[i][1];
+           pos = pos + 1;
+      }
+  }
+      var
+      container2 = document.getElementById('example1'),
+      hot;
+      //alert(hot.countRows()); 
+      function keepOptionRenderer(instance, td, row, col, prop, value, cellProperties) {
+          Handsontable.renderers.DropdownRenderer.apply(this, arguments);                                                                                  
+          td.style.fontWeight = 'bold';
+          td.style.color = 'black';
+          td.style.background = 'lightgreen';
+      }
+
+      function headerRenderer(instance, td, row, col, prop, value, cellProperties) {
+          Handsontable.renderers.TextRenderer.apply(this, arguments);
+          td.style.fontWeight = 'bold';
+          td.style.color = 'blue';
+          td.style.background = '#ADD8E6';
+      }
+      hot = new Handsontable(container2, {
+         beforeCreateCol: function(index, amount) {
+         for (var i = 0; i < amount; i++) {
+         columnsTypes.splice(index + i, 0, 'text');
+         }
+        },
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+         }
+        },
+        cells: function(row, col) {
+        var cellProperties = {};
+        if ((col === 1) || (row === 0)){
+             cellProperties.readOnly = true;
+             //cellProperties.renderer = headerRenderer;
+             if (row != 1) {
+                cellProperties.className = 'blue';
+             } else { cellProperties.className = 'green'; }
+        } else if ((col === 1) && (row === 1)) {
+             cellProperties.readOnly = true;
+             cellProperties.className = 'green';
+        } else if (row === 1 ) {
+            if (col != 1) {  
+             cellProperties = {
+              type: 'dropdown', 
+              source: ['Keep Option', 'Archive it'],
+             } 
+         }
+         cellProperties.className = 'green';
+         //cellProperties.renderer = keepOptionRenderer;   
+        } else if ((col > 1) && (row > 1)){  
+          cellProperties = {
+            type: 'dropdown', 
+            source: ['Yes','No', 'Need more info.','NA']
+        }}
+          return cellProperties;
+        }, 
+        data: data,
+        colWidths: [0,300,150,150,150,150,150,150,150,150],
+        manualColumnResize: true,
+        minSpareRows: 10,
+        contextMenu: true,
+        hiddenColumns: {
+           columns: [0],
+           indicators: true
+        },
+        allowInsertRow: false,
+        allowInsertColumn: false,
+        allowRemoveRow: false,
+        allowRemoveColumn: false,
+        licenseKey: "e1ccf-05a6d-60e20-84d04-71653", 
+     });
+    
+    //hot.alter('remove_row', req_pos, 1);
+    //hot.alter('insert_row', 15);
+    //hot.alter('remove_row',17,1);
+    console.log(JSON.parse(json))
+});
+</script>
+</form>
+</div>
+</div>
+{% endblock %}

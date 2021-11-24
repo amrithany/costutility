@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }   
+                                                                                                                                                                                                                 
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left">
+         <h4>Decision you are working on: {{dec_title}}</h4>
+    </div>
+    <div class="container-fluid">
+             <h2 class="form-signin-heading">Setup for Assigning Importance Scores
+                <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+                <a href="/utility_tool/resources/score_info.html" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book"></a>
+             </h2>
+             <div id="myDIV">  
+            <h5 style="border: 2px solid grey; padding-left: 15px;">
+             <br>Different Evaluation Criteria will hold more or less importance to different stakeholders because they care about different things. For example, Teacher Alex may care a great deal about how each Solution Option will affect his/her existing workload while Teacher Jo may be concerned most about how each Solution Option best meets the needs of her/his special education students. Allowing stakeholders to assign an Importance Score between 0 and 100 to each Evaluation Criterion helps to factor these concerns into the decision about which Solution Option to adopt. 
+             <br><br>You can provide one set of Importance Scores to represent the scores of one person or the consensus of a group. You can also invite one or more stakeholders or stakeholder representatives to contribute Importance Scores.
+             <br><br>If you have invited multiple stakeholders to contribute Importance Scores via <i>DecisionMaker</i>, <i>DecisionMaker</i> will average their scores.
+             <br><br>If you invite stakeholders to contribute Importance Scores, you can allow the scores of certain stakeholders to count more heavily in the final importance weight by giving different numbers of “votes” to different people.
+            <br><br></h5>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>
+             <p></p>    
+             <font color="blue"> 
+            {% if stakeholdersNow == 'Y' %}    
+            It appears that you have already selected some stakeholders to contribute Importance Scores.
+             <br><p></p>
+                <b>Step 1:</b><p>If you have already invited everyone you need to contribute Importance Scores, you may wish to use <a href="/utility_tool/decisions/solution_options/add_iw_votes.html"><b>this table</b></a> to adjust the number of votes assigned to each stakeholder’s Importance Scores. If you do not want to change the voting distribution, skip this Step and each stakeholder will keep an equal number of votes (10 each).  
+                <br><br><p></p>   
+                <b>Step 2:</b><p> 
+                If you want to invite additional stakeholders to contribute Importance Scores, click here: <a href="/utility_tool/stakeholders/stakeholders.html"><input class="btn btn-primary btn-sm" type="button" name="st" value="Add More Stakeholders"/></a>
+                <br><br><p></p>
+                <b>Step 3:</b><p>
+                When you are done with the votes table, click here to provide or revise your own Importance Scores: <a href="/utility_tool/decisions/solution_options/add_scores.html"><input class="btn btn-primary btn-sm" type="button" name="scores" id="scores" value="Save and Add Importance Scores"/></a>
+                <br><br><p></p>   
+                OR, if you do not need to provide or revise your own Importance Scores, click here: <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="submit" id="submit" value="Save and Back to Flowchart"/></a>
+         {% else %}
+               <b>Step 1:</b><p>
+               If you are the only person contributing Importance Scores, click here: <a href="/utility_tool/decisions/solution_options/add_scores.html"> <input class="btn btn-primary btn-sm" type="button" name="scores" id="scores" value="Add Importance Scores"/></a>
+               <br><br><p></p> 
+               <b>Step 2:</b><p>
+               If you want to invite stakeholders to contribute Importance Scores, click here: <a href="/utility_tool/stakeholders/stakeholders.html"> <input class="btn btn-primary btn-sm" type="button" name="st" value="Add More Stakeholders"/></a>
+                <br><br><p></p> 
+                <b>Step 3:</b><p>
+                Once you have invited everyone you need to contribute Importance Scores, you may wish to use <a href="/utility_tool/decisions/solution_options/add_iw_votes.html"><b>this table</b></a> to adjust the number of votes assigned to each stakeholder’s Importance Scores. If you do not want to change the voting distribution, skip this Step and each stakeholder will keep an equal number of votes (10 each).
+                <br><br><p></p> 
+                <b>Step 4:</b><p>
+                When you are done with the votes table, click here to provide or revise your own Importance Scores: <a href="/utility_tool/decisions/solution_options/add_scores.html"><input class="btn btn-primary btn-sm" type="button" name="scores" id="scores" value="Save and Add Importance Scores"/></a>
+                 <br><br><p></p> 
+                 OR, if you do not need to provide or revise your own Importance Scores, click here: <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="button" id="submit" value="Save and Back to Flowchart"/></a>
+         {% endif %}
+         </font>
+      </div>
+</div>
+{% endblock %}

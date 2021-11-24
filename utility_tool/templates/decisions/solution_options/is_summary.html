@@ -1,0 +1,207 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style TYPE="text/css">
+table {
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th {
+    cursor: pointer;
+}
+
+th, td {
+    text-align: left;
+    padding: 16px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+body * { font-family: "Playfair Display", serif; }
+</style>
+
+<div class="hero-unit">
+<div style="color:#0000FF" align="right"><h4>Decision you are working on: {{dec_title}}</h4></div>
+<div class="container">
+        <!--<form class="form-signin span8" id="form1" method="post"  enctype="multipart/form-data">-->
+       {% csrf_token %}
+        <h2 class="form-signin-heading">Importance Scores Summary Table</h2>
+            <br>
+            <table id="myTable" class="table table-condensed">
+
+                <thead style="font-weight: bold;color: black; background-color:#DCDCDC;">
+                    <th></th>
+                    <th>Number of Votes assigned</th>
+                    <th>% of Votes assigned</th>
+                    {% for e in eva_table %}
+                       <th> {{e.criterion}} </th>
+                    {% endfor %}
+               </thead>     
+                <tr style="background-color:#E0FFFF;">
+                    <td style="font-weight: bold;color: #447a9a;">Summary</td>
+                    <td></td>
+                    <td></td>
+                    {% for e in eva_table %}
+                    <td></td>
+                    {% endfor %}
+                </tr>
+                    <tr> 
+                    <td>Importance score (adjusted by the votes)</td>
+                    <td></td>
+                    <td></td> 
+                    {% for e in eva_table %}
+                    <td>{{e.weight |floatformat:"2"}}</td>                                                                                                                  
+                   {% endfor %}
+                   </tr>
+                   <tr> 
+                    <td>Importance weight (adjusted by the votes)</td>
+                    <td></td>
+                    <td></td> 
+                    {% for e in eva_table %}
+                    <td>{{e.adjusted_weight |floatformat:"2"}}</td>                                                                                                                  
+                   {% endfor %}
+                   </tr>
+
+               <tr><td></td></tr>
+               <tr style="background-color:#E0FFFF;"><td style="font-weight: bold;color: #447a9a;">Individual importance scores</td>
+                    <td></td>
+                    <td></td>                                                                                                                                                                                    
+                    {% for e in eva_table %}
+                    <td></td>
+                    {% endfor %}
+               </tr>
+                    {% for st in stdec %}
+                    <tr>
+                            <td>{{st.name}}</td>
+                            <td>{{st.votes}}</td>
+                            <td><p id="output{{st.id}}"></p</td> 
+                   <script type="text/javascript">
+                     var votes = {{st.votes}};
+                     var total_votes = {{total_votes}};
+                     var percvotes = (votes / total_votes) * 100;
+                     percnum = percvotes.toFixed(0);                                                                                                    
+                     //alert(percvotes);
+                     //alert(percnum);
+                     perc = " %";
+                     document.getElementById('output{{st.id}}').innerHTML = percnum.concat(perc);
+                   </script>                     
+                    {% for s in scores %}
+                             {% if s.email == st.email %}
+                             <td>{{s.score}}</td>
+                            {% endif %}
+                   {% endfor %}
+                   </tr>
+                   {% endfor %}
+
+                <tr><td></td></tr>    
+                <tr style="background-color:#E0FFFF;"><td style="font-weight: bold;color: #447a9a;">How much consensus is there among stakeholders on the relative importance of the criterion?</td>
+                    <td></td>
+                    <td></td>                                                                                                                                                                                    
+                    {% for e in eva_table %}
+                    <td></td>
+                    {% endfor %}
+                </tr>
+                    <tr> 
+                    <td>Lowest importance score assigned </td>
+                    <td></td>
+                    <td></td>
+                    {% for value in min_scores %}
+                    <td>{{value.0}}</td>                                                                                     
+                   {% endfor %}
+                   </tr>
+                   <tr> 
+                    <td>Highest importance score assigned </td>
+                    <td></td>
+                    <td></td> 
+                    {% for value in max_scores %}
+                    <td>{{value.0}}</td>                                                                                     
+                   {% endfor %}
+                   </tr>
+                   <tr>
+                    <td>Standard deviation of the importance scores assigned </td>
+                    <td></td>
+                    <td></td>
+                    {% for value in stdev_scores %}
+                    <td>{{value.0 |floatformat:"2"}}</td>
+                   {% endfor %}
+                   </tr>
+               </table>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+ <script type="text/javascript">
+  var passvar = '{{ dec_id }}';
+  function goback() {
+   document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+  }
+
+  function sortTable(n) {
+  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+  table = document.getElementById("myTable");
+  switching = true;
+  // Set the sorting direction to ascending:
+  dir = "asc"; 
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[n];
+      y = rows[i + 1].getElementsByTagName("TD")[n];
+      /* Check if the two rows should switch place,
+      based on the direction, asc or desc: */
+      if (dir == "asc") {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == "desc") {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          // If so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      // Each time a switch is done, increase this count by 1:
+      switchcount ++; 
+    } else {
+      /* If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again. */
+      if (switchcount == 0 && dir == "asc") {
+        dir = "desc";
+        switching = true;
+      }
+    }
+  }
+}
+</script> 
+<br>
+{% if loggedinuser == created_by  %} 
+<a href="/utility_tool/decisions/pa_setup.html"><input class="btn btn-primary btn-sm" type="button" name="setup" value="Back to Setup for Importance Scores"/></a>
+{% endif %}
+<input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Flowchart" onclick="goback();"/>        <!--</form>-->
+</div>
+</div>
+{% endblock %}
+
+
+

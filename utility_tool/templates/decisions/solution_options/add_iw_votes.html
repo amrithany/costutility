@@ -1,0 +1,106 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style>
+ 
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 12px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+} 
+</style>
+
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="votesform">
+         <form method="post" id="votesform"  enctype="multipart/form-data">
+             <h3 class="form-signin-heading">Distribution of Stakeholder Votes
+               <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+             </h2>
+            <div id="myDIV">  
+            <h5 style="border: 2px solid grey; padding-left: 15px;">
+                <br>The total number of votes available is {{total_votes}}, i.e., [10 x the number of Stakeholders]. 
+            <br><br>Each stakeholder starts with 10 votes. If you give one person more votes, their Importance Scores will be weighted more heavily in DecisionMaker’s calculations of utility or stakeholder satisfaction.  But then you must reduce someone else’s votes by the same amount so that the total remains the same.
+            <br><br>If you invite stakeholders to contribute Importance Scores, you can allow the scores provided by certain stakeholders to count more heavily in the final importance weight attributed to each Evaluation Criterion by giving them more “votes.” 
+            <br><br>If you do not want any votes yourself, you can set your votes to 0 and reassign your 10 votes to one or more other stakeholders.
+            <br><br><i>Example:  In a decision about what texts to read for a senior elective course in literature,  you may want to give a student representative some input into how important each Evaluation Criterion should be when selecting the texts. At the same time, you may want to ensure that the instructor’s inputs count more heavily in the final Importance Scores. If they are the only two stakeholders in the decision, the instructor could assign him/herself 15 votes and give the student representative 5 votes. 
+            </i>
+            <br><br></h5>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>                                                       
+             <script type="text/javascript">
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>
+             <p></p>
+ <font color="#7F00FF">Note: the total number of votes available is {{total_votes}}, i.e., [10 x the number of Stakeholders]. </font>
+<br>
+<!--Currently you have assigned [running total] votes.
+<br>-->
+            When you are done, click here: <input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Flowchart">
+             <!--<input class="btn btn-primary" type="submit" name="submit" value="Save and Back to Flowchart"/>    
+             <input class="btn btn-primary" type="submit" name="setup" value="Save and Go to Setup">
+             <input class="btn btn-primary" type="submit" name="scores" id="scores" value="Save and Add Importance Scores"/>
+             <input class="btn btn-primary" type="submit" name="st" value="Save and Add/View Stakeholders"/>   -->
+             <br> 
+             <table>
+                <thead>
+                    <th>Name</th>
+                    <th>Number of Votes</th>
+                    <th>Updated By</th>
+                 </thead>
+                 <tbody class="product-instances">
+                 {% csrf_token %}
+                 {{ votesform.management_form }}
+                 <b><font color="red">{{ errtext }} </font></b><br>
+                      {% for form in votesform %}
+                      {{ form.id }}
+                        <tr>
+                            <td>{{form.name}}</td>
+                            <td> {{form.votes}}</td>
+                            <td>{{form.updated_by}}</td>
+                        </tr> 
+         {% endfor %}
+         </tbody>
+         </table>
+     </form>  
+      </div>
+</div>
+
+
+{% endblock %}
+
+

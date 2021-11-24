@@ -1,0 +1,247 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style>
+    /*span {
+        display: inline-block;
+        background: #DC143C;
+        width: 20px;
+        height: 25px;
+        float: left;
+        margin: 0 auto;
+    }*/
+
+     body * { font-family: "Playfair Display", serif; }
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="form1">
+   <form id="form1" method="post"  enctype="multipart/form-data">
+        <h3 class="form-signin-heading">Assign Tasks to the Stakeholders for this Decision</h3>
+        <font color="blue">
+            <b>Step 1:</b><p>If you need to include additional stakeholders for this decision who are not already in the list below, click here:
+        <input class="btn btn-primary btn-sm" type="submit" name="add" id="add" value="Add Another Stakeholder"/><br>
+        <p></p>
+        <b>Step 2:</b><p>You can assign stakeholders to be invited into up to four steps of the decision-making process now, or you can come back later to do this. For each stakeholder, check the box under each step in which you would like them to participate online via <i>DecisionMaker</i>. 
+        <!--Click here for an explanation of what stakeholders are able to see when invited to participate.-->
+        <br><p></p>
+        <b>Step 3:</b><p>If you want to use <i>DecisionMaker</i> to invite your stakeholders by email, click here:
+        <input class="btn btn-primary btn-sm" type="submit" name="email" id="email" value="Send Email to Invite Stakeholders"/>
+        <br><p></p>     
+        <!--<b>Step 4:</b><p>When you are done, click here:
+        <input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>
+        <br><p></p>-->
+        {% if impexists == 'Y' %}
+        <b>Note:</b> If you previously visited the Importance Scores step and just added new stakeholders to contribute Importance Scores, you may wish to redistribute the votes assigned to each stakeholder.  If so, click here: <input class="btn btn-primary btn-sm" type="submit" name="votes" id="votes" value="Assign Votes to Stakeholders"/>
+        <br><p></p>
+        {% endif %}
+        <b>Other actions:</b><br><p></p>
+        To remove a stakeholder from this decision, click inside the red box to the left of her/his name and click on "Save and Back to Flowchart". <!-- <input class="btn btn-danger btn-sm active" type="submit" name="submit2" value="Remove Stakeholders from This Decision"/-->
+        <br>
+        <p></p>
+        </font>
+        <span style="float:right;"><input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/></span>
+        <br><p></p>
+            <table class="table table-condensed">
+                <thead>
+                    <th>X</th>
+                    <th nowrap>First Name</th>
+                    <th>Last Name</th>
+                    <th>Title</th>
+                    <th>Organization</th>
+                    <th style="text-align: center;">Suggest Solution Options</th>
+                    <th style="text-align: center;">Provide Screening Criteria</th>
+                    <th style="text-align: center;">Provide Evaluation Criteria</th>
+                    <th style="text-align: center;">Contribute Importance Scores</th>
+                    <br />
+                 </thead>
+                 <tbody>
+                 {% csrf_token %}        
+                    {% localtime on %}
+                    {% for st in st_dec %}
+                    <!--<tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">-->
+                         <tr>      
+                               {% if user_email == st.email %}
+                                  <td style="background-color:#CD5C5C;"></td> 
+                               {% else %}   
+                                  <td style="background-color:#CD5C5C;"><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="id"  onclick="setId2(this);" style="text-align:center; vertical-align:middle;" title="Check the box to select a stakeholder to delete from this decision."></td>
+                               {% endif %}   
+                           </div>
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                             {% if user_email == st.email %}
+                                <td></td>
+                                <td></td> 
+                                <td></td> 
+                             {% else %}
+                                <td style="text-align: center;"><input type="checkbox" name="solopt" id="{{st.id}}solopt" value="{{st.solopt_type}}"> </td>
+                                <td style="text-align: center;"><input type="checkbox" name="scrcr" id="{{st.id}}scrcr"> </td>
+                                <td style="text-align: center;"><input type="checkbox" id="{{st.id}}evacr" value="{{st.scrcr_type}}"> </td>
+                            {% endif %}
+                            <td style="text-align: center;"><input type="checkbox" id="{{st.id}}iw"> </td>
+                        </tr>
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var selected = [];
+                     var deleted = [];
+                     var passvar = '{{ dec_id }}';
+                   
+                     
+                     $(document).ready(function () {
+                        $("tr:even").css("background-color", "#F0FFFF");
+                        $("tr:odd").css("background-color", "#DCDCDC"); 
+                         {% for st in stdec_type %}
+                           stid = '{{st.st_id}}';
+                           solopt = '{{st.solopt_type}}';
+                           scrcr = '{{st.scrcr_type}}';
+                           evacr = '{{st.evacr_type}}';
+                           iw = '{{st.iw_type}}';
+  
+                           if (solopt == "Y") { 
+                              $("#{{st.st_id}}solopt").prop("checked", true);
+                           }
+                           if (scrcr == "Y") { 
+                              $("#{{st.st_id}}scrcr").prop("checked", true);
+                           }
+                           if (evacr == "Y") { 
+                              $("#{{st.st_id}}evacr").prop("checked", true);
+                           }
+                           if (iw == "Y") { 
+                              $("#{{st.st_id}}iw").prop("checked", true);
+                           }
+                         {% endfor %}
+                     });   
+ 
+                     function setId2(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (chkBox.checked) {
+                                  if (inputs[i].id == chkBox.id) {
+                                       deleted.push(chkBox.id);
+                                  }}
+                                // remove the id from the list if the deleted checkbox is unchecked
+                                else {
+                                  deleted.splice( deleted.indexOf(chkBox.id), 1 );    
+                                }
+                                }
+                          }
+                     }
+                     $("input[type='submit']").click(function(e){
+                        var selected = [];     
+                        e.preventDefault();
+                        var solopt_id = $("#{{st.id}}solopt").attr('id');
+                        var scrcr_id = $("#{{st.id}}scrcr").attr('id');
+                        var evacr_id = $("#{{st.id}}evacr").attr('id');
+                        var iw_id = $("#{{st.id}}iw").attr('id');
+                        var buttonVal = this.value;
+                        if ($("#{{st.id}}solopt").is(":checked")) { 
+                             solopt_id = solopt_id + "Y";
+                             selected.push(solopt_id);
+                        } else { 
+                             solopt_id = solopt_id + "N";
+                             selected.push(solopt_id);
+                        }
+                        if ($("#{{st.id}}scrcr").is(":checked")) { 
+                             scrcr_id = scrcr_id + "Y";
+                             selected.push(scrcr_id);                                                                                                                                                           
+                        } else { 
+                             scrcr_id = scrcr_id + "N";
+                             selected.push(scrcr_id);
+                        } 
+                        if ($("#{{st.id}}evacr").is(":checked")) {  
+                             evacr_id = evacr_id + "Y";
+                             selected.push(evacr_id);                                                                                                                                                           
+                        } else { 
+                             evacr_id = evacr_id + "N";
+                             selected.push(evacr_id);
+                        }
+                        if ($("#{{st.id}}iw").is(":checked")) {  
+                             iw_id = iw_id + "Y";
+                             selected.push(iw_id);                                                                                                                                                           
+                        } else { 
+                             iw_id = iw_id + "N";
+                             selected.push(iw_id);
+                        }
+                        //for (var i in deleted) {
+                            //alert(deleted[i]);
+                        //}
+                        if (selected != []){
+                            $.ajax({
+                             type:"POST",
+                             url:"{% url 'assign_tasks' %}",
+                             data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                'selected':JSON.stringify(selected),
+                                //'deleted':JSON.stringify(deleted),
+                                'id': '{{st.id}}',
+                                },
+                              success: function(){
+                              //window.location.reload();
+                              if (buttonVal == 'Save and Back to Flowchart') {
+                                 window.location.href = "/utility_tool/decisions/" + {{dec_id}} +"/menu.html";   
+                              } else if  (buttonVal == 'Delete Stakeholders from this List') {
+                                window.location.reload();   
+                              } else if (buttonVal == 'Add Another Stakeholder') {
+                                window.location.href = "/utility_tool/stakeholders/stakeholders.html";  
+                              } else if (buttonVal == 'Assign Votes to Stakeholders') {  
+                                window.location.href = "/utility_tool/decisions/pa_setup.html"; 
+                              } else if (buttonVal == 'Send Email to Invite Stakeholders') {  
+                                window.location.href = "/utility_tool/decisions/solution_options/send_email.html"; 
+                              }},
+                              error: function(){
+                              //alert('failure');
+                             }   
+                         });
+                        }
+                       if (deleted != []){
+                            $.ajax({
+                             type:"POST",
+                             url:"{% url 'assign_tasks' %}",
+                             data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                //'selected':JSON.stringify(selected),
+                                'deleted':JSON.stringify(deleted),
+                                'id': '{{st.id}}',
+                                },
+                              success: function(){
+                              //window.location.reload();
+                              if (buttonVal == 'Save and Back to Flowchart') {
+                                 window.location.href = "/utility_tool/decisions/" + {{dec_id}} +"/menu.html";   
+                              } else if  (buttonVal == 'Delete Stakeholders from this List') {
+                                window.location.reload();   
+                              } else if (buttonVal == 'Add Another Stakeholder') {
+                                window.location.href = "/utility_tool/stakeholders/stakeholders.html";  
+                              } else if (buttonVal == 'Assign Votes to Stakeholders') {  
+                                window.location.href = "/utility_tool/decisions/pa_setup.html"; 
+                              } else if (buttonVal == 'Send Email to Invite Stakeholders') {                                               
+                                window.location.href = "/utility_tool/decisions/solution_options/send_email.html"; 
+                              }},
+                              error: function(){
+                              //alert('failure');
+                             }   
+                         });
+                        }                        
+            return false;
+                                                                                                                                                                                                                 
+            });                     
+            </script>
+            {% endfor %}                                                                                                                                                                                 
+            {% endlocaltime %}
+      </tbody>      
+     </table>
+    </form> 
+    <!--<input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/> -->
+    </div>
+</div>
+</body>
+{% endblock %}
+
+
+

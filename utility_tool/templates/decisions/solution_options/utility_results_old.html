@@ -1,0 +1,194 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css" MEDIA=all>
+.handsontable th {
+    white-space: normal!important;
+    }
+    body * { font-family: "Playfair Display", serif; }    
+</style>
+<body>
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+<div class="container-fluid">
+<form method="post"  enctype="multipart/form-data">
+{% csrf_token %}    
+<script src="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.css">
+<script src="{% static 'js/bootstrap.min.js' %}"></script>        
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+<h2 class="form-signin-heading">Detailed Utility Results
+<a href="#" title="This page provides details on how DecisionMaker calculates utility values."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+<a href="/Steps.html#Utility" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>    
+</h2>
+<input class="btn btn-success" type="button" name="cancel" value="Back to Make a Decision" onclick="goback();"/>
+<h5 style="border: 2px solid grey;padding-left: 15px;">
+    <br>Table 1 below ranks the evaluated Solution Options from best to worst in meeting your Evaluation Criteria.
+    <br><br>A Solution Option with an overall score of 10 would, in theory, meet your stakeholders’ criteria perfectly and a Solution Option scoring 0 would not meet their Evaluation Criteria at all.
+    <br><br>If no Solution Options score above 5, or if stakeholders express dissatisfaction with the Solution Options that are ranked highest, you may want to go back and consider additional Solution Options and/or review whether all important considerations were captured in the Evaluation Criteria. 
+<br><br></h5> <br>
+<b><i>Table 1: Solution Options Ranked from Highest to Lowest Overall Utility</i></b>
+<table id="myTable" class="table table-condensed">
+<thead>
+<th>Solution Option</th>
+<th>Weighted Utility 0-10 <br>Stakeholder Satisfaction</th>
+</thead>        
+{% for u in util_res %}
+      <tr>
+      <td>{{u.sol_option}}</td>
+      <td style="padding-left:5em;">{{u.weighted_utility|floatformat:"1"}}</td>
+      </tr>
+{% endfor %}
+</table>
+<br>
+<h5 style="border: 2px solid grey;padding-left: 15px;">
+<br>Table 2 below shows:
+<br><br>i) The importance weights for each Evaluation Criterion. These are calculated from the Importance Scores that you and/or other stakeholders provided for each Evaluation Criterion. They reflect the overall importance assigned to each criterion by all stakeholders who contributed to this decision.
+<br><br>ii) The evaluation data you entered in an earlier step which is used to calculate the utility values shown for each Solution Option at the level of each Evaluation Criterion. A higher criterion-level utility value (closer to the maximum of 10) indicates that the Solution Option performs well when assessed against the individual Evaluation Criterion. 
+<br><br>We multiply the importance weights for each Evaluation Criterion by the criterion-level utility values for each Solution Option to obtain the overall utility values shown in Table 1. 
+<br><br></h5><br>
+<div id="example1" class="hot handsontable htColumnHeaders"></div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var dec_id = {{dec_id}};
+
+function goback() {
+  document.location.href = "/utility_tool/decisions/solution_options/decision_made.html"; 
+}
+
+$(document).ready(function () {
+
+      var json = '{{table}}';
+      var sarray = [];
+      var container2 = document.getElementById('example1'), hot;
+      var eva_count = {{eva_count}}; 
+      var sol_count = {{solopt_count}};
+      var archived_pos = [];
+      var deleted_pos = [];
+
+      justpos = 6;
+      // add solution options to the end of the columns row
+      {% for s in solopt %}                                                                                                                                                                                      
+          if ('{{s.archived}}' == 'Y') {
+             archived_pos.push(justpos);
+          } 
+          //else { 
+          sol = '{{s.sol_option}}';
+          sol = sol.replace(/&#39;/g,"'"); 
+          sol = sol.replace(/&amp;/g, "&");   
+          sol = 'Criterion-level utility value - ' +  sol;                                                                                                             
+          sarray.push(sol);            
+          //} 
+          justpos = justpos + 1; 
+      {% endfor %}
+
+      json = json.replace(/&quot;/g, '"');
+      json = json.replace(/&#39;/g, "'"); 
+      json = json.replace(/&amp;/g, "&");   
+      data = JSON.parse(json);  
+      
+      for (var i = 0; i < sarray.length; i++){
+           data[0] = data[0].concat([sarray[i]]);
+      }  
+      //data[0] = data[0].concat('Importance Weight');
+      // adding utility values to the (evaluation criteria - solution option) combination row
+      // we start in the first row and first NEW column added to the existing evaluation table
+      //var k = 6 + sol_count;
+      
+      var j=1;
+      var y=justpos;
+      //justrow = j;
+      {% for e in evam %}             
+
+           if ('{{e.deleted}}' == 'Y') {
+               deleted_pos.push(j);
+            } 
+          if ('{{e.archived}}' == 'Y') {
+             archived_pos.push(y);
+          } 
+          //else {  
+           //alert('{{e.utility_value}}'); 
+           data[j][y] = '{{e.utility_value |floatformat:"2"}}';
+             
+           //alert(j);
+           //alert(y);            
+           //}
+           if (y < sol_count) 
+            { y = 6 + sol_count; 
+              j = 1;
+            }
+           else 
+            { 
+              if (j < eva_count) 
+                { j++; }
+              else { j = 1;
+                     y++;
+                   } 
+            }
+           //justpos = k;   
+           //justrow = j; 
+      {% endfor %}
+
+      data[0] = data[0].concat('Importance Weight');
+      {% for i in eva %}
+         data[j][y] = '{{i.adjusted_weight|floatformat:"2"}}';
+         j++; 
+      {% endfor %}
+       
+       
+      hot = new Handsontable(container2, {
+         beforeCreateCol: function(index, amount) {
+         for (var i = 0; i < amount; i++) {
+         columnsTypes.splice(index + i, 0, 'text');
+         }
+        },
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+         }
+        },
+         data: data,
+         manualColumnResize: true,
+         colWidths: 150,
+         minSpareRows: 1,
+         cells: function(row, col) {
+            var cellProperties = {};
+            cellProperties.readOnly = true;          
+            return cellProperties;
+        },
+       hiddenColumns: {
+        columns: archived_pos,
+        indicators: true
+       },
+       hiddenRows: {
+        rows: deleted_pos,
+        indicators: true
+       },  
+       licenseKey: "e1ccf-05a6d-60e20-84d04-71653",    
+     });
+    // hover text http://jsfiddle.net/8yk14pts/ 
+    // hiding the evaluation measure and unit columns brought from the evaluation table 
+    //hot.updateSettings({
+            //colWidths: [150,150.150,150.100,100,100,100,100,100,150,100,100,100,100,100,100],
+            //});
+    hot.loadData(data);
+    /*j = 1;
+
+    for (var i = 0; i < hot.countRows(); i++) {
+        if (hot.getDataAtCell(i,j) !== null) { 
+           alert(i);
+           alert(j); 
+           alert(hot.getDataAtCell(i,j));
+        }
+        j=j+1;
+    }*/
+    console.log(JSON.parse(json))
+});
+</script>
+<br><span style="float:right;"><input class="btn btn-success" type="button" name="cancel" value="Back to Make a Decision" onclick="goback();"/></span>
+</form>
+</div>
+</div>
+</body>
+{% endblock %}

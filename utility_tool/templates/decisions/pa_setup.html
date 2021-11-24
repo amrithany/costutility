@@ -1,0 +1,148 @@
+{% extends 'Header-Footer.html' %}  
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }   
+ body * { font-family: "Playfair Display", serif; }                                                                                                                                                                                                                              
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left">
+         <h4>Decision you are working on: {{dec_title}}</h4>
+    </div>
+    <div class="container-fluid">
+     <form method="post" id="votesform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Setup for Assigning Importance Scores
+                <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+                <a href="/Steps.html#Importance-Scores" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book"></a>
+             </h2>
+             <div id="myDIV">  
+            <h5 style="border: 2px solid grey; padding-left: 15px;">
+             <br>Different Evaluation Criteria will hold more or less importance to different stakeholders because they care about different things. For example, Teacher Alex may care a great deal about how each Solution Option will affect his/her existing workload while Teacher Jo may be concerned most about how each Solution Option best meets the needs of her/his special education students. Allowing stakeholders to assign an Importance Score between 0 and 100 to each Evaluation Criterion helps to factor these concerns into the decision about which Solution Option to adopt. 
+             <br><br>You can provide one set of Importance Scores to represent the scores of one person or the consensus of a group. You can also invite one or more stakeholders or stakeholder representatives to contribute Importance Scores.
+             <br><br>If you have invited multiple stakeholders to contribute Importance Scores via <i>DecisionMaker</i>, <i>DecisionMaker</i> will average their scores.
+             <br><br>If you invite stakeholders to contribute Importance Scores, you can allow the scores of certain stakeholders to count more heavily in the final importance weight by giving different numbers of “votes” to different people.
+            <br><br></h5>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>
+             <p></p>    
+             <font color="blue"> 
+            {% if stakeholdersNow == 'Y' %}    
+            It appears that you have already selected some stakeholders to contribute Importance Scores.
+             <br><p></p>
+                <b>Step 1:</b><p>If you have already invited everyone you need to contribute Importance Scores, you may wish to use the table below to adjust the number of votes assigned to each stakeholder’s Importance Scores. If you do not want to change the voting distribution, skip this step and each stakeholder will keep an equal number of votes (10 each).  
+                <br><br><p></p>   
+                {% if shared != "Y" %}
+                <b>Step 2:</b><p> 
+                If you want to invite additional stakeholders to contribute Importance Scores, click here: <input class="btn btn-primary btn-sm" type="submit" name="st" value="Add More Stakeholders"/>
+                <br><br><p></p>
+                {% endif %}
+                <b>Step 3:</b><p>
+                When you are done with the votes table, click here to provide or revise your own Importance Scores: <input class="btn btn-success btn-sm" type="submit" name="scores" id="scores" value="Save and Add Importance Scores"/>
+                <br><br><p></p>  
+                <b>Step 4:</b><p>
+                If you wish to see what Importance Scores have already been contributed by stakeholders, click here: <input class="btn btn-primary btn-sm" type="submit" name="summary" id="summary" value="Importance Scores Summary Table"/>
+                <br><br><p></p>   
+                <!--OR, if you do not need to provide or revise your own Importance Scores, click here: <input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>-->
+         {% else %}
+               <b>Step 1:</b><p>
+               If you are the only person contributing Importance Scores, click here: <input class="btn btn-primary btn-sm" type="submit" name="scores" id="scores" value="Add Importance Scores"/>
+               <br><br><p></p> 
+               <b>Step 2:</b><p>
+               If you want to invite stakeholders to contribute Importance Scores, click here: <input class="btn btn-primary btn-sm" type="submit" name="st" value="Add Stakeholders"/>
+                <br><br><p></p> 
+                <b>Step 3:</b><p>
+                Once you have invited everyone you need to contribute Importance Scores, you may wish to use the table below to adjust the number of votes assigned to each stakeholder’s Importance Scores. If you do not want to change the voting distribution, skip this step and each stakeholder will keep an equal number of votes (10 each). 
+                <br><br><p></p>
+                <b>Step 4:</b><p>                                                                                                                                                                                
+                If you wish to see what Importance Scores have already been contributed by stakeholders, click here: <input class="btn btn-primary btn-sm" type="submit" name="summary" id="summary" value="Importance Scores Summary Table"/> 
+                <br><br><p></p>
+                 <!--OR, if you do not need to provide or revise your own Importance Scores, click here: <input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>-->
+         {% endif %}
+         </font>
+             <h3 class="form-signin-heading">Distribution of Stakeholder Votes
+               <a id="button2" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+             </h2>
+            <div id="myDIV2">  
+            <h5 style="border: 2px solid grey; padding-left: 15px;">
+                <br>The total number of votes available is {{total_votes}}, i.e., [10 x the number of stakeholders]. 
+                <br><br>Each stakeholder starts with 10 votes. If you give one person more votes, their Importance Scores will be weighted more heavily in <i>DecisionMaker</i>’s calculations of utility or stakeholder satisfaction.  But then you must reduce someone else’s votes by the same amount so that the total remains the same.
+                <!--<br><br>If you invite stakeholders to contribute Importance Scores, you can allow the scores provided by certain stakeholders to count more heavily in the final importance weight attributed to each Evaluation Criterion by giving them more “votes.”-->
+            <br><br>If you do not want any votes yourself, you can set your votes to 0 and reassign your 10 votes to one or more other stakeholders.
+            <font color="maroon"><br><br>Example:  In a decision about what texts to read for a senior elective course in literature,  you may want to give a student representative some input into how important each Evaluation Criterion should be when selecting the texts. At the same time, you may want to ensure that the instructor’s inputs count more heavily in the final Importance Scores. If they are the only two stakeholders in the decision, the instructor could assign him/herself 15 votes and give the student representative 5 votes. 
+            </font>
+            <br><br></h5>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>                                                       
+             <script type="text/javascript">
+                   $( "#myDIV2" ).hide();
+                   $( "#button2" ).click(function() {
+                       $( "#myDIV2" ).toggle();
+                   });
+
+           /*$("#votesform").on('submit', function(event) {                                                                                  
+                                   alert("New Dog Added"); 
+                                                   }); */
+             </script>
+             <p></p>
+             <font color="#7F00FF">Note: the total number of votes available is {{total_votes}}, i.e., [10 x the number of stakeholders]. </font>
+             <br>
+             <br> 
+             <table>
+                <thead>
+                    <th>Name</th>
+                    <th>Number of Votes</th>
+                    <th>Updated By</th>
+                 </thead>
+            <tbody class="product-instances">
+                 {% csrf_token %}
+                 {{ votesform.management_form }}
+                 <b><font color="red">{{ errtext }} </font></b><br>
+                      {% for form in votesform %}
+                      {{ form.id }}
+                        <tr>
+                            <td>{{form.name}}</td>
+                            <td> {{form.votes}}</td>
+                            <td>{{form.updated_by}}</td>
+                        </tr> 
+              {% endfor %}                                                                                                                                                                                            
+            </tbody>           
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>                                                       
+             <script type="text/javascript">
+             $("#votesform").on('submit', function(event) {                                                                                
+
+             var $inputs = $('#votesform :input');
+             var zero = 'N';
+
+             $inputs.each(function() {
+                var name = this.name;    
+                var lastFive = name.substr(name.length - 5);    
+                if (lastFive == 'votes') {
+                  if ($(this).val() == 0) {
+                      //alert($(this).val());
+                      zero = 'Y';
+                 }}   
+             });
+
+             if (zero == 'Y') {
+                alert('Note that, for anyone who has 0 votes, their opinions about the relative importance of each Evaluation Criterion will not count.');
+                }   
+             });
+             </script>
+         </table>
+         <span style="float:right;"><input class="btn btn-success btn-sm" type="submit" name="next" id="next" value="Next Step"/></span>
+     </form>  
+      </div>
+</div>
+</body>
+{% endblock %}

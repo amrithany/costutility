@@ -1,0 +1,24 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                          
+
+<style TYPE="text/css">
+  body * { font-family: "Playfair Display", serif; }                                                                                                                                                        
+</style>
+<body>
+<div class="hero-unit"> 
+    <div class="container">
+        <form class="form-signin span8" id="forgotform" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">Access Login Information</h2>
+             <b><font color="red">{{ err }} </font></b><br>
+             Enter your Email Address to receive an email with your Login Information:  {{ forgotform.email }}
+             <br /><br>    
+             <!-- Provide a button to click to submit the form. -->
+             <input class="btn btn-primary" type="submit" name="submit" value="Send Email" />
+             <a href="/utility_tool/users/login.html"><input type="button" class="btn btn-success" name="goto2" id="goto2" value="Back to Login" onclick="goBack()"/></a>
+        </form>
+     </div>
+</div>
+</body>
+{% endblock %}

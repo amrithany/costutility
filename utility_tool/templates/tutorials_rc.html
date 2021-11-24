@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!-- saved from url=(0113)https://www.pythonanywhere.com/user/amritha/files/home/amritha/costutility/utility_tool/templates/Contact-Us.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% load static %}
+<style>
+ul#one {
+  margin-top: -2%;
+  padding-left: 2%;
+}
+.hero {
+    background: url("{% static "Science-Teacher.jpg" %}") center;
+    background-size: cover;
+    padding: 5em 0;
+    z-index: -2;
+    position: relative;
+}
+
+  .hero:after {
+      background-color: white;
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.2;
+  }
+
+.flex-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  }
+
+.hero-message {
+  max-width: 100%;
+  position: relative;
+}
+
+.hero-message > h1#not-homepage {
+  display: block;
+  text-align: center;
+  text-shadow: 2px 2px 20px white;
+}
+
+img {
+      border: 2px solid #ddd;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+}
+
+img:hover {
+      box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+    }
+
+</style>
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/Style.css' %}" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+</head>
+<div id="page-container">
+<div class="nav-upper">
+    <p id="nav-upper"><i>DecisionMaker</i>&reg; – the CBCSE Cost-Utility Tool Kit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>© 2019 Teachers College, Columbia University. All rights reserved.</p>
+  <ul class="nav">
+  <li class="nav"><a href="Home.html">Home</a></li>
+  <li class="nav"><a href="Home.html#About-Us">About DM</a></li>
+  <li class="nav"><a href="tutorials.html">Tutorials</a></li>
+  <li class="nav"><a href="/utility_tool/decisions/decisions_list.html">My Decisions</a></li>     
+  <li class="nav"><a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a></li>
+  <li class="nav"><a href="Resources-Guidance.html">Resources & Guidance</a></li>
+   <li class="nav"><a href="license2.html">License</a></li>
+  <li class="nav"><a href="Contact-Us.html">Contact Us</a></li>
+  <li class="nav"><a href="Who-We-Are.html">Who We Are</a></li>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <li class="nav"><a href="/utility_tool/users/login.html">Login</a></li>
+  {% else %}
+     <li class="nav"><a href="/logout.html">Logout</a></li> 
+  {% endif %}
+</ul>
+</div>
+<div class="hero flex-center">
+  <div class="hero-message">
+      <h1 id="not-homepage">Relevance and Credibility Indices Tutorials</h1>
+    </div>
+  </div>
+<div class="body">
+    <h5 id="line">In order to help assess whether existing research studies are credible and relevant to a particular educational context, researchers at Teachers College have developed two indices, the Relevance Index (RI) and the Credibility Index (CI). These rubrics can help decision-makers evaluate existing studies of educational programs, strategies or interventions to determine whether they represent reliable evidence that the activity could help improve student outcomes in their own context.</h5>
+    <h5 id="line">These video tutorials explain what the Relevance and Credibility Indices are, walk through examples in which they are applied to two different research studies, and then provide a hands-on opportunity for you to practice applying the Indices yourself to a third research study. To read more about the Relevance and Credibility Indices, click <a href="Steps.html#Evidence-Gathering" target="_blank">here</a>.  Want to view the answer key for the hands-on application? Click <a href="https://drive.google.com/file/d/1-gN8h37KGjpGrXuuV4D5yeny_6-r-q5c/view" target="_blank">here</a> for the eSpark Learning demo and <a href="https://drive.google.com/file/d/1TqV7VMdYqCDPcBO5GNinwsfGq3bRGCWa/view" target="_blank">here</a> for the IXL demo.</h5>
+    <br>  
+    <ul id="one">                                                                                                                     
+        <h5><!--<a href="https://vimeo.com/432293618/aaca320c7e" target="_blank"><li class="body-list">Introduction to the RI/CI</li></a>-->
+            <a target="_blank" href="https://vimeo.com/432293618/aaca320c7e">
+                <img src="{% static 'RICI 1.jpg' %}" alt="Introduction to the RI/CI">
+              </a>
+             <br>
+            <a href="https://vimeo.com/432294089/338c5bc693" target="_blank">
+                <img src="{% static 'RICI 2.jpg' %}" alt="Applying the Relevance Index"></a>
+            <br>
+            <a href="https://vimeo.com/432295069/181c3b04ce" target="_blank">
+                <img src="{% static 'RICI 3.jpg' %}" alt="Applying the Credibility Index"></a> 
+            <br>
+            <a href="https://vimeo.com/432296471/dc18bb10fc" target="_blank">
+                <img src="{% static 'RICI 4.jpg' %}" alt="Try it! A hands-on application of the RI and CI."></a> 
+       </h5>
+    </ul>
+</div>
+<br>
+</div>
+</body></html>

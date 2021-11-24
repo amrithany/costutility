@@ -1,0 +1,32 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                          
+<div class="hero-unit">
+    <br><br><b>Importance Scores:</b><font color="blue"> What are Importance Scores and how should they be assigned? </font>
+    <br><br> 
+    Different stakeholders care to a greater or lesser extent about different things. Allowing stakeholders to assign an Importance Score between 0 and 100 to each Evaluation Criterion provides a way to factor different levels of concern about different issues into a decision about which Solution Options to adopt.
+    <br><br> <b><font color="blue">For example,</font> if you are selecting a literacy program to implement at your school</b> and you are considering the following Evaluation Criteria:
+    <li>  Impact on student academic performance</li> 
+    <li>  Support from teachers</li> 
+    <li>  Availability of materials online</li> 
+    <br>
+     You can assign Importance Scores to each Evaluation Criterion to indicate the relative importance of each criterion as a consideration in the decision. If you believe that impact on student academic performance is of utmost importance, you might assign it an Importance Score of 100. If support from teachers is relatively half as important as impact on student academic achievement, you would assign it an Importance Score of 50.  Finally, whether the materials are available online may be of little importance to you if few of your students have internet access after school, so you could assign it a lower score, such as 20 or 10 indicating that it is 5-10 times less important than impact on student academic achievement. 
+     <br><br><b><font color="blue">Integrating Importance Scores from multiple stakeholders</font></b>
+     <br><br>
+     If you invite several stakeholders to contribute Importance Scores, <i>DecisionMaker</i> will average the scores to provide an overall Importance Score for each Evaluation Criterion. If you are the Project Administrator (Facilitator) for this decision, you will be able to see who contributed which scores.  If they vary widely, it may help to get the stakeholders to talk with each other about why different things matter so much (or little) to them and revisit the scoring.  Averaging scores can seem democratic but it can also paper over differences that should be understood and addressed to avoid an unnecessarily controversial decision being made.
+     <br><br><b><font color="blue">Assigning different numbers of votes to different stakeholders</font></b>
+    <br><br>
+    If you invite stakeholders to contribute Importance Scores, you can allow the scores of certain stakeholders to count more heavily in the decision analysis by giving different numbers of “votes” to different people. For example, you may want to give a student representative a voice in which criteria are most important, while at the same time making sure that a teacher’s inputs count more heavily in the analysis.  Each stakeholder starts with 10 votes but you can redistribute them so that, in this situation, the teacher could be assigned 15 votes while the student gets 5 votes.
+    <br><br>
+    {% if whereamI == 'aboutmaker' %}                                                                                                                                                                                
+    <a href="/utility_tool/resources/about_maker.html"><input class="btn btn-success" type="button" name="cancel" value="Back to About DecisionMaker"></a>
+    {% else %}  
+        {% if dec_id != 0 %}
+            <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+        {% endif %}   
+        
+        <a href="/utility_tool/decisions/solution_options/guidance.html"><input class="btn btn-success" type="button" name="cancel2" value="Back to Resources & Guidance"></a> 
+
+   {% endif %}      
+</div>
+{% endblock %}

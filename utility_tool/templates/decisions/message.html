@@ -1,0 +1,32 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}                                                                                                                                                                                           
+
+<style TYPE="text/css">
+  body * { font-family: "Playfair Display", serif; }                                                                                                                                                            
+</style>
+<body>
+<div class="hero-unit">
+    <!--Importance scores have to be entered before you can view the Summary table.-->
+    <!-- Type of Cost and Number of participants have to be entered before you can view the Cost Table. -->
+    {{mess}}
+    {% if sol_mesg != '' %}
+    <br> {{sol_mesg}}
+    {% endif %}
+
+    {% if eva_mesg != '' %}  
+    <br> {{eva_mesg}}   
+    {% endif %}
+
+    {% if iw_mesg != '' %}  
+    <br> {{iw_mesg}}   
+    {% endif %}
+
+    {% if evm_mesg != '' %}  
+    <br> {{evm_mesg}}   
+    {% endif %}
+
+    <br><br><a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"></a>
+</div>
+</body>       
+{% endblock %}

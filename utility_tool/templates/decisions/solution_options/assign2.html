@@ -1,0 +1,192 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style>
+    .mycheckbox input[type="checkbox"] {
+        display: none;
+    }
+    .mycheckbox input[type="checkbox"]+label {
+        background: url('{% static "trashcanred.PNG" %}') no-repeat;
+         width:30px;
+         height: 30px;
+    }
+    .mycheckbox input[type="checkbox"]:checked + label {
+        background: url('{% static "crossred.PNG" %}');
+        width: 30px;
+        height: 30px;
+    }  
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid">
+   <form id="form1" method="post"  enctype="multipart/form-data">
+       {% csrf_token %}
+        <h3 class="form-signin-heading">Assign Tasks to the Stakeholders for this Decision</h3>
+        <font color="blue">
+            <b>Step 1:</b><p>If you need to include additional stakeholders for this decision who are not already in the list below, click here:
+        <a href="/utility_tool/stakeholders/stakeholders.html"><input class="btn btn-primary btn-sm" type="button" name="add" value="Add Another Stakeholder"/></a><br>
+        <p></p>
+        <b>Step 2:</b><p>You can assign stakeholders to different tasks now, or come back later to do this. For each stakeholder, check the box under each task in which you would like them to participate online via <i>DecisionMaker</i>.
+        <br><p></p>
+        <b>Step 3:</b><p>When you are done, click here:
+        <input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>
+        <br><p></p>
+        <b>Note:</b> If you previously visited the Importance Scores step and just added new stakeholders to contribute Importance Scores, you may wish to redistribute the votes assigned to each stakeholder.  If so, click here: <a href="/utility_tool/decisions/pa_setup.html"><input class="btn btn-primary btn-sm" type="button" name="votes" value="Assign Votes to Stakeholders"/></a>
+        <br><p></p>
+        <b>Other actions:</b><br><p></p>
+        To remove a stakeholder from this decision, check the box to the left of her/his name and click here:  <input class="btn btn-primary btn-sm active" type="submit" name="submit2" value="Delete Stakeholders from this List" title="Check the box to select a stakeholder to delete from this decision."/>
+        <br><p></p>
+        </font>
+        <div class="mycheckbox">
+                <input type="checkbox" name="useful" id="useful" />
+                    <label for="useful"></label>
+                </div>
+            <table class="table table-condensed">
+                <thead>
+                    <th></th>
+                    <th nowrap>First Name</th>
+                    <th>Last Name</th>
+                    <th>Title</th>
+                    <th>Organization</th>
+                    <th style="text-align: center;">Suggest Solution Options</th>
+                    <th style="text-align: center;">Provide Screening Criteria</th>
+                    <th style="text-align: center;">Provide Evaluation Criteria</th>
+                    <th style="text-align: center;">Contribute Importance Scores</th>
+                    <br />
+                    {% localtime on %}
+                    {% for st in st_dec %}
+                           <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">
+                               <div class="mycheckbox">
+                               <td><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="useful"  onclick="setId2(this);">
+                                   <label for="useful"></label></td>
+                           </div>
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                            <td style="text-align: center;"><input type="checkbox" name="solopt" id="{{st.id}}solopt" value="{{st.solopt_type}}"> </td>
+                            <td style="text-align: center;"><input type="checkbox" name="scrcr" id="{{st.id}}scrcr"> </td>
+                            <td style="text-align: center;"><input type="checkbox" id="{{st.id}}evacr" value="{{st.scrcr_type}}"> </td>
+                            <td style="text-align: center;"><input type="checkbox" id="{{st.id}}iw"> </td>
+                        </tr>
+                    </thead>    
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var selected = [];
+                     var deleted = [];
+                     var passvar = '{{ dec_id }}';
+                   
+                     
+                     $(document).ready(function () {
+                         {% for st in stdec_type %}
+                           stid = '{{st.st_id}}';
+                           solopt = '{{st.solopt_type}}';
+                           scrcr = '{{st.scrcr_type}}';
+                           evacr = '{{st.evacr_type}}';
+                           iw = '{{st.iw_type}}';
+  
+                           if (solopt == "Y") { 
+                              $("#{{st.st_id}}solopt").prop("checked", true);
+                           }
+                           if (scrcr == "Y") { 
+                              $("#{{st.st_id}}scrcr").prop("checked", true);
+                           }
+                           if (evacr == "Y") { 
+                              $("#{{st.st_id}}evacr").prop("checked", true);
+                           }
+                           if (iw == "Y") { 
+                              $("#{{st.st_id}}iw").prop("checked", true);
+                           }
+                         {% endfor %}
+                     });   
+ 
+                     function setId2(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id == chkBox.id) {
+                                       deleted.push(chkBox.id);
+                                   }
+                             }
+                          }
+                     }
+
+                     $('#submit').off('click');
+                     $("#submit").on('click', function (e) {
+                        var selected = [];     
+                        e.preventDefault();
+                        var solopt_id = $("#{{st.id}}solopt").attr('id');
+                        var scrcr_id = $("#{{st.id}}scrcr").attr('id');
+                        var evacr_id = $("#{{st.id}}evacr").attr('id');
+                        var iw_id = $("#{{st.id}}iw").attr('id');
+
+                        if ($("#{{st.id}}solopt").is(":checked")) { 
+                             solopt_id = solopt_id + "Y";
+                             selected.push(solopt_id);
+                        } else { 
+                             solopt_id = solopt_id + "N";
+                             selected.push(solopt_id);
+                        }
+                        if ($("#{{st.id}}scrcr").is(":checked")) { 
+                             scrcr_id = scrcr_id + "Y";
+                             selected.push(scrcr_id);                                                                                                                                                           
+                        } else { 
+                             scrcr_id = scrcr_id + "N";
+                             selected.push(scrcr_id);
+                        } 
+                        if ($("#{{st.id}}evacr").is(":checked")) {  
+                             evacr_id = evacr_id + "Y";
+                             selected.push(evacr_id);                                                                                                                                                           
+                        } else { 
+                             evacr_id = evacr_id + "N";
+                             selected.push(evacr_id);
+                        }
+                        if ($("#{{st.id}}iw").is(":checked")) {  
+                             iw_id = iw_id + "Y";
+                             selected.push(iw_id);                                                                                                                                                           
+                        } else { 
+                             iw_id = iw_id + "N";
+                             selected.push(iw_id);
+                        }
+                        //for (var i in selected) {
+                            //alert(selected[i]);
+                        //}
+                        if (selected != []){
+                            $.ajax({
+                             type:"POST",
+                             url:"{% url 'assign_tasks' %}",
+                             data: {
+                                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                                'selected':JSON.stringify(selected),
+                                'id': '{{st.id}}',
+                                },
+                              success: function(){
+                              //alert('success');
+                              //window.location.reload();
+                              window.location.href = "/utility_tool/decisions/" + {{dec_id}} + "/menu.html"; 
+                              },
+                              error: function(){
+                              //alert('failure');
+                             }   
+                         });
+                        }    
+            return false;
+                                                                                                                                                                                                                 
+            });                     
+            </script>
+            {% endfor %}                                                                                                                                                                                 
+            {% endlocaltime %} 
+            </table>
+    <!--<span style="float:right;">
+    <input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>
+    </span>-->
+    </form> 
+    </div>
+</div>
+{% endblock %}
+
+
+

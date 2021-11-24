@@ -1,0 +1,453 @@
+<style>
+
+#page-container {
+position: relative;
+min-height: 100%;
+}
+
+html, body {
+  height: 100%;
+}
+
+h1 {
+  hypens: manual;
+}
+
+h2, h3, h4 {
+  hyphens: auto;
+}
+
+h1{
+  font-family: "Playfair Display", serif;
+  font-size: 5em;
+  color: #305970;
+  letter-spacing: .2em;
+  font-weight: 500;
+}
+
+h1#not-homepage {
+  font-size: 4em;
+  color: #305970;
+  letter-spacing: .2em;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 0;
+}
+
+@media screen and (max-width:768px){
+  h1{
+    font-family: "Playfair Display", serif;
+    font-size: 3em;
+    color: #447a9a;
+    letter-spacing: .2em;
+    font-weight: 500;
+  }
+}
+
+h2{
+  font-family: "Playfair Display", serif;
+  font-size: 2.3em;
+  font-weight: 200;
+  letter-spacing:.05em;
+  color: #447a9a;
+  text-align: center;
+}
+
+h2.white{
+  font-family: "Playfair Display", serif;
+  font-size: 2.3em;
+  font-weight: 200;
+  letter-spacing:.05em;
+  color: white;
+  text-align: center;
+}
+
+@media screen and (min-width: 500px) and (max-width:768px){
+  h2{
+    font-family: "Playfair Display", serif;
+    font-size: 2em;
+    font-weight: 200;
+    letter-spacing:.05em;
+    color: #447a9a;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width:500px){
+  h2{
+    font-family: "Playfair Display", serif;
+    font-size: 1.6em;
+    font-weight: 200;
+    letter-spacing:.05em;
+    color: #447a9a;
+    text-align: center;
+  }
+}
+
+h2.steps{
+  font-family: "Playfair Display", serif;
+  font-size: 2.3em;
+  font-weight: 200;
+  letter-spacing:.05em;
+  text-align: center;
+  color: #305970;
+}
+
+h3{
+  font-family: "Playfair Display", serif;
+  font-size: 1.7em;
+  font-weight: 200;
+  letter-spacing:.05em;
+  text-align: center;
+  color: #305970;
+}
+h5#line {
+  line-height: 2;
+  text-align: center;
+  hypens: none;
+}
+
+
+h3.style1{
+  font-family: "Playfair Display", serif;
+  font-size: 1.5em;
+  font-weight: 200;
+  letter-spacing:.05em;
+  text-align: center;
+  color: #447a9a;
+  /*margin-top: -2%;*/
+  margin:0;
+  line-height: 1.5;
+}
+
+h4 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing:.05em;
+}
+
+h4#Steps {
+  font-family: "Playfair Display", serif;
+  color: white;
+  text-align: center;
+}
+
+
+/*ipad and mobile small*/
+h4.style1 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing:.05em;
+  text-align: center;
+  color: white;
+}
+  /*Mobile and Tablet Screen*/
+@media screen and (max-width:768px){
+  h4.style1 {
+    font-family: "Playfair Display", serif;
+    font-size: .9em;
+    font-weight: 300;
+    letter-spacing:.05em;
+    text-align: center;
+    color: white;
+  }
+}
+/*Tablet small, mobile big*/
+h4.style2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing:.05em;
+  text-align: center;
+  color: white;
+}
+  /*Mobile Screen*/
+  @media screen and (max-width:500px){
+    h4.style2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing:.05em;
+  text-align: center;
+  color: white;
+  }
+  }
+
+  /*Tablet Screen*/
+  @media screen and (min-width: 500px) and (max-width:768px){
+    h4.style2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1em;
+  font-weight: 300;
+  letter-spacing:.05em;
+  text-align: center;
+  color: white;
+    }
+  }
+
+  /*Tablet big, Mobile small*/
+  h4.style3 {
+    font-family: "Playfair Display", serif;
+    font-size: 1.2em;
+    font-weight: 300;
+    letter-spacing:.05em;
+    text-align: center;
+    color: white;
+  }
+    /*Mobile Screen*/
+    @media screen and (max-width:500px){
+      h4.style3 {
+    font-family: "Playfair Display", serif;
+    font-size: .9em;
+    font-weight: 300;
+    letter-spacing:.05em;
+    text-align: center;
+    color: white;
+    }
+    }
+
+h5 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.2em;
+  font-weight: 300;
+  letter-spacing:.05em;
+  text-align: left;
+  color: #305970;
+}
+
+/*Navigation Bar*/
+
+
+.nav-upper {
+  background-color: #38647f;
+  padding: 0;
+}
+
+ul.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #447a9a;
+  position: sticky;
+}
+
+li.nav {
+  float: left;
+  display: inline;
+}
+
+li.nav a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 20px 18px;
+  text-decoration: none;
+  font-family: "Playfair Display", serif;
+  font-weight: 200;
+  font-size: 1em;
+}
+
+
+/* Change the active link background color */
+li.nav a.active {
+  background-color: #1e3847;
+  color: #FFFFFF;
+}
+/* Change the link color on hover*/
+li.nav a:hover:not(.active) {
+  opacity: 0.7;
+  background-color: #5c98ba;
+  color: #111;
+  transition: all .3s;
+  }
+
+@media screen and (max-width: 500px) {
+    ul.nav li.nav {
+      float: none;
+    }
+    li.nav a {
+      border-style: solid;
+      border-color: #FFFFFFBF;
+    border-width: 0.5px;
+  }
+}
+
+/*iPad navbar*/
+@media screen and (min-width: 500px) and (max-width: 768px){
+  li.nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 18px;
+    text-decoration: none;
+    font-family: "Playfair Display", serif;
+    font-weight: 200;
+    font-size: .8em;
+  }
+}
+
+/*regular lists*/
+ul#no-indent {
+  padding-left: 10%;
+}
+li.body-list {
+  font-family: "Playfair Display", serif;
+  margin-left: 0;
+  margin-right: 3%;
+  line-height: 2;
+  font-size: 1em;
+}
+
+li.body-list a.link:hover {
+    color: #85b2cb;
+  }
+
+.body {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+
+
+/*p formatting*/
+p {
+  font-family: "Playfair Display", serif;
+  line-height: 2;
+  text-align: justify;
+  font-size: 1em;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+@media screen and (max-width: 768px) {
+p{
+  text-align: left;
+  hyphens: auto;
+  word-wrap: none;
+}
+}
+p#caption {
+  text-align: center;
+  line-height: 2;
+  padding: 0;
+}
+
+p#left-align {
+  text-align: left;
+}
+
+p#nav-upper {
+  color: white;
+  font-size: .8em;
+  padding-right: 1%;
+  margin: 0;
+  text-align: right;
+}
+
+@media screen and (max-width: 768px) {
+  p#nav-upper {
+    color: white;
+    font-size: .8em;
+    padding-right: 1%;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+p.body {
+    font-family: "Playfair Display", serif;
+    margin-left: 2%;
+    margin-right: 2%;
+    line-height: 2;
+    margin-top: -2%;
+  }
+
+
+p.number {
+    font-family: "Playfair Display", serif;
+    font-size: 2.5em;
+    color: white;
+    font-weight:500;
+    font-variant:small-caps;
+    padding: 0 2%;
+    margin: 2%;
+  }
+
+@media screen and (min-width: 768px){
+  p#footer {
+    font-size: .9em;
+    line-height: 1.7;
+    padding: 2%;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 768px){
+  p#footer {
+    font-size: .8em;
+    line-height: 1.5;
+    padding: 2%;
+    text-align: center;
+  }
+}
+
+/*Links formatting*/
+
+a.link {
+  color: #3b6f8b;
+  text-decoration: none;
+}
+
+a.link:hover {
+  color: #85b2cb;
+}
+
+a.footer-link {
+  color: #305970;
+  text-decoration: none;
+}
+
+a.footer-link:hover {
+  color: #85b2cb;
+}
+
+a.steps {
+    color: #3b6f8b;
+    font-size: 1em;
+    text-decoration: none;
+  }
+
+a.steps:hover {
+    color: #85b2cb;
+  }
+
+
+/*Footer*/
+hr {
+border-top: 1px solid gray;
+}
+
+
+footer {
+  background-color: #e8f0f5;
+  max-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid gray;
+}
+
+@media screen and (max-width: 768px){
+footer {
+  background-color: #e8f0f5;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid gray;
+}
+}
+
+</style>

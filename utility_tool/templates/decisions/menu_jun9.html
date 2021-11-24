@@ -1,0 +1,277 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>flowchart.js · Playground</title>
+        <style type="text/css">
+          .end-element { background-color : #FFCCFF; }
+
+           .bordered {
+                width: 1075px;
+                height: 350px;
+                padding: 20px;
+                border:  white;
+                border-radius: 8px;
+                padding-top: 145px;
+                padding-left: 50px;
+         }
+          body * { font-family: "Playfair Display", serif; }             
+        </style>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.0/raphael-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="http://flowchart.js.org/flowchart-latest.js"></script>
+        <!-- <script src="../release/flowchart.min.js"></script> -->
+        <script>
+            window.onload = function () {
+                var btn = document.getElementById("run"),
+                    cd = document.getElementById("code"),
+                    chart;
+                (btn.onclick = function () {
+                    var code = cd.value;
+                    if (chart) {
+                      chart.clean();
+                    }
+                    chart = flowchart.parse(code);
+                    chart.drawSVG('canvas', {
+                      // 'x': 30,
+                      // 'y': 50,
+                      'line-width': 3,
+                      'maxWidth': 3,//ensures the flowcharts fits within a certian width
+                      'line-length': 50,
+                      'text-margin': 10,
+                      'font-size': 14,
+                      'font': 'normal',
+                      'font-family': 'Playfair Display',
+                      'font-weight': 'bold',
+                      'font-color': 'white',
+                      'line-color': 'black',
+                      'element-color': 'black',
+                      //'fill': '#FFFF99',
+                      'fill': '#003EFF',
+                      'yes-text': 'Solution Options',
+                      'no-text': 'Screening Criteria',
+                      'arrow-end': 'block',
+                      'scale': 0.8,
+                      'symbols': {
+                        'start': {
+                          //'font-color': 'red',
+                          //'element-color': 'green',
+                          //'fill': 'yellow'
+                          'class': 'end-element'  
+                        },
+                        'end':{
+                          'class': 'end-element'
+                        }
+                      },
+                      'flowstate' : {
+                        'past' : { 'fill' : '#7EB6FF', 'font-size' : 12, 'font-color': 'black', 'line-color': 'white', 'text-align': 'center'},
+                        'current' : {'fill' : 'blue', 'font-color' : 'white', 'font-weight' : 'bold', 'font-size' : 18, 'align': 'center'},
+                        'invalid' : {'fill' : 'grey', 'font-color' : 'white', 'font-weight' : 'bold', 'font-size' : 18, 'align': 'center'},
+                        'approved' : {'fill' : '#9999ff', 'font-color' : 'white', 'font-weight' : 'bold', 'font-size' : 18, 'align': 'center'},
+                        'request' : {'fill' : 'green', 'font-color' : 'white', 'font-weight' : 'bold', 'font-size' : 18, 'align': 'center'},
+                        'rejected' : { 'fill' : '#90EE90', 'font-size' : 12, 'font-color': 'black', 'line-color': 'white', 'text-align': 'center' }
+                      }
+                    });
+                    $('[id^=sub1]').click(function(){
+                      alert('info here');
+                    });
+                })();
+            };
+        </script>
+    </head>
+    <body>
+        <div class="hero-unit" style="background-color: white">
+        <div style="color:#0000FF" align="left"><h4>
+             Decision you are working on: {{dec_title}} 
+            <span style="float:right;"> Logged in as {{loggedinuser}}    </span>
+        </h4></div>
+        <br> 
+        <h2 class="form-signin-heading">Decision Flowchart
+         <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+         <a href="/Resources-Guidance.html" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>
+        </h2>
+        <h5 style="border: 2px solid grey; padding-left: 15px;">
+         {%if loggedinuser != created_by %}
+        <br>You have been invited as a stakeholder to contribute to this decision. 
+        <br><br>Click on a dark blue flowchart symbol to work on the topic shown. It will turn green after you have entered any information on the relevant page. 
+        <br><br>Items shown in grey are only accessible to the Project Administrator.
+        <br><br>Items shown in violet are view-only.
+        {% else %}
+        <br>
+        Click on a flowchart symbol to work on that step in the decision-making process. 
+        <br><br>Items shown in green indicate some information has been entered for this step.
+         {% endif %}  
+         <br><br></h5>
+         <div id="myDIV">   
+         <h6 style="border: 2px solid grey; padding-left: 15px;">
+             <br><a href="/Steps.html#Decision-Making"><font color="blue">Decision Problem: </font></a>
+             <br>The Project Administrator should use this page to enter or edit background details on what this decision is about. Answers to the first 5 questions are required to proceed. Stakeholders can view this page but cannot edit it.
+             <p></p>
+             <br><a href="/Steps.html#Identify-Stakeholders"><font color="blue">Identify stakeholders:</font></a>
+             <br>The Project Administrator can use this page to invite stakeholders to participate in this decision via DecisionMaker. You can skip this step if you are making the decision solo or are interacting with stakeholders offline. You can come back at any time to invite stakeholders to participate.
+             <p></p>
+             <br><a href="/Steps.html#Solution-Options"><font color="blue">Solution Options:</font></a>
+             <br>Use this page to enter possible programs/strategies/options for addressing the problem this decision is about. You can come back and add more options or archive options at any time.
+             <p></p>
+             <br><a href="/Steps.html#Screening-Criteria"><font color="blue">Screening Criteria:</font></a>
+             <br>This page is optional but can be used to list requirements that will help you narrow down the list of Solution Options.  You can also start with this list of requirements to prompt ideas for Solution Options.
+             <p></p>
+             <br><a href="/Steps.html#Screen-Solution-Options"><font color="blue">Screen Solution Options:</font></a>
+             <br>This page is optional and only accessible by the Project Administrator who can use it to assess whether each Solution Option listed meets the Screening Criteria and should stay in the consideration set for further evaluation.
+             <p></p>
+             <br><a href="/Steps.html#Evaluation-Criteria"><font color="blue">Evaluation Criteria: </font></a>
+             <br>Use this page to enter factors that are important to you and other stakeholders and that you will use to evaluate each Solution Option.
+             <p></p>
+             <br><a href="/Steps.html#Importance-Scores"><font color="blue">Importance Scores:</font></a>
+             {%if loggedinuser != created_by %}  
+                <br>Use this page to indicate the relative importance of each of the Evaluation Criteria. If you do not use this page, <i>DecisionMaker</i> will assume that none of the listed Evaluation Criteria hold any importance for you.
+             {% else %}
+                <br>Use this page to indicate the relative importance of each of the Evaluation Criteria. One or more people participating in this decision must provide Importance Scores in order to produce utility values. This could include you as the Project Administrator or any of the stakeholders you invite to participate. The Project Administrator can also use this page to determine how many votes are awarded to each stakeholder.
+             {% endif %} 
+             <p></p>
+             <br><a href="/Steps.html#Evidence-Gathering"><font color="blue">Evidence-gathering to Evaluate Options:</font></a>
+             <br>In these pages, the Project Administrator should enter ways to assess how well the Solution Options meet each of the Evaluation Criteria. After collecting the evaluation data, the table titled “Evaluation Data Table” must be completed in order to obtain utility results. These pages are view-only for stakeholders.
+             <p></p>
+             <br><a href="/Steps.html#Costs"><font color="blue">Costs:</font></a>
+             <br>The Project Administrator should enter costs of each Solution Option in order to obtain cost-utility results. This page is view-only for stakeholders.
+             <p></p>
+             <br><a href="/Steps.html#Make-Decision"><font color="blue">Make a Decision:</font></a>
+             <br>The Project Administrator should review the results of the analysis and record the final decision. This page is view-only for stakeholders.
+         <br><br></h6>   
+         </div> 
+        <div><textarea id="code" style="width: 100%;display:none;" rows="11">
+{%if loggedinuser == created_by %}
+   st=>start: Decision Problem|request :> http://amritha.pythonanywhere.com/utility_tool/decisions/{{dec_id}}/edit_decision.html
+{% else %}
+   st=>start: Decision Problem|approved :> http://amritha.pythonanywhere.com/utility_tool/decisions/{{dec_id}}/edit_decision.html
+{% endif %}   
+{%if loggedinuser == created_by %}
+   {% if decmade_created == "Y" %}
+      e=>end: Make a Decision|request :> http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/decision_made.html 
+   {% else %}
+      e=>end: Make a Decision|current :> http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/decision_made.html 
+   {% endif %}
+{% else %}
+   e=>end: Make a Decision|approved :> http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/decision_made.html 
+{% endif %}   
+{%if loggedinuser == created_by %}
+    {% if evam_created == "Y" %}
+       op5=>operation: Evidence-gathering to Evaluate Options|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/idn_measures.html
+    {% else %}
+       op5=>operation: Evidence-gathering to Evaluate Options|current :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/idn_measures.html
+    {% endif %}
+{% else %}
+    op5=>operation: Evidence-gathering to Evaluate Options|approved :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/idn_measures.html
+{% endif %}    
+{%if solopt_allowed == "Y"%}
+    {% if solopt_created == "Y" %}
+       para=>operation: Solution Options|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_solopt_det.html
+    {% else %}
+       {% if soloptP_created == "Y" and loggedinuser == created_by %}
+           para=>operation: Solution Options|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_solopt_det.html
+       {% else %}    
+           para=>operation: Solution Options|current :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_solopt_det.html 
+       {% endif %}    
+    {% endif %}
+{% else %}
+para=>operation: Solution Options|approved :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_solopt_det.html
+{% endif %}
+{% if scrcr_allowed == "Y" %}
+    {% if scr_created == "Y"%}
+       para2=>operation: Screening Criteria|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scr_criteria.html
+    {% else %}
+       {% if scrP_created == "Y" and loggedinuser == created_by %}      
+          para2=>operation: Screening Criteria|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scr_criteria.html
+       {% else %}   
+          para2=>operation: Screening Criteria|current :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scr_criteria.html
+       {% endif %}  
+    {% endif %}
+{% else %}
+    para2=>operation: Screening Criteria|invalid
+{% endif %}   
+{%if loggedinuser == created_by %}
+    {% if mapp_created == "Y" %}
+       op10=>operation: Screen Solution Options|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/handsontable.html
+    {% else %}
+       op10=>operation: Screen Solution Options|current :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/handsontable.html
+    {% endif %}
+{% else %}
+    op10=>operation: Screen Solution Options|invalid
+{% endif %}  
+{% if evacr_allowed == "Y" %}
+   {% if eva_created == "Y" %}
+      para3=>operation: Evaluation Criteria|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_eva_criteria.html
+   {% else %}
+      {% if evaP_created == "Y" and loggedinuser == created_by %}
+         para3=>operation: Evaluation Criteria|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_eva_criteria.html
+      {% else %}
+         para3=>operation: Evaluation Criteria|current :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_eva_criteria.html
+      {% endif %}   
+   {% endif %}
+{% else %}
+   para3=>operation: Evaluation Criteria|invalid
+{% endif %}
+{% if iw_allowed == "Y" %}
+    {% if iw_created == "Y" %}
+       {% if loggedinuser == created_by %} 
+        para4=>operation: Importance Scores|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/pa_setup.html
+        {% else %}
+        para4=>operation: Importance Scores|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scores.html
+        {% endif %} 
+    {% else %}   
+           {%if iwP_created == "Y" and loggedinuser == created_by %}
+                {% if loggedinuser == created_by %} 
+                    para4=>operation: Importance Scores|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/pa_setup.html
+                {% else %}
+                    para4=>operation: Importance Scores|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scores.html
+                {% endif %}  
+          {% else %}   
+                {% if loggedinuser == created_by %} 
+                    para4=>operation: Importance Scores|current  :>http://amritha.pythonanywhere.com/utility_tool/decisions/pa_setup.html
+                {% else %}
+                    para4=>operation: Importance Scores|current :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/add_scores.html
+                {% endif %} 
+          {% endif %}
+    {% endif %}
+{% else %}
+   para4=>operation: Importance Scores|invalid
+{% endif %} 
+
+{%if loggedinuser == created_by %}
+    {% if cost_created == "Y" %}
+       op8=>operation: Costs|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/costs1.html
+    {% else %}
+       op8=>operation: Costs|current :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/costs1.html
+    {% endif %}
+    {% if stakeholdersNow == "Y" %}
+        op9=>operation: Identify Stakeholders|request :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/assign_tasks.html
+    {% else %}
+        op9=>operation: Identify Stakeholders|current :>http://amritha.pythonanywhere.com/utility_tool/stakeholders/stakeholders.html
+    {% endif %}    
+
+{% else %}
+   op8=>operation: Costs|approved :>http://amritha.pythonanywhere.com/utility_tool/decisions/solution_options/costs1.html
+   op9=>operation: Identify Stakeholders|invalid 
+{% endif %}
+
+st(right)->op9(right)->para(right)->para2(right)->op10(right)->para3(right)->para4(right)->op5(right)->op8(right)->e
+</textarea></div>
+<div><button id="run" style="display:none;" type="button">Run</button></div>
+<div class="bordered" id="canvas" align="center"><!--<br><br><br><br><br><div style="padding-left: 300px;"><a href="/utility_tool/reports/summary_report.html"><input class="btn btn-secondary" type="button" name="cancel" value="Summary Report"></a></div>--></div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+   $( "#myDIV" ).hide();
+   $( "#button" ).click(function() {
+       $( "#myDIV" ).toggle();
+   });
+</script>
+</body>
+</html>
+
+
+{% endblock %}

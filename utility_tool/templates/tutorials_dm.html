@@ -1,0 +1,109 @@
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ body * { font-family: "Playfair Display", serif; }     
+</style>
+<!DOCTYPE html>
+<html>
+<head>
+      <html lang="en" >
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/Header.css' %}" rel="stylesheet"> 
+  <link href="{% static 'css/Style_fc.css' %}" rel="stylesheet"> 
+  <link href="{% static 'css/Flowchart.css' %}" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!--THIS IS THE REGULAR NAV BAR--><div class="navbar">
+      <div class="nav-upper">
+          <span style="padding-right: 1%"><i>DecisionMaker</i>&reg; – the CBCSE Cost-Utility Tool Kit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>© 2019 Teachers College, Columbia University. All rights reserved.</span>
+        </div>
+  <a class="active" href="/Home.html">Home</a>
+  <a href="/Home.html#About-Us">About DM</a>
+  <a href="tutorials.html">Tutorials</a>
+  <a href="/utility_tool/decisions/decisions_list.html">My Decisions</a>
+  <a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a>
+  <a href="/Resources-Guidance.html">Resources & Guidance</a>
+  <a href="/license2.html">License</a>
+  <a href="/Contact-Us.html">Contact Us</a>
+  <a href="/Who-We-Are.html">Who We Are</a>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <a href="/utility_tool/users/login.html">Login</a>
+  {% else %}
+     <a href="/logout.html">Logout</a>
+  {% endif %}
+    </div><!--REGULAR NAV BAR ENDS-->
+    <!--THIS IS THE MOBILE NAV BAR--><div class="mobile-nav">
+      <div class="nav-upper-mobile">
+        <span style="padding-right: 1%"><i>DecisionMaker</i>&reg; – the CBCSE Cost-Utility Tool Kit<br> © 2019 Teachers College, Columbia University</span>
+    </div>
+    <div class="menuToggle">
+        <input type="checkbox">
+        <span></span>
+        <span></span>
+        <span></span>
+          <ul class="nav-mobile">
+            <a href="/Home.html"><li class="nav">Home</li></a>
+            <a href="/Home.html#About-Us"><li class="nav">About DM</li></a>
+            <a href="tutorials.html"><li class="nav">Tutorials</li></a>
+            <a href="/utility_tool/decisions/decisions_list.html"><li class="nav">My Decisions</li></a>
+            <a href="/utility_tool/decisions/Stakeholders.html"><li class="nav">My Stakeholders</li></a>
+            <a href="/Resources-Guidance.html"><li class="nav">Resources & Guidance</li></a>
+            <a href="/license2.html"><li class="nav">License</li></a> 
+            <a href="/Contact-Us.html"><li class="nav">Contact Us</li></a>
+            <a href="/Who-We-Are.html"><li class="nav">Who We Are</li></a>
+            {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+               <a href="/utility_tool/users/login.html"><li class="nav">Login<li></a>
+            {% else %}
+               <a href="/logout.html"><li class="nav">Logout</li></a>
+            {% endif %}
+          </ul>
+          </div>
+        </div><!--MOBILE NAV BAR ENDS-->
+      <div>
+  <section class="hero-2" id="Flowchart">
+      <div class="hero-2-message">
+        <h1 id="not-homepage">DecisionMaker Tutorials</h1>
+      </div>
+  </section>
+  <span class="background-image" role="img" aria-label="Aerial view of people working at a table"></span>
+<p id="intro">
+<br>These short video tutorials (2-6 minutes each) demonstrate how to apply DecisionMaker’s 10-step framework to a decision-making process. There is a brief introductory video plus one video for each of the ten steps in the framework.  Click on each icon in the flowchart to access the relevant video. There is also a very short video that explains how to use the DecisionMaker flowchart. This series of tutorials follows an example decision about choosing digital math tools to support math instruction. You can download the full case study about this decision by clicking on the blue button labeled “Download Demo Examples” from your My Decisions page. The decision will appear in your decisions list and is titled: DEMO: Developing a Digital Toolkit for Math COPY.  
+<br><br>Watch the introduction to the <a href="https://vimeo.com/416121297/abd8ffb477" target="_blank">DecisionMaker framework</a> here. For information about the flowchart, click <a href="https://vimeo.com/416121827/a6a53e707c" target="_blank">here</a>. 
+</p>
+  <div class="circle">
+        <!--Filled--><div class="item filled" id="one"><a href="https://vimeo.com/416121491/7e4400e056" target="_blank"><img src="{% static "1-Decision-Problem-White.png" %}" style="max-width:80%"></a>  </div>
+        <!--Filled>--><div class="item filled" id="two"><a href="https://vimeo.com/416122033/61cfc718f7" target="_blank"><img src="{% static "2-Stakeholders-White.png" %}" style="max-width:80%"></a>  </div>       
+        <!--Filled>--><div class="item filled" id="three"><a href="https://vimeo.com/416130651/86bb88de44" target="_blank"><img src="{% static "3-Solution-Options-White.png" %}" style="max-width:80%"></a> </div>       
+        <!--Filled>--><div class="item filled" id="four"><a href="https://vimeo.com/416130396/c101ec4769" target="_blank"><img src="{% static "4-Screening-Criteria-White.png" %}" style="max-width:80%"></a> </div>
+        <!--Filled>--><div class="item filled" id="five"><a href="https://vimeo.com/416130228/0c4f830c50" target="_blank"><img src="{% static "5-Screen-Solution-Options-White.png" %}" style="max-width:80%"></a></div> 
+        <!--Filled--><div class="item filled" id="six"><a href="https://vimeo.com/416130079/7f72fb686a" target="_blank"><img src="{% static "6-Evaluation-Criteria.png" %}" style="max-width:80%"></a></div>
+        <!--Filled--><div class="item filled" id="seven"><a href="https://vimeo.com/416131633/93ec1c3575" target="_blank"><img src="{% static "7-Importance-Scores-White.png" %}" style="max-width:80%"></a></div>
+        <!--Filled--><div class="item filled" id="eight"><a href="https://vimeo.com/416130851/0dad64d76c" target="_blank"><img src="{% static "8-Evidence-Gathering-White.png" %}" style="max-width:80%"></a></div> 
+        <!--Filled--><div class="item filled" id="nine"><a href="https://vimeo.com/425663958/519aae016a" target="_blank"><img src="{% static "9-Costs-White.png" %}" style="max-width:80%"></a></div>
+        <!--Filled--><div class="item filled" id="ten"><a href="https://vimeo.com/425664155/1a9aa1454b" target="_blank"><img src="{% static "10-Make-Decision-White.png" %}" style="max-width:80%"></a></div>
+      <div class="arrow" id="one">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="two">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="three">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="four">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="five">
+        <p>⟶</p>
+      </div>
+      </div>
+      </div>
+      </div>
+</body>
+
+  </html>
+  {% endblock %}

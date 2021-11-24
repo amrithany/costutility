@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<!-- saved from url=(0121)https://www.pythonanywhere.com/user/amritha/files/home/amritha/costutility/utility_tool/templates/Resources-Guidance.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>{% load static %}
+<style>
+
+#step {
+  font-weight: 500;
+  font-size: 1em;
+  color: #182d39;
+}
+
+/*Links Styling*/
+a.steps {
+    color: #3b6f8b;
+    font-size: 1.1em;
+    text-decoration: none;
+  }
+a.steps:hover {
+    color: #85b2cb;
+  }
+
+/*Main Grid Styling and Layout*/
+  /*Mobile Screen*/
+@media screen and (max-width:768px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(autofit);
+    /*grid-template-rows: repeat(autofit, minmax(50px, 1fr)) ;*/
+    grid-template-columns: .5fr .3fr .3fr .5fr;
+    /*margin-left: 3%;*/
+    grid-template-areas:
+    ". item-n1 item-1. "
+    "item-2 item-2 item-2 item-2"
+    ". item-n2 item-3 ."
+    "item-4 item-4 item-4 item-4"
+    ". item-n3 item-5 ."
+    "item-6 item-6 item-6 item-6"
+    ". item-n4 item-7 ."
+    "item-8 item-8 item-8 item-8"
+    ". item-n5 item-9  ."
+    "item-10 item-10 item-10 item-10"
+    ". item-n6 item-11  ."
+    "item-12 item-12 item-12 item-12"
+    ". item-n7 item-13  ."
+    "item-14 item-14 item-14 item-14"
+    ". item-n8 item-15  ."
+    "item-16 item-16 item-16 item-16"
+    ". item-n9 item-17  ."
+    "item-18 item-18 item-18 item-18"
+    ". item-n10 item-19  ."
+    "item-20 item-20 item-20 item-20"
+    ". item-n11 item-21 ."
+    "item-22 item-22 item-22 item-22"
+    }
+  img.icon {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    display: block;
+    padding: 5% 0;
+  }
+}
+/*Laptop Screen*/
+@media screen and (min-width: 768px) and (max-width: 1824px) {
+    .grid {
+      display: grid;
+      grid-template-rows: repeat(auto, 100px);
+      grid-template-columns: .3fr .3fr .05fr 3fr;
+      /*margin-left: 3%;*/
+      grid-template-areas:
+      "item-n1 item-1  . item-2"
+      "item-n2 item-3  . item-4"
+      "item-n3 item-5  . item-6"
+      "item-n4 item-7  . item-8"
+      "item-n5 item-9  . item-10"
+      "item-n6 item-11  . item-12"
+      "item-n7 item-13  . item-14"
+      "item-n8 item-15  . item-16"
+      "item-n9 item-17  . item-18"
+      "item-n10 item-19  . item-20"
+      "item-n11 item-21 . item-22"
+    }
+  }
+/*Large Screens*/
+@media screen and (min-width: 1824px) {
+  .grid {
+    display: grid;
+    grid-template-rows: repeat(auto, 100px);
+    grid-template-columns: minmax(100px, 150px) minmax(100px, 150px).05fr 3fr;
+    /*margin-left: 3%;*/
+    grid-template-areas:
+    "item-n1 item-1  . item-2"
+    "item-n2 item-3  . item-4"
+    "item-n3 item-5  . item-6"
+    "item-n4 item-7  . item-8"
+    "item-n5 item-9  . item-10"
+    "item-n6 item-11  . item-12"
+    "item-n7 item-13  . item-14"
+    "item-n8 item-15  . item-16"
+    "item-n9 item-17  . item-18"
+    "item-n10 item-19  . item-20"
+    "item-n11 item-21 . item-22"
+    }
+  }
+
+img.icon {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  display: block;
+  padding: 5% 0;
+  }
+.decision-icon {
+  grid-area: item-1;
+  background-color: #417a99;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.decision-number {
+    grid-area: item-n1;
+    background-color: #417a99;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.decision {
+  grid-area: item-2;
+  display: flex;
+  align-items: center;
+  }
+.stakeholders-icon {
+  grid-area: item-3;
+  background-color: #4785a7;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.stakeholders-number {
+    grid-area: item-n2;
+    background-color: #4785a7;;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.stakeholders {
+  grid-area: item-4;
+  display: flex;
+  align-items: center;
+  }
+.solution-options-icon {
+  grid-area: item-5;
+  background-color: #4f8fb1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.solution-options-number {
+    grid-area: item-n3;
+    background-color: #4f8fb1;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.solution-options {
+  grid-area: item-6;
+  display: flex;
+  align-items: center;
+  }
+.screening-criteria-icon {
+  grid-area: item-7;
+  background-color: #5e98b6;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.screening-criteria-number {
+    grid-area: item-n4;
+    background-color: #5e98b6;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.screening-criteria {
+  grid-area: item-8;
+  display: flex;
+  align-items: center;
+  }
+.mapping-icon {
+  grid-area: item-9;
+  background-color: #6da1bc;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.mapping-number {
+    grid-area: item-n5;
+    background-color: #6da1bc;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.mapping {
+  grid-area: item-10;
+  display: flex;
+  align-items: center;
+  }
+.evaluation-criteria-icon {
+  grid-area: item-11;
+  background-color: #7aa9c4;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.evaluation-criteria-number {
+    grid-area: item-n6;
+    background-color: #7aa9c4;
+    /*background-color: #89b2cb;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.evaluation-criteria {
+  grid-area: item-12;
+  display: flex;
+  align-items: center;
+  }
+.relative-importance-icon {
+  grid-area: item-13;
+  background-color: #6da1bc;
+  /*background-color: #95bbcf;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.relative-importance-number {
+    grid-area: item-n7;
+    background-color: #6da1bc;
+    /*background-color: #95bbcf;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.relative-importance {
+  grid-area: item-14;
+  display: flex;
+  align-items: center;
+  }
+.evaluation-measures-icon {
+  grid-area: item-15;
+  background-color: #5e98b6;
+  /*background-color: #a3c4d4;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.evaluation-measures-number {
+    grid-area: item-n8;
+    background-color: #5e98b6;
+    /*background-color: #a3c4d4;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.evaluation-measures {
+  grid-area: item-16;
+  display: flex;
+  align-items: center;
+  }
+.cost-icon {
+  grid-area: item-17;
+  background-color: #4f8fb1;
+  /*background-color: #b1ccd7;*/
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.cost-number {
+    grid-area: item-n9;
+    background-color: #4f8fb1;
+    /*background-color: #b1ccd7;*/
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.cost {
+  grid-area: item-18;
+  display: flex;
+  align-items: center;
+  }
+.solution-icon {
+  grid-area: item-19;
+  background-color: #4785a7;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  }
+.solution-number {
+  grid-area: item-n10;
+  background-color: #4785a7;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.solution {
+  grid-area: item-20;
+  display: flex;
+  align-items: center;
+  }
+.resources-icon {
+    grid-area: item-21;
+    background-color: #417a99;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    }
+.resources-number {
+    grid-area: item-n11;
+    background-color: #417a99;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+.resources {
+    grid-area: item-22;
+    display: flex;
+    align-items: center;
+    }
+
+</style>
+
+
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="{% static 'css/Style.css' %}" rel="stylesheet"> 
+   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<div id="page-container">
+<div class="nav-upper">
+    <p id="nav-upper"><i>DecisionMaker</i>&reg;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>© 2019 Teachers College, Columbia University. All rights reserved.</p>
+<ul class="nav">
+ <li class="nav"><a href="Home.html">Home</a></li>
+  <li class="nav"><a href="Home.html#About-Us">About DM</a></li>
+  <li class="nav"><a href="tutorials.html">Tutorials</a></li>
+  <li class="nav"><a href="/utility_tool/decisions/decisions_list.html">My Decisions</a></li>
+  <li class="nav"><a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a></li>
+  <li class="nav"><a href="Resources-Guidance.html">Resources & Guidance</a></li>
+   <li class="nav"><a href="license2.html">License</a></li>
+  <li class="nav"><a href="Contact-Us.html">Contact Us</a></li>
+  <li class="nav"><a href="Who-We-Are.html">Who We Are</a></li>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <li class="nav"><a href="/utility_tool/users/login.html">Login</a></li>
+  {% else %}
+     <li class="nav"><a href="/logout.html">Logout</a></li>
+  {% endif %}
+</ul>
+</div>
+<h2>Resources &amp; Guidance</h2>
+<div class="body">
+<p>This page links to resources to guide you at various stages of the decision-making process. Click on the relevant step to view the resources available.</p>
+<br>
+<div class="grid">
+  <div class="decision-icon">
+    <img class="icon" src="{% static "Decision-1.png" %}" alt="Decision" style="max-width:70px">
+    </div>
+  <div class="decision-number">
+    <p class="number">I.</p>
+  </div>
+  <div class="decision">
+    <p id="left-align"><span id="step">Decision Problem:</span> <a class="steps" href="Steps.html#Decision-Making">Resources to help you identify the problem, define your goals, and define the decision problem
+&nbsp;»</a></p>
+  </div>
+  <div class="stakeholders-icon">
+        <img class="icon" src="{% static "Stakeholders-1.png" %}" alt="Stakeholders" style="max-width: 70px">
+    </div>
+  <div class="stakeholders-number">
+    <p class="number">II.</p>
+  </div>
+  <div class="stakeholders">
+    <p id="left-align"><span id="step">Identify Stakeholders:</span> <a class="steps" href="Steps.html#Identify-Stakeholders">Resources to help you identify which stakeholders to include and how&nbsp;»</a></p>
+  </div>
+  <div class="solution-options-icon">
+      <img class="icon" src="{% static "Solution Options-1.png" %}" alt="Solution Options" style="max-width:70px">
+    </div>
+  <div class="solution-options-number">
+    <p class="number">III.</p>
+  </div>
+  <div class="solution-options">
+    <p id="left-align"><span id="step">Solution Options:</span> <a class="steps" href="Steps.html#Solution-Options">Resources to help you identify possible programs, tools or strategies to address the decision
+ problem you have articulated&nbsp;»</a></p>
+  </div>
+  <div class="screening-criteria-icon">
+      <img class="icon" src="{% static "Screening Criteria-1.png" %}" alt="Screening Criteria" style="max-width:70px">
+  </div>
+  <div class="screening-criteria-number">
+    <p class="number">IV.</p>
+  </div>
+  <div class="screening-criteria">
+    <p id="left-align"><span id="step">Screening Criteria:</span> <a class="steps" href="Steps.html#Screening-Criteria">Resources to help you identify any absolute or non-negotiable requirements (e.g., compliance issues) that can be applied to narrow down the list of Solution Options to a number that will be feasible to evaluate fully&nbsp;»</a></p>
+  </div>
+  <div class="mapping-icon">
+    <img class="icon" src="{% static "Mapping-1.png" %}" alt="Mapping" style="max-width:70px">
+    </div>
+  <div class="mapping-number">
+    <p class="number">V.</p>
+  </div>
+  <div class="mapping">
+    <p id="left-align"><span id="step">Screen Solution Options:</span> <a class="steps" href="Steps.html#Screen-Solution-Options">Applying the Screening Criteria to your Solution Options&nbsp;»</a></p>
+  </div>
+  <div class="evaluation-criteria-icon">
+      <img class="icon" src="{% static "Evaluation Criteria-1.png" %}" alt="Evaluation Criteria" style="max-width:50px">
+  </div>
+  <div class="evaluation-criteria-number">
+    <p class="number">VI.</p>                                                                                                                                                                                    
+  </div>
+  <div class="evaluation-criteria">
+    <p id="left-align"><span id="step">Evaluation Criteria</span><a class="steps" href="Steps.html#Evaluation-Criteria"> Resources to help identify factors you will consider in evaluating each of the possible 
+Solution Options&nbsp;»</a></p>
+  </div>
+  <div class="relative-importance-icon">
+      <img class="icon" src="{% static "Relative Importance-1.png" %}" alt="Relative Importance" style="max-width:70px">
+    </div>
+  <div class="relative-importance-number">
+    <p class="number">VII.</p>
+  </div>
+  <div class="relative-importance">
+    <p id="left-align"><span id="step">Importance Scores:</span><a class="steps" href="Steps.html#Importance-Scores"> What are Importance Scores and how should you assign them?&nbsp;»</a></p>
+  </div>
+  <div class="evaluation-measures-icon">
+    <img class="icon" src="{% static "Evaluation Measures-1.png" %}" alt="Evaluation Measures" style="max-width:50px">
+  </div>
+  <div class="evaluation-measures-number">
+    <p class="number">VIII.</p>
+  </div>
+  <div class="evaluation-measures">
+    <p id="left-align"><span id="step">Evidence-Gathering to Evaluate Options: </span><a class="steps" href="Steps.html#Evidence-Gathering">Resources to help you identify existing evidence or collect new evidence to evaluate how well each Solution Option meets your Evaluation Criteria&nbsp;»</a></p>
+  </div>
+  <div class="cost-icon">
+    <img class="icon" src="{% static "Cost-1.png" %}" alt="Cost" style="max-width:70px">
+    </div>
+  <div class="cost-number">
+    <p class="number">IX.</p>
+  </div>
+  <div class="cost">
+    <p id="left-align"><span id="step">Costs:</span> <a class="steps" href="Steps.html#Costs">Resources to help identify the resource requirements and estimate the cost of implementing each Solution Option&nbsp;»</a></p>
+  </div>
+  <div class="solution-icon">
+      <img class="icon" src="{% static "Solution-1.png" %}" alt="Solution" style="max-width:70px">
+    </div>
+  <div class="solution-number">
+    <p class="number">X.</p>
+  </div>
+  <div class="solution">
+    <p id="left-align"><span id="step">Make a Decision: </span><a class="steps" href="Steps.html#Make-Decision">How to think about the results and apply them to decision-making&nbsp;»</a></p>
+  </div>
+  <div class="resources-icon">
+      <img class="icon" src="{% static "Resources.png" %}" alt="Resources" style="max-width:50px">
+    </div>
+  <div class="resources-number">
+    <p class="number">XI.</p>
+  </div>
+  <div class="resources">
+    <p id="left-align"><span id="step">General Resources: </span><a class="steps" href="Steps.html#Resources">Miscellaneous other resources&nbsp;»</a></p>                                                       
+  </div>
+</div>
+<br>
+<p id="left-align">The decision-making framework used in <i>DecisionMaker</i>&reg; is based on Multiattribute Utility Theory (MAUT) as developed by Edwards (1971); Edwards, Guttentag and Snapper (1975); and Edwards and Newman (1982).<!-- The <i>DecisionMaker</i><sup style="font-size:0.4em">TM</sup> User Manual includes details about the methods.--></p>
+</div>
+<br>
+<footer>
+  <p align="center" id="footer">Developed by<a class="footer-link" href="https://www.tc.columbia.edu/" target="_blank">Teachers College, Columbia University&nbsp;»</a> with the generous support of the <a class="footer-link" href="http://wtgrantfoundation.org/" target="_blank">William T. Grant Foundation&nbsp;»</a>, <i>DecisionMaker</i>&reg; is freely available to all educators to facilitate collaborative and evidence-based decision-making in education.</p>
+  </footer>
+</div>
+
+</body></html>

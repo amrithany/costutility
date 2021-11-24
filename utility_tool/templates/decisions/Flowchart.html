@@ -1,0 +1,216 @@
+{% load static %}
+{% block body_block %}
+
+<!DOCTYPE html>
+<html>
+<head>
+      <html lang="en" >
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/Header.css' %}" rel="stylesheet"> 
+  <link href="{% static 'css/Style.css' %}" rel="stylesheet"> 
+  <link href="{% static 'css/Flowchart.css' %}" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!--THIS IS THE REGULAR NAV BAR--><div class="navbar">
+      <div class="nav-upper">
+      <span style="padding-right: 1%"><i>DecisionMaker</i><sup style="font-size: 0.2em">TM</sup> – the CBCSE Cost-Utility Tool Kit © 2019 Teachers College, Columbia University</span>
+        </div>
+  <a class="active" href="/Home.html">Home</a>
+  <a href="/Home.html#About-Us">About DM</a>
+  <a href="/utility_tool/decisions/decisions_list.html">My Decisions</a>
+  <a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a>
+  <a href="Resources-Guidance.html">Resources & Guidance</a>
+  <a href="Contact-Us.html">Contact Us</a>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <a href="/utility_tool/users/login.html">Login</a>
+  {% else %}
+     <a href="/logout.html">Logout</a>
+  {% endif %}
+    </div><!--REGULAR NAV BAR ENDS-->
+    <!--THIS IS THE MOBILE NAV BAR--><div class="mobile-nav">
+      <div class="nav-upper-mobile">
+        <span style="padding-right: 1%"><i>DecisionMaker</i><sup style="font-size: 0.5em">TM</sup> – the CBCSE Cost-Utility Tool Kit<br> © 2019 Teachers College, Columbia University</span>
+    </div>
+    <div class="menuToggle">
+        <input type="checkbox">
+        <span></span>
+        <span></span>
+        <span></span>
+          <ul class="nav-mobile">
+            <a href="/Home.html"><li class="nav">Home</li></a>
+            <a href="/Home.html#About-Us"><li class="nav">About DM</li></a>
+            <a href="/utility_tool/decisions/decisions_list.html"><li class="nav">My Decisions</li></a>
+            <a href="/utility_tool/decisions/Stakeholders.html"><li class="nav">My Stakeholders</li></a>
+            <a href="Resources-Guidance.html"><li class="nav">Resources & Guidance</li></a>
+            <a href="Contact-Us.html"><li class="nav">Contact Us</li></a>
+            <a href="#"><li class="nav">Login</li></a>
+          </ul>
+          </div>
+        </div><!--MOBILE NAV BAR ENDS-->
+      <div>
+  <section class="hero-2" id="Flowchart">
+      <div class="hero-2-message">
+        <h1 id="not-homepage">Decision Flowchart</h1>
+      </div>
+  </section>
+  <span class="background-image" role="img" aria-label="Aerial view of people working at a table"></span>
+<div class="body">
+  <!--Icons are centered starting here in this div wrapper--><div id="wrapper" style="text-align: center">
+  <!--This is the Info Icon Code-->  <div class="icon-container-info tooltip">
+      <a href="#More-Info"><img src="{% static "info_am1.PNG" %}" style="max-width: 70%"></a>
+  <!--This is the Info hover Text--><span class="tooltiptext">Click here to view more information</span>
+    </div>
+  <!--This is the R&G icon code-->  <div class="icon-container-book tooltip">
+      <a href="/Resources-Guidance.html"><img src="{% static "book_am3.PNG" %}" style="max-width: 70%"></a>
+    <!--This is R&G hover text-->  <span class="tooltiptext">Click here for Resources & Guidance</span>
+      </div>
+</div><!--icons end here-->
+<!--AMRITHA, you will need to adjust this text so that it matches what the flowchart now does. I.e., no longer turns green--><p id="intro">Click on a flowchart symbol to work on that step in the decision-making process. Items shown in green indicate some information has been entered for this step.</p>
+<div id="float-left"><h5 id="font-2">Decision you are working on:</h5></div>
+<div id="float-right"><h5 id="font-2">Logged in as:</h5></div>
+  <div class="circle">
+        <!--Emtpy--><div class="item empty" id="one"><a href="#"><img src="{% static "1-Decision-Problem-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled><div class="item filled" id="one"><a href="#"><img src="{% static "1-Decision-Problem-White.png" %}" style="max-width:80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="one"><a href="#"><img src="{% static "1-Decision-Problem-Dark.png" %}" style="max-width:80%"></a>
+        <!--Gray<div class="item gray" id="one"><a href="#"><img src="{% static "1-Decision-Problem-White.png" %}" style="max-width:80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="two"><a href="#"><img src="{% static "2-Stakeholders-Blue.png" %}" style="max-width:80%"></a>
+        <!--Filled><div class="item filled" id="two"><a href="#"><img src="{% static "2-Stakeholders-White.png" %}" style="max-width:80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="two"><a href="#"><img src="{% static "2-Stakeholders-Dark.png" %}" style="max-width:80%"></a>
+        <!--Gray<div class="item gray" id="two"><a href="#"><img src="{% static "2-Stakeholders-White.png" %}" style="max-width:80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="three"><a href="#"><img src="{% static "3-Solution-Options-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled><div class="item filled" id="three"><a href="#"><img src="{% static "3-Solution-Options-White.png" %}" style="max-width:80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="three"><a href="#"><img src="{% static "3-Solution-Options-Dark.png" %}" style="max-width:80%"></a>
+        <!--Gray<div class="item gray" id="three"><a href="#"><img src="{% static "3-Solution-Options-White.png" %}" style="max-width:80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="four"><a href="#"><img src="{% static "4-Screening-Criteria-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled><div class="item filled" id="four"><a href="#"><img src="{% static "4-Screening-Criteria-White.png" %}" style="max-width:80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="four"><a href="#"><img src="{% static "4-Screening-Criteria-Dark.png" %}" style="max-width:80%"></a>
+        <!--Gray<div class="item gray" id="four"><a href="#"><img src="{% static "4-Screening-Criteria-White.png" %}" style="max-width:80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="five"><a href="#"><img src="{% static "5-Screen-Solution-Options-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled><div class="item filled" id="five"><a href="#"><img src="{% static "5-Screen-Solution-Options-White.png" %}" style="max-width:80%"></a>-->
+        <!--Stakeholder<div class="item stakeholder" id="five"><a href="#"><img src="{% static "5-Screen-Solution-Options-Dark.png" %}" style="max-width:80%"></a>-->
+        <!--Gray<div class="item gray" id="five"><a href="#"><img src="{% static "5-Screen-Solution-Options-White.png" %}" style="max-width:80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="six"><a href="#"><img src="{% static "6-Evaluation-Criteria-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled<div class="item filled" id="six"><a href="#"><img src="{% static "6-Evaluation-Criteria-White.png" %}" style="max-width: 80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="six"><a href="#"><img src="{% static "6-Evaluation-Criteria-Dark.png" %}" style="max-width: 80%"></a>
+        <!--Gray<div class="item gray" id="six"><a href="#"><img src="{% static "6-Evaluation-Criteria-Dark.png" %}" style="max-width: 80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="seven"><a href="#"><img src="{% static "7-Importance-Scores-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled<div class="item filled" id="seven"><a href="#"><img src="{% static "7-Importance-Scores-White.png" %}" style="max-width: 80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="seven"><a href="#"><img src="{% static "7-Importance-Scores-Dark.png" %}" style="max-width: 80%"></a>
+        <!--Gray<div class="item gray" id="seven"><a href="#"><img src="{% static "7-Importance-Scores-White.png" %}" style="max-width: 80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="eight"><a href="#"><img src="{% static "8-Evidence-Gathering-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled<div class="item filled" id="eight"><a href="#"><img src="{% static "8-Evidence-Gathering-White.png" %}" style="max-width: 80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="eight"><a href="#"><img src="{% static "8-Evidence-Gathering-Dark.png" %}" style="max-width: 80%"></a>
+        <!--Gray<div class="item gray" id="eight"><a href="#"><img src="{% static "8-Evidence-Gathering-White.png" %}" style="max-width: 80%"></a>-->
+      </div>
+        <!--Empty--><div class="item empty" id="nine"><a href="#"><img src="{% static "9-Costs-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled<div class="item filled" id="nine"><a href="#"><img src="{% static "9-Costs-White.png" %}" style="max-width: 80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="nine"><a href="#"><img src="{% static "9-Costs-Dark.png" %}" style="max-width: 80%"></a>
+        <!--Gray<div class="item gray" id="nine"><a href="#"><img src="{% static "9-Costs-White.png" %}" style="max-width: 80%"></a>-->
+        </div>
+        <!--Empty--><div class="item empty" id="ten"><a href="#"><img src="{% static "10-Make-Decision-Blue.png" %}" style="max-width: 80%"></a>
+        <!--Filled<div class="item filled" id="ten"><a href="#"><img src="{% static "10-Make-Decision-White.png" %}" style="max-width: 80%"></a>
+        <!--Stakeholder<div class="item stakeholder" id="ten"><a href="#"><img src="{% static "10-Make-Decision-Dark.png" %}" style="max-width: 80%"></a>
+        <!--Gray<div class="item gray" id="ten"><a href="#"><img src="{% static "10-Make-Decision-White.png" %}" style="max-width: 80%"></a>-->
+      </div>
+      <div class="arrow" id="one">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="two">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="three">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="four">
+        <p>⟶</p>
+      </div>
+      <div class="arrow" id="five">
+        <p>⟶</p>
+      </div>
+      </div>
+      <div class="buttons-container">
+        <a href=#><button class="fixed">Summary<br>Report</button></a>
+        <div class="divider"></div>
+        <a href="#"><button class="fixed">Supporting<br>Documents</button></a>
+            </div>
+      <a name="More-Info"></a>
+            <br>
+      <div class="accordions-container">
+        <button class="accordion" id="one">I. Decision Problem</button>
+      <div class="panel" id="one">
+        <p id="left-align">The Project Administrator should use this page to enter or edit background details on what this decision is about. Answers to the first 5 questions are required to proceed. Stakeholders can view this page but cannot edit it.</p>
+      </div>
+      <button class="accordion" id="two">II. Identify Stakeholders</button>
+      <div class="panel" id="two">
+        <p id="left-align">The Project Administrator can use this page to invite stakeholders to participate in this decision via DecisionMaker. You can skip this step if you are making the decision solo or are interacting with stakeholders offline. You can come back at any time to invite stakeholders to participate.</p>
+      </div>
+      <button class="accordion" id="three">III. Solution Options</button>
+      <div class="panel" id="three">
+        <p id="left-align">Use this page to enter possible programs/strategies/options for addressing the problem this decision is about. You can come back and add more options or archive options at any time.</p>
+      </div>
+      <button class="accordion" id="four">IV. Screening Criteria</button>
+      <div class="panel" id="four">
+        <p id="left-align">This page is optional but can be used to list requirements that will help you narrow down the list of Solution Options. You can also start with this list of requirements to prompt ideas for Solution Options.</p>
+      </div>
+      <button class="accordion" id="five">V. Screen Solution Options</button>
+      <div class="panel" id="five">
+        <p id="left-align">This page is optional and only accessible by the Project Administrator who can use it to assess whether each Solution Option listed meets the Screening Criteria and should stay in the consideration set for further evaluation.</p>
+      </div>
+      <button class="accordion" id="six">VI. Evaluation Criteria</button>
+      <div class="panel" id="six">
+        <p id="left-align">Use this page to enter factors that are important to you and other stakeholders and that you will use to evaluate each Solution Option.</p>
+      </div>
+      <button class="accordion" id="seven">VII. Importance Scores</button>
+      <div class="panel" id="seven">
+        <p id="left-align">Use this page to indicate the relative importance of each of the Evaluation Criteria. One or more people participating in this decision must provide Importance Scores in order to produce utility values. This could include you as the Project Administrator or any of the stakeholders you invite to participate. The Project Administrator can also use this page to determine how many votes are awarded to each stakeholder.</p>
+      </div>
+      <button class="accordion" id="eight">VIII. Evidence-Gathering to Evaluate Options</button>
+      <div class="panel" id="eight">
+        <p id="left-align">In these pages, the Project Administrator should enter ways to assess how well the Solution Options meet each of the Evaluation Criteria. After collecting the evaluation data, the table titled “Evaluation Data Table” must be completed in order to obtain utility results. These pages are view-only for stakeholders.</p>
+      </div>
+      <button class="accordion" id="nine">IX. Costs</button>
+      <div class="panel" id="nine">
+        <p id="left-align">The Project Administrator should enter costs of each Solution Option in order to obtain cost-utility results. This page is view-only for stakeholders.</p>
+      </div>
+      <button class="accordion" id="ten">X. Make a Decision</button>
+      <div class="panel" id="ten">
+        <p id="left-align">The Project Administrator should review the results of the analysis and record the final decision. This page is view-only for stakeholders.
+      </p>
+      </div>
+      </div>
+      </div>
+      <script>
+      var acc = document.getElementsByClassName("accordion");
+      var i;
+
+      for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+          this.classList.toggle("active");
+          var panel = this.nextElementSibling;
+          if (panel.style.maxHeight){
+            panel.style.maxHeight = null;
+          } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      }
+      </script>
+</body>
+
+<!--<footer>
+  <p id="footer">Developed by <a class="footer-link" href="https://www.cbcse.org/" target="_blank">CBCSE&nbsp;»</a> at <a class="footer-link" href="https://www.tc.columbia.edu/" target="_blank">Teachers College, Columbia University&nbsp;»</a> with the generous support of the <a class="footer-link" href="http://wtgrantfoundation.org/" target="_blank">William T. Grant Foundation&nbsp;»</a>, <i>DecisionMaker</i><sup style="font-size:.1em">TM</sup> is freely available to all educators to facilitate collaborative and evidence-based decision-making in education.</p>
+  </footer>
+-->
+
+  </html>
+  {% endblock %}

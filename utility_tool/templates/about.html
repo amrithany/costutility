@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+{% load static %}
+ {% block body_block %}
+<div class="container-fluid" style="background-color: #003EFF;">
+<div class="hero-unit" align="center" style="background-color: #003EFF;color:white;">
+    <br>
+    <h2 style="color:white"><i>DecisionMaker</i>&#153; - A Cost-Utility Tool Kit 2019</h2>
+    <br>
+    <i>DecisionMaker</i>&#153; is a free, online tool developed by <a href="https://www.cbcse.org/" style="color:white" target="_blank"><b>CBCSE</b></a> at Teachers College, Columbia University in collaboration with multiple education agencies to help education decision-makers make evidence-based decisions. Click <a href="/utility_tool/resources/about_maker.html" style="color:white"><b>here</b></a> to learn more.
+    <br> 
+    <!--<a href="/utility_tool/resources/about_maker.html" style="color:white"><b>About</b></a> --><br> <br>
+    <img src="{% static "flowchart dec 17.PNG" %}" alt="Cost Utility Flowchart" /> <!-- New line -->
+     <br /><br>
+     <!--<a href="users/login.html" style="color:white"><b>Login</b></a> <br>-->
+     <a href="/utility_tool/users/register.html" style="color:white"><b>Registration for New Users</b></a>
+</div>
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,174 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;                                                                                                                                                                                       
+       }
+       body * { font-family: "Playfair Display", serif; }
+</style>
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ <body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="soloptform">
+             <form method="post" id="soloptform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Solution Options
+               <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>  
+               <!--<a href="#" title="test"><img src="{% static "info_final.png" %}" alt="Info2"/></a>
+               <a href="#" title="test"><img src="{% static "info4_18.png" %}" alt="A"/></a>
+               <a href="#" title="test"><img src="{% static "Info_button_final_18.png" %}" alt="B"/></a>
+               <a href="#" title="test"><img src="{% static "book5_18.png" %}" alt="C"/></a>
+               <a href="#" title="test"><img src="{% static "book6_18.jpg" %}" alt="D"/></a>--> 
+               <a href="/Steps.html#Solution-Options" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>                 
+             </h2>
+            <div id="myDIV">  
+            <h5 style="border: 2px solid grey; padding-left: 15px;">
+            <br> Solution options are ways to address a decision problem, e.g., different strategies for supporting below-grade readers.
+            <br><br></h5>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>
+             <p></p>     
+            <font color="blue">     
+                <b>Step 1:</b><p>List below each program/strategy/option you think should be considered as a way to address the issue about which you are making a decision. Add the source of the idea.
+            <br><p></p>
+            <b>Step 2:</b><p>When you are done, click here: 
+                {% if sol_permC > 0 and loggedinuser != created_by  %}
+                    <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="goto"  value="Go Back to Flowchart"/></a>
+                {% else %}        
+                    <input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Flowchart"/>
+                {% endif %}
+            <br><br><p></p>
+            <b><u>Optional Steps</u></b><br><p>  
+            <b>Step 3:</b><p>Add or view any relevant information, web sites or documents for each option using the “Solution Option Details” buttons.                                   
+            <br><p></p>  
+            <b>Step 4:</b><p>If you want to share this page with other people without them logging into <i>DecisionMaker</i>, you can create a public link to embed in an email or other communication: <input class="btn btn-primary btn-sm" type="submit" name="link" value="Create a Public Link"/>
+            <br><p></p> 
+            {% if loggedinuser == created_by  %} 
+            <b>Step 5:</b><p>The Project Administrator can temporarily remove any of the options to take them out of the consideration set by clicking on “Put this away for now” under each option. You can retrieve them any time from here:<input class="btn btn-primary btn-sm" type="submit" name="archived" value="Archived Solution Options"/>
+            <br><p></p> 
+            <b>Step 6:</b><p>If the Project Administrator wants to invite stakeholders to suggest Solution Options or review who has already been invited, click here:
+            <input class="btn btn-primary btn-sm" type="submit" name="st" value="Save and Add/View Stakeholders"/>
+            <br><p></p> 
+            {% endif %}
+            <b>Step 7:</b><p>If you wish to import Solution Options, click here:  <input class="btn btn-primary btn-sm" type="submit" name="import" value="Import Solution Options from Excel"/> 
+            </font> 
+               
+                 {% csrf_token %}
+                 {{ soloptform.management_form }}
+                 <br><b><font color="red">{{err}} </font></b><br> 
+                      {% for form in soloptform %}
+                      {% autoescape on %}
+                       <div style="border-bottom: thin dotted black">
+                       <br>
+                       {{ form.id }}
+                       <font color="red"> {{ form.errors }} </font>
+                       <b>{{forloop.counter}}. </b> &nbsp; 
+                       Solution Option: {{ form.sol_option }} 
+                       <br>
+                       <!--<div id="showhide{{form.prefix}}">
+                       Created By: {{ form.created_by }}
+                       Updated By: {{form.updated_by}}
+                       </div>-->
+                       * Source of idea <a href="#" title="Where did you get the idea for this Solution Option? e.g., Principal Smith, What Works Clearinghouse, Education Week, Inside Higher Ed, CGCS conference, etc."><img src="{% static "Info-Icon-With-Background.png" %}" alt="Book" /></a>: {{form.source}}
+                       <br><p></p>
+                       <button type="button" class="btn btn-basic active" data-toggle="collapse" data-target="#demo{{ form.prefix }}">Solution Option Details </button> <a href="#" title="Click here if you want to add or view any relevant information, web sites or documents for this option"><img src="{% static "Info-Icon-With-Background.png" %}" alt="Info3"/></a>
+                       <div  id="demo{{ form.prefix }}" class="collapse">
+                       <br>    
+                       Details: {{form.option_details}}
+                       <br><br>
+                       <table>
+                           <tr><td>File Name:&nbsp;&nbsp;{{form.filename1}}</td> 
+                               <td>{{form.file_attachment1}}</td></tr>
+                           <tr><td>File Name:&nbsp;&nbsp;{{form.filename2}}</td> 
+                               <td>{{form.file_attachment2}}</td></tr>
+                           <tr><td>File Name:&nbsp;&nbsp;{{form.filename3}}</td> 
+                               <td>{{form.file_attachment3}}</td></tr>
+                           <tr><td>File Name:&nbsp;&nbsp;{{form.filename4}}</td> 
+                               <td>{{form.file_attachment4}}</td></tr>
+                           <tr></tr>
+                           <tr></tr>   
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname1}}</td> 
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link1}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname2}}</td> 
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link2}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname3}}</td> 
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link3}}</td></tr>
+                           <tr><td>Name of website:&nbsp;&nbsp;{{form.linkname4}}</td> 
+                               <td>&nbsp;Link:&nbsp;&nbsp;{{form.link4}}</td></tr>
+                       </table>        
+                      </div>
+                      <br><p></p>
+                      <!--Do you wish to archive this option? <a href="#" title="Choose “Yes” if you want to remove this option from further consideration. You can retrieve it at any time from Archived Solution Options."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>--> {{form.archived}}
+                      <br>
+                      {% endautoescape %}
+                      </div>
+                  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                  <script type="text/javascript">
+                    var passvar = '{{ dec_id }}';
+                    var mapping_allowed = '{{ mapping_allowed }}';
+                    //var exists = '{{ exists }}';
+                    //var x = document.getElementById("showhide{{form.prefix}}");
+
+                    //if (exists == 'no') {
+                       //x.style.display = "none";
+                    //} else { x.style.display = "block"; }  
+                    (function( $ ){
+
+                    $.fn.uncheckableRadio = function() {
+
+                    return this.each(function() {
+                    $(this).mousedown(function() {
+                    $(this).data('wasChecked', this.checked);
+                    });
+
+                    $(this).click(function() {
+                    if ($(this).data('wasChecked'))
+                    this.checked = false;
+                    });
+                    });
+
+                    };
+
+                    })( jQuery );
+
+                    $('input[type=radio]').uncheckableRadio();
+ 
+                  </script>
+        {% endfor %}
+        {% if sol_permC <= 0 or loggedinuser == created_by  %}
+        <h5 style="border: 2px solid grey; padding-left: 15px;"><br>If you need to enter additional Solution Options, click on <input class="btn btn-success btn-sm" type="submit" name="additional" value="Add Additional Solution Options"/><br><br></h5>
+        {% endif %}
+        <!--
+             <br><input class="btn btn-primary" type="submit" name="submit" value="Save and Back to Flowchart"/>                                                                                                                       
+               {% if mapping_allowed == 'Y' %}
+                 {% if scr_count == 0 %}                                                                                                             
+                     <a href="/utility_tool/decisions/solution_options/add_scr_criteria.html"><input class="btn btn-primary" type="submit" name="scrcr" value="Save and Map against Screening Criteria"/></a>  
+                 {% else %} 
+                     <a href="/utility_tool/decisions/solution_options/handsontable.html"><input class="btn btn-primary" type="submit" name="map" value="Save and Map against Screening Criteria"/></a>  
+                 {% endif %}    
+              {% endif %} 
+              <input class="btn btn-primary" type="submit" name="archived" value="Save and Go to Archived Solution Options"/> 
+             {% if loggedinuser == created_by  %} 
+                <input class="btn btn-primary" type="submit" name="st" value="Save and Add/View Stakeholders"/>  
+             {% endif %}   
+             <a href="/utility_tool/decisions/solution_options/link.html"><input class="btn btn-warning" type="button" name="cancel3" value="Create a link to share this page with anyone"/></a>
+             -->
+        {% if sol_permC > 0 and loggedinuser != created_by  %}
+            <span style="float:right;"><a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="goto"  value="Go Back to Flowchart"/></a></span>
+        {% else %}    
+            <span style="float:right;"><input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Flowchart"/></span>  
+        {% endif %}
+    </form> 
+</div>
+</div>
+</body>
+{% endblock %}
+

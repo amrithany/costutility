@@ -1,0 +1,42 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+</style>
+<div class="hero-unit">
+<div class="container">
+<div id="div1" style="width: 1000px;height: 50px;padding: 10px;background-color:lightblue;margin: 0;">
+Do you wish to enter the proposed Solution Options? 
+<a href="/utility_tool/decisions/solution_options/add_solopt.html"><input class="btn btn-success" type="button" name="button" value="Add Solution Options"/></a>
+</div>
+<div id="div4" style="width: 1000px;height: 50px;padding: 10px;background-color: lightgrey;margin: 0;">
+Do you wish to view the Guidance page on identifying options?
+<input class="btn btn-success" type="button" name="button2" value="Guidance for Identifying Options"/>
+</div>
+<div id="div2" style="width: 1000px;height: 50px;padding: 10px;background-color: lightblue;margin: 0;">
+Do you wish to narrow down the options based on some screening criteria?
+<a href="/utility_tool/decisions/solution_options/add_scr_criteria.html"><input class="btn btn-success" type="button" name="button3" value="Add Screening Criteria"/></a>
+</div>
+<div id="div3" style="width: 1000px;height: 50px;padding: 10px;background-color: lightgrey;margin: 0;">
+Do you wish to invite Stakeholders to add options?
+<input class="btn btn-success" type="button" name="button4" value="Add Stakeholders for Options"/>
+</div>
+<div id="div4" style="width: 1000px;height: 50px;padding: 10px;background-color: lightblue;margin: 0;">
+Do you wish to invite Stakeholders to add screening criteria?
+<input class="btn btn-success" type="button" name="button5" value="Add Stakeholders for Screening Criteria"/>
+</div>
+<div id="div3" style="width: 1000px;height: 50px;padding: 10px;background-color: lightgrey;margin: 0;">
+Do you wish to evaluate potential options?
+<a href="/utility_tool/decisions/handsontable.html"><input class="btn btn-success" type="button" name="button6" value="Evaluate Potential Options"/></a>
+</div>
+         <!--
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         </scrty_tool/decisions/solution_options/add_solopt.html"><input class="btn btn-success" type="button" name="button" value="Add Solution Options"/></a>ipt> -->
+<br><a href="/utility_tool/decisions/decisions_list.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Problems List"/></a>
+</div>
+</div>
+
+{% endblock %}
+

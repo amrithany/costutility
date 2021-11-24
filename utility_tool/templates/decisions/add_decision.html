@@ -1,0 +1,38 @@
+{% extends 'Header-Footer.html' %}  
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;        
+       }   
+
+.errorlist
+    {
+        color: red;
+    }
+
+ body * { font-family: "Playfair Display", serif; }                 
+</style>
+
+<body>
+<div class="hero-unit">
+    <div class="container-fluid">
+             <form id="decform" method="post" action="/utility_tool/decisions/add_decision.html" enctype="multipart/form-data">
+             {% csrf_token %}
+             <h2 class="form-signin-heading">Decision Problem Details <a href="/Steps.html#Decision-Making" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt=="Book" /></a></h2>
+              <p></p>
+            <font color="blue">        
+             <b>Step 1:</b><p>Enter information about your decision problem below. The first 5 items are required. You can fill out the rest of the information any time. 
+             <!--<p></p><b>Step 2:</b><p> When you are done, click here: <input class="btn btn-success" type="submit" name="submit" value="Save and Go to Flowchart"/>--><br><br>
+             </font>
+             <b><font color="red">{{ err }} </font></b>
+             {{ decform }}
+             <br />
+             <span style="float:right;"><input class="btn btn-success" type="submit" name="submit" value="Save and Go to Flowchart"/></span>
+         </form>
+      </div>
+</div>
+</body>
+
+{% endblock %}

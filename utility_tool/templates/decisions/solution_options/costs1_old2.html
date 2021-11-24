@@ -1,0 +1,110 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }   
+                                                                                                                                                                                                                 
+</style>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+    <div class="container-fluid">
+        <div class="row">    
+             <form id="decform" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             <h2>DO NOT USE - PAGE UNDER CONSTRUCTION</h2>
+             <h2 class="form-signin-heading">Input Cost Information</h2>
+             {{ setupform }} 
+             <br/> 
+             If you already have the cost estimates for each solution option in hand, please use the table below.
+         <br>
+         <h4>Cost Table</h4>
+         <table title="Costs" id="t1" style="font-size:16px;align:center;">
+             <tr id="header row">
+                <td bgcolor="lightblue" style="border: 1px solid grey;"><b>Solution Option</b></td>
+                 <td bgcolor="lightblue" style="border: 1px solid grey;"><b>Number of participants served</b></td>
+                 <td bgcolor="lightblue" style="border: 1px solid grey;"><b>{{cost_text}}</b></td>
+            </tr>
+            <tbody>
+            {% for c  in cost_table  %}
+            <tr id="{{c.id}}">
+             <td bgcolor="lightgrey" style="border: 1px solid grey;" id="option{{c.id}}">{{ c.sol_option }}</td>
+             {% if loggedinuser == created_by %}
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="no_of_participants{{c.id}}" contenteditable>{{ c.no_of_participants }}</div></td>
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="cost{{c.id}}" contenteditable>{{ c.cost }}</div></td>
+             {% else %}
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;" id="no_of_participants{{c.id}}">{{ c.no_of_participants }}</td>
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;" id="cost{{c.id}}">{{ c.cost }}</td>
+             {% endif %}
+            </tr>
+            </tbody>
+            <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+            <script type="text/javascript">
+            var loggedinuser = '{{loggedinuser}}';
+            var created_by = '{{created_by}}';
+            $(document).ready(function () {
+                $('#no_of_participants{{c.id}}').html() = "";
+            });  
+
+            function onclickfunc() {
+            if ($('#cost{{c.id}}').html() < 0) {
+              alert('Cost should not be less than 0');
+              e.preventDefault();
+            }
+            else {
+
+                var TableData = new Array();
+                TableData = storeTblValues()
+                var myJsonString = JSON.stringify(TableData);
+                alert(myJsonString);
+                    function storeTblValues()
+                    {
+                        $('#t1 tr').each(function(row, tr){
+                        TableData[row]={
+                            "id" : $(this).attr("id")
+                            , "sol_option" :$(tr).find('td:eq(0)').text()
+                            , "no_of_participants" : $(tr).find('td:eq(1)').text()
+                            , "cost" : $(tr).find('td:eq(2)').text()
+                        }
+                        }); 
+                        TableData.shift();  // first row is the table header - so remove
+                        return TableData;
+                    }
+
+                $.ajax({
+                    type: "POST",
+                    data:{ csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                            url:"{% url 'cost_setup' %}",
+                          'TableData': myJsonString
+                  },
+                    success: function(msg){
+                    // return value stored in msg variable
+                   alert('success');
+                    },
+                    error: function(){
+                       alert('failure'); 
+                    }  
+                });
+                }
+               return false;
+            }
+            </script>   
+            {% endfor %}
+            </table>
+            <br/> 
+             If not, you can use a free, online tool,<a href="https://www.cbcsecosttoolkit.org/" target="_blank"> CostOut</a>, funded by the Institute of Education Sciences at the U.S. Department of Education, to help you estimate the cost of each solution option. You will need information about all the resources or ingredients used to implement the program.
+          <br><br>
+         {% if loggedinuser == created_by %}
+            <input class="btn btn-primary" type="submit" name="submit" id="submit" value="Save and Back to Flowchart" onclick="onclickfunc()" />
+         {% else %}   
+            <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" id="cancel" value="Back to Decision Flowchart"/></a>
+         {% endif %} 
+         <a href="/utility_tool/decisions/solution_options/cost_table.html"><input class="btn btn-success" type="button" name="costs2" id="costs2" value="Enter Costs"/></a>
+      </form>  
+      </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }   
+.errorlist
+    {   
+        color: red;
+    }  
+    body * { font-family: "Playfair Display", serif; }    
+</style>
+<body>
+<div class="hero-unit">
+<div class="container">
+<form id="registerform" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<h2 class="form-signin-heading">Register</h2><h4 align="center">Fields marked with an asterisk (*) are required registration fields.</h4>
+<b><font color="red">{{ err }} </font></b><br>
+<label>* User Name:</label> {{registerform.user}}
+<label>* Email Address:</label> {{registerform.email}}  
+<label>* Confirm Email Address:</label> {{registerform.emailagain}}  
+<label>* Password:</label> {{registerform.password}}  
+<label>* Confirm Password:</label> {{registerform.passwordagain}}  
+<label>* First Name:</label>{{ registerform.firstName}} 
+<label>* Last Name:</label>{{ registerform.lastName}} 
+<label>* State/Province/Region:</label>{{ registerform.state}} 
+<label>* Country:</label>{{ registerform.country}} 
+<label>* Organization Name:</label>{{ registerform.organisation}}  
+<label>* Type of organization:</label>{{ registerform.type_of_org}}
+<div id="hiding-org" style="display:none"><label>Other Type of Organization:</label> {{registerform.other_org}}</div> 
+<label>* Position:</label>{{ registerform.position}} 
+<div id="hiding-pos" style="display:none"><label>Other Type of Position:</label> {{registerform.other_pos}}</div> 
+<label>* How did you hear about DecisionMaker?</label>{{ registerform.hearaboutus}} 
+<div id="hiding-hear" style="display:none"> {{registerform.other_hear}}</div> 
+<label>* Would you like to receive occasional updates if we add new features or provide training opportunities related to DecisionMaker?</label>{{ registerform.updates}}
+<label>* Highest level of education completed:</label>{{ registerform.education}}
+<label>Age:</label>{{ registerform.age}}
+<label>Gender:</label>{{ registerform.gender}}
+<label>Race/Ethnicity:</label>{{ registerform.race}}
+<div id="hiding-race" style="display:none"> {{registerform.other_race}}</div>
+<label>* For the purpose of the license agreement, are you signing as a public institution or a private institution/individual?</label>{{ registerform.publicOrPrivate}} 
+<br><br>
+<!--<input class="btn btn-primary" type="submit" name="submit" value="Register" />
+ Provide a button to click to submit the form. -->                                                                  
+<a href="license.html"><input class="btn btn-primary" type="submit" name="goto" value="Go to License Agreement"></a>
+<script type="text/javascript">
+    document.getElementById('id_type_of_org').onchange = function () {
+        var typeoforg = document.getElementById('id_type_of_org').value;
+        if (typeoforg == 'Other') {
+            document.getElementById("hiding-org").style.display = "block";
+        } else {
+            document.getElementById("hiding-org").style.display = "none";   
+        }
+    };
+    document.getElementById('id_position').onchange = function () {
+        var pos = document.getElementById('id_position').value;
+        if (pos == 'Other') {
+            document.getElementById("hiding-pos").style.display = "block";
+        } else {
+            document.getElementById("hiding-pos").style.display = "none";   
+        }
+    };      
+
+    document.getElementById('id_hearaboutus').onchange = function () {
+        var pos = document.getElementById('id_hearaboutus').value;
+        if (pos == 'Other (please specify)') {
+            document.getElementById("hiding-hear").style.display = "block";
+        } else {
+            document.getElementById("hiding-hear").style.display = "none";   
+        }
+    };      
+
+    document.getElementById('id_race').onchange = function () {
+        var pos = document.getElementById('id_race').value;
+        if (pos == 'Other') {
+            document.getElementById("hiding-race").style.display = "block";
+        } else {
+            document.getElementById("hiding-race").style.display = "none";   
+        }
+    };      
+</script>
+</form>
+</div>
+</div>
+</body>
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+<style TYPE="text/css">
+       body * { font-family: "Playfair Display", serif; }
+
+ol {
+  padding: 0;
+  margin-left: 1em;
+}
+
+</style>
+ <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">                                                                                                             
+ <body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid">
+             <form id="sform" method="post" action="/utility_tool/decisions/solution_options/solopt_storage.html" enctype="multipart/form-data">
+                 <h2 class="form-signin-heading">Import Solution Options <a href="/Steps.html#Solution-Options" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a> 
+             </h2>
+             <p> Use this page if you have a long list of Solution Options (e.g., budget items, school sites, people) and prefer to enter their details in an Excel template and import them all at once rather than entering them one by one in <i>DecisionMaker</i>.</p>
+             {% csrf_token %}
+             <br><b><font color="red">{{err}} </font></b>
+             <font color="blue"> 
+             <ol type="I">
+             <p><li>Download this Excel template and save to your desktop or other location: <a href="https://amritha.pythonanywhere.com/static/Solution Options template.xlsx"> <input class="btn btn-primary btn-sm" type="button" name="download" value="Download Excel Template"/></a></li></p>
+             <p><li>Enter your information about Solution Options in the template and save. You can leave columns blank but don’t delete any columns.</li></p>
+             <p><li>Click here to select your completed template:  {{sform.solopt_file}} </li></p>
+             <p><li>Click here to import the file and populate the Solution Options page in <i>DecisionMaker</i>:  <input class="btn btn-primary btn-sm" type="submit" name="submit"  value="Upload file & Import into Solution Options"></li></p>
+             <p><li>Return to the Solution Options page and check your upload worked.  <a href="/utility_tool/decisions/solution_options/add_solopt_det.html"><input class="btn btn-success btn-sm" type="button" name="back" value="Back to Solution Options"/></a> </li></p>
+             </ol> 
+             </font>
+</form>
+</div>
+</div>
+</body>
+{% endblock %}
+

@@ -1,0 +1,52 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+</style>
+<div class="hero-unit">
+<div class="container">
+<form class="form-signin span8" id="form1" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+<br>
+Who will suggest possible solution options to address the decision problem you described?  <br><br> 
+<input type="radio" name="whoEntersSO" value="Me"> Me <br>
+<input type="radio" name="whoEntersSO" value="Stake"> I will invite some stakeholders to suggest possible solution options <br>
+<input type="radio" name="whoEntersSO" value="Both" checked="checked"> Both me and some stakeholders <br><br>
+<br>
+Do you want everyone to enter options in one list so they can all see all options being suggested, or would you prefer they each enter options on a blank private form which only you and the individual respondent can see? <br><br>
+<input type="radio" name="listType" value="One" checked="checked"> One list for everyone <br>
+<input type="radio" name="listType" value="Private"> Private list for me and one for each stakeholder <br>
+<br>
+<input class="btn btn-success" type="button" name="cancel" value="<< Back" onclick="goback();"/>
+<input class="btn btn-success" type="submit" name="next" value="Next >>" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("input[name='next']").click(function(){
+            var radioValue = $("input[name='whoEntersSO']:checked").val();
+            var radioValue2 = $("input[name='listType']:checked").val();
+            postValues();
+        });
+        
+    });
+
+    function goback() {
+       document.location.href = "/utility_tool/decisions/solution_options/"  + {{dec_id}} + "/question1.html";
+   }
+
+   function postValues(){
+    var data = {'whoEntersSO': radioValue, 'listType': radioValue2};
+    alert('data');
+    $.post(URL, data, function(response){
+        if(response === 'success'){ alert('Yay!'); }
+        else{ alert('Error! :'); }
+    });
+   }
+</script>
+</form>
+</div>
+</div>
+
+{% endblock %}
+

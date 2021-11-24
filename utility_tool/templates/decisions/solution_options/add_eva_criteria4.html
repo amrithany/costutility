@@ -1,0 +1,656 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style>
+input[name='evacr_q']{
+    outline:2px solid #6495ED;
+    outline-offset: -2px;
+}
+input[name='evacr_q']:checked {
+    outline:2px solid #6495ED;
+    outline-offset: -2px;
+}
+input[name='evacr_q2']{
+    outline:2px solid #348634;
+    outline-offset: -2px;
+}
+input[name='evacr_q2']:checked {
+    outline:2px solid #348634;
+    outline-offset: -2px;
+}
+input[name='evacr_q2']{
+    outline:2px solid #ab42ab;
+    outline-offset: -2px;
+}
+input[name='evacr_q2']:checked {
+    outline:2px solid #ab42ab;                                                                                                                                                                                   
+    outline-offset: -2px;
+}
+</style>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid">
+             <form method="post" id="evacr_form" enctype="multipart/form-data">
+              {% csrf_token %}
+              <script src="{% static 'js/bootstrap.min.js' %}"></script>
+             <h4 class="form-signin-heading">Current Solution Options</h4>    
+             <table>
+                  {% for o in solopt %}    
+                  <tr>
+                      <td> {{forloop.counter}}. &nbsp;          {{o.sol_option|truncatechars:500}} </td>
+                  </tr>
+                  {% endfor %}
+             </table>
+             <br>
+             <h2 class="form-signin-heading">Evaluation Criteria - page under construction</h2>
+             <h5 style="border: 2px solid grey;padding-left: 15px;">
+              <br>Use this page to list evaluation criteria, i.e., factors you will consider in assessing each of the Solution Options to help you choose among them
+              <br><br>If you click on the light grey triangle at the right-hand side of each cell in the Evaluation Criteria column below, you can select from a list of possible evaluation criteria. You can also write in your own evaluation criteria
+              <br><br> Note that DecisionMaker assumes that costs are always a factor in decision-making. In a later step you will be asked to enter estimated costs of implementing each Solution Option so you should not specify costs as an evaluation criterion here
+              <br><br>Examples of evaluation criteria for a decision about a new elementary school literacy curriculum might include:
+              <ul><li type="square" style="color: #888;"> Strength of research evidence to suggest curriculum improves reading comprehension for K-5 students </li>
+              <li type="square" style="color: #888;">  Curriculum  reflects community values </li>
+              <li type="square" style="color: #888;">  Level of teacher buy-in for adoption of this curriculum </li>
+              <li type="square" style="color: #888;">  Feasibility of integrating this curriculum with current schedule </li> </ul>
+              <br>You can enter as many criteria as you think it will be feasible to evaluate each option against.  The average number used is 6
+              <br><br></h5>    
+             <input class="btn btn-primary" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>
+             {% if loggedinuser == created_by  %} 
+                <input class="btn btn-primary" type="submit" name="st" id="st" value="Save and Add/View Stakeholders"/>  
+             {% endif %}   
+             <br><br>
+             <font color="blue"><b>Please select one or more Overreaching Evaluation Criteria in order to view and choose the Granular Evaluation Criteria.</b></font><br>   
+             {% for q in qset %}                                                                                                                          
+              <input id='justafield' type='hidden' name='hiddenfield_or'>
+              <input type="checkbox" name="evacr" class="checkchoice" id="{{q.overreaching_ec}}" value="{{q.overreaching_ec}}"> {{q.overreaching_ec}}     
+              <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 //var uncheckedList=new Array; 
+                 $('document').ready(function(){
+                    {% for qx in qset2 %}
+            
+                    fieldname = "{{qx.or_criterion}}";
+
+                    $("[name=evacr]").each( function() {   
+                        if ( $(this).val() ==  fieldname )
+                            $(this).attr('checked', true);
+                    }); 
+                  {% endfor %}
+                 });
+
+                 /*$( "#evacr_form" ).submit(function(e) {
+                     $("[name=evacr]").each( function() { 
+                       //alert($(this).val());  
+                       //alert($(this).is(':checked'));   
+                       temp_var = $(this).val() + $(this).is(':checked');
+                       $('#Hidden').val(temp_var); 
+                       // if ( !$(this).is(':checked') ) {
+                         //  $(this).val("{{q.overreaching_ec}}-U");
+                       // }
+
+                     });
+                  });*/ 
+                 </script>
+             {% endfor %}
+              <div id="add">   
+              {% for q2 in qset_add %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Addresses the identified need - {{q2.granular_ec}}         
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#add").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>  
+              <div id="eq">   
+              {% for q2 in qset_eq %}
+              <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Equity - {{q2.granular_ec}}             
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#eq").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>  
+              <div id="ext">   
+              {% for q2 in qset_ext %}
+              <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>    
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> External recommendations - {{q2.granular_ec}}             
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#ext").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}                                                                                                                                                                                       
+             </div>
+              <div id="feas">
+              {% for q2 in qset_feas %}
+              <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Feasibility of implementation - {{q2.granular_ec}}                                                             
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#feas").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>  
+              <div id="loc">   
+              {% for q2 in qset_loc %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>    
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Fit with local context - {{q2.granular_ec}}             
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#loc").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>  
+              <div id="pe">   
+              {% for q2 in qset_pe %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>   
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Impact on parent engagement - {{q2.granular_ec}}             
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#pe").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}                                                                                                                                                                                       
+             </div>  
+              <div id="aced">
+              {% for q2 in qset_aced %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Impact on student academic performance - {{q2.granular_ec}}                                                             
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#aced").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>  
+              <div id="emot">   
+              {% for q2 in qset_emot %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Impact on student socio-emotional development - {{q2.granular_ec}}             
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#emot").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>  
+              <div id="staf">   
+              {% for q2 in qset_staf %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Impact on student/staff engagement - {{q2.granular_ec}}                                                              
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#staf").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}                                                                                                                                                                                       
+             </div> 
+              <div id="teac">
+              {% for q2 in qset_teac %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Improves teacher performance - {{q2.granular_ec}}                                                              
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#teac").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}                                                                                                                                                                                       
+             </div>  
+              <div id="stand">
+              {% for q2 in qset_stand %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Meets required standards and regulations - {{q2.granular_ec}}                                                    
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#stand").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>
+              <div id="qual">
+              {% for q2 in qset_qual %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>   
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Quality of implementation (for programs/strategies/tools already in place) - {{q2.granular_ec}}
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#qual").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}
+             </div>
+              <div id="stx">
+              {% for q2 in qset_stx %}
+               <input id='{{q2.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>  
+              &emsp;&emsp;<input type="checkbox" name="evacr_q" id="{{q2.id}}" value="{{q2.id}}"> Support from stakeholders - {{q2.granular_ec}}
+              <input type="text" id="{{q2.id}}two" name="{{q2.id}}two" style="width: 1000px;">    
+               <br>
+                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                 <script type="text/javascript">
+                 $('document').ready(function(){
+                 {% for qx in qset2 %}
+            
+                    fieldname = '{{ qx.orig_eva_id }}';
+                    if (fieldname == "{{q2.id}}") {
+                         $("#stx").show();
+                         $("#{{q2.id}}").prop("checked", true);
+                         $("#{{q2.id}}two").val("{{qx.criterion2}}");  
+                    }
+                 {% endfor %}
+                 });
+
+
+                 $( "#evacr_form" ).submit(function(e) {
+                     if (!$("#{{q2.id}}").is(":checked")) {
+                         $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                     }  
+                 });
+                 </script>
+              {% endfor %}                                                                                                                                                                                       
+             </div> 
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         var dec_id = '{{ dec_id }}';
+         var stakeholdersNow = '{{stakeholdersNow}}';
+
+         $("#add").hide();
+         $("#eq").hide();
+         $("#ext").hide();
+         $("#feas").hide();
+         $("#loc").hide();
+         $("#pe").hide();
+         $("#aced").hide();
+         $("#emot").hide();
+         $("#staf").hide();
+         $("#teac").hide();
+         $("#stand").hide();
+         $("#qual").hide();
+         $("#stx").hide();
+
+         /*$( "#evacr_form" ).submit(function(e) {
+                 if (!$("#{{q2.id}}").is(":checked")) {
+                 $("#{{q2.id}}Hidden").val("{{q2.id}}U");
+                 }  
+                 else { $("#{{q2.id}}Hidden").val("{{q2.id}}C"); }
+         });*/
+
+         $(function() {
+            $(".checkchoice").change(function() {
+                if (this.id == 'Addresses the identified need') {
+                    if ( $(this).is(':checked') ) {
+                      $("#add").show();
+                    } else {
+                      $("#add").hide();
+                    }
+                } 
+                if (this.id == 'Equity') {
+                    if ( $(this).is(':checked') ) {
+                      $("#eq").show();
+                    } else {
+                      $("#eq").hide();
+                    }
+                }  
+                if (this.id == 'External recommendations') {
+                    if ( $(this).is(':checked') ) {
+                      $("#ext").show();
+                    } else {
+                      $("#ext").hide();
+                    }
+                }
+                if (this.id == 'Feasibility of implementation') {
+                    if ( $(this).is(':checked') ) {
+                      $("#feas").show();
+                    } else {
+                      $("#feas").hide();
+                    }
+                } 
+                if (this.id == 'Fit with local context') {
+                    if ( $(this).is(':checked') ) {
+                      $("#loc").show();
+                    } else {
+                      $("#loc").hide();
+                    }
+                }  
+                if (this.id == 'Impact on parent engagement') {
+                    if ( $(this).is(':checked') ) {
+                      $("#pe").show();
+                    } else {
+                      $("#pe").hide();                                                                                                                                                                          
+                    }
+                }  
+                if (this.id == 'Impact on student academic performance') {
+                    if ( $(this).is(':checked') ) {
+                      $("#aced").show();
+                    } else {
+                      $("#aced").hide();
+                    }
+                } 
+                if (this.id == 'Impact on student socio-emotional development') {
+                    if ( $(this).is(':checked') ) {
+                      $("#emot").show();
+                    } else {
+                      $("#emot").hide();
+                    }
+                }  
+                if (this.id == 'Impact on student/staff engagement') {
+                    if ( $(this).is(':checked') ) {
+                      $("#staf").show();
+                    } else {
+                      $("#staf").hide();                                                                                                                                                                          
+                    }
+                }
+                if (this.id == 'Improves teacher performance') {                                                                                                                                                  
+                    if ( $(this).is(':checked') ) {
+                      $("#teac").show();
+                    } else {
+                      $("#teac").hide();                                                                                                                                                                          
+                    }
+                }  
+                if (this.id == 'Meets required standards and regulations') {
+                    if ( $(this).is(':checked') ) {
+                      $("#stand").show();
+                    } else {
+                      $("#stand").hide();
+                    }
+                } 
+                if (this.id == 'Quality of implementation (for programs/strategies/tools already in place)') {
+                    if ( $(this).is(':checked') ) {
+                      $("#qual").show();
+                    } else {
+                      $("#qual").hide();
+                    }
+                }  
+                if (this.id == 'Support from stakeholders') {
+                    if ( $(this).is(':checked') ) {
+                      $("#stx").show();
+                    } else {
+                      $("#stx").hide();                                                                                                                                                                         
+                    }
+                }    
+            });
+        });
+         </script> 
+         <br>
+        <font color="blue"><b>If you would like to enter Evaluation Criteria as free text, please use the text boxes below to do so.</b> </font><br>
+        <input type="text" id="cri1" name="cri1" style="width: 1000px;" value=""><br>                                                                                                                            
+        <input type="text" id="cri2" name="cri2" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri3" name="cri3" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri4" name="cri4" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri5" name="cri5" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri6" name="cri6" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri7" name="cri7" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri8" name="cri8" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri9" name="cri9" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri10" name="cri10" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri11" name="cri11" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri12" name="cri12" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri13" name="cri13" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri14" name="cri14" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri15" name="cri15" style="width: 1000px;" value=""><br> 
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         $('document').ready(function(){
+         {% for q3 in qset3 %}
+                fieldname = "{{q3.fieldname}}";
+                if (fieldname == "cri1"){
+                    $("#cri1").val("{{q3.criterion}}");   }
+                else if (fieldname == "cri2"){
+                    $("#cri2").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri3"){ 
+                    $("#cri3").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri4"){ 
+                    $("#cri4").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri5"){ 
+                    $("#cri5").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri6"){ 
+                    $("#cri6").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri7"){ 
+                    $("#cri7").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri8"){ 
+                    $("#cri8").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri9"){  
+                    $("#cri9").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri10"){ 
+                    $("#cri10").val("{{q3.criterion}}");   } 
+                else if (fieldname == "cri11"){ 
+                    $("#cri11").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri12"){ 
+                    $("#cri12").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri13"){ 
+                    $("#cri13").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri14"){ 
+                    $("#cri14").val("{{q3.criterion}}");   }  
+                else if (fieldname == "cri15"){ 
+                    $("#cri15").val("{{q3.criterion}}");   }   
+         {% endfor %}
+         });
+         </script> 
+     </form>
+     </div>
+</div>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,215 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style>
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 15%;
+    padding: 5px;    
+    padding-left: 40px; 
+    text-align:justify;
+}
+.column2 {
+    float: left;    
+    width: 30%;
+    padding:0;
+    margin:0;
+    padding-left: 40px; 
+    text-align:justify;
+   }  
+   body * { font-family: "Playfair Display", serif; }   
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+    <div class="container-fluid">
+             <form method="post" id="scrcr_form" enctype="multipart/form-data">
+               {% csrf_token %} 
+                <script src="{% static 'js/bootstrap.min.js' %}"></script>  
+             <h2 class="form-signin-heading">Screening Criteria
+                 <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+                 <a href="/Steps.html#Screening-Criteria" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>
+             </h2>
+             <div id="myDIV">
+             <h5 style="border: 2px solid grey;padding-left: 15px;">
+                 <br>Screening criteria are non-negotiable requirements that you can use to help you narrow down the list of Solution Options to a number that will be feasible to evaluate fully. You can select from the suggestions below or write in your own. 2-3 items are probably enough but use as many as are helpful.
+                 <br><br>Screening criteria should be items that can be answered yes/no quickly for each possible Solution Option. 
+                 <br><br>Any criterion that cannot be assessed quickly should be entered as an "Evaluation Criterion" later in the flowchart so you can gather more information to more thoroughly evaluate whether each option meets this criterion. 
+                 <br><br>You can also start with this list of requirements to prompt ideas for Solution Options. 
+                 <br><br>If you don’t need to narrow the list of Solution Options, skip this step and proceed straight to the “Evaluation Criteria” step in the flowchart.
+                 <font color="maroon">
+                     <br><br>Example: If you are choosing a digital tool for middle school math practice, initial Screening Criteria might include:
+                     <br><br>&emsp;&emsp;Works on Chromebooks
+                         <br>&emsp;&emsp;Research evidence exists to show tool helps middle school students improve math performance
+                     <br><br>It may be easy to determine whether a tool works on Chromebooks but it may take more time and effort to look for or collect your own evidence of effectiveness. As a result, you may decide to move the second item to Evaluation Criteria. 
+                 </font>
+             <br><br></h5>
+             </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                <script type="text/javascript">
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+                </script>
+                <p></p>     
+                <font color="blue">     
+                    <b>Step 1:</b><p>Use the checkboxes to select relevant requirements that will help you screen the Solution Options to ensure they are real possibilities worth evaluating further. 
+                    <br><p></p>    
+                    <b>Step 2:</b><p>If helpful, add details in the textboxes to the right of the Screening Criteria you selected. 
+                    <br><p></p>
+                    <b>Step 3:</b><p>You can write in your own Screening Criteria in the empty textboxes underneath the list of suggested items.
+                <br><p></p>
+                <!--<b>Step 2:</b><p>When you are done, click here: <input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/>    -->
+               </font> 
+             <!--<input class="btn btn-primary" type="submit" name="submit2" value="Add / View Information on Criteria"/>-->
+             <br><b><font color="red">{{ err }} </font></b><br>
+             &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+             Optional: Enter any additional relevant details about this Screening Criterion here
+             {% for q in qset %}
+             <input id='{{q.id}}Hidden' type='hidden' value='unchecked' name='hiddenfield'>
+             <div class="row">
+             <div class="column2">
+             {% if shared == "Y" %}
+             <input type="checkbox" name="scrcr" id="{{q.id}}" value="{{q.id}}" disabled="disabled"> {{q.criterion}} 
+             {% else %}
+             <input type="checkbox" name="scrcr" id="{{q.id}}" value="{{q.id}}"> {{q.criterion}} 
+             {% endif %}      
+             </div>
+             <div class="column2"> 
+             {% if shared == "Y" %}   
+             <input type="text" id="{{q.id}}two" name="{{q.id}}two" style="width: 1000px;" readonly> 
+             {% else %}
+             <input type="text" id="{{q.id}}two" name="{{q.id}}two" style="width: 1000px;"> 
+             {% endif %}
+             </div>
+             </div>   
+             <!--<input type="text" id="cri10" name="cri10" style="width: 1000px;"><br>     
+             -->
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         var dec_id = '{{ dec_id }}';
+         var stakeholdersNow = '{{stakeholdersNow}}';
+         var unselected = [];    
+         $('document').ready(function(){
+         {% for q2 in qset2 %}
+            
+            fieldname = '{{ q2.orig_scr_id }}';
+            if (fieldname == "{{q.id}}") {
+                 $("#{{q.id}}").prop("checked", true);
+                 crit1 = '{{q2.criterion2}}';
+                 crit1 = crit1.replace(/&#39;/g,"'");      
+                 crit1 = crit1.replace(/&amp;/g, "&");        
+                 crit1 = crit1.replace(/&quot;/g, '"');   
+
+                 $("#{{q.id}}two").val(crit1);  
+            }
+
+         {% endfor %}
+         });
+
+
+         $( "#scrcr_form" ).submit(function(e) {
+                 if (!$("#{{q.id}}").is(":checked")) {
+                 $("#{{q.id}}Hidden").val("{{q.id}}U");
+                 }  
+                 else { $("#{{q.id}}Hidden").val("{{q.id}}C"); }
+         });
+
+         </script> 
+         {% endfor %}
+         <br>
+         <font color="blue"><b>If you would like to enter your own Screening Criteria, use the textboxes below: </b> </font><br>
+        {% if shared == "Y" %} 
+        <input type="text" id="cri1" name="cri1" style="width: 1000px;" value="" readonly><br>                                                                                                                          
+        <input type="text" id="cri2" name="cri2" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri3" name="cri3" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri4" name="cri4" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri5" name="cri5" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri6" name="cri6" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri7" name="cri7" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri8" name="cri8" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri9" name="cri9" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri10" name="cri10" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri11" name="cri11" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri12" name="cri12" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri13" name="cri13" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri14" name="cri14" style="width: 1000px;" value="" readonly><br> 
+        <input type="text" id="cri15" name="cri15" style="width: 1000px;" value="" readonly><br> 
+        {% else %}
+        <input type="text" id="cri1" name="cri1" style="width: 1000px;" value=""><br>                                                                   
+        <input type="text" id="cri2" name="cri2" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri3" name="cri3" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri4" name="cri4" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri5" name="cri5" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri6" name="cri6" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri7" name="cri7" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri8" name="cri8" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri9" name="cri9" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri10" name="cri10" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri11" name="cri11" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri12" name="cri12" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri13" name="cri13" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri14" name="cri14" style="width: 1000px;" value=""><br> 
+        <input type="text" id="cri15" name="cri15" style="width: 1000px;" value=""><br> 
+        {% endif %}
+
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         $('document').ready(function(){
+         {% for q3 in qset3 %}
+                fieldname = "{{q3.fieldname}}";
+                crit = '{{q3.criterion}}';
+                crit = crit.replace(/&#39;/g,"'");  
+                crit = crit.replace(/&amp;/g, "&");
+                crit = crit.replace(/&quot;/g, '"');      
+
+                if (fieldname == "cri1"){
+                    $("#cri1").val(crit);   }
+                else if (fieldname == "cri2"){
+                    $("#cri2").val(crit);   }  
+                else if (fieldname == "cri3"){ 
+                    $("#cri3").val(crit);   }  
+                else if (fieldname == "cri4"){ 
+                    $("#cri4").val(crit);   }  
+                else if (fieldname == "cri5"){ 
+                    $("#cri5").val(crit);   }  
+                else if (fieldname == "cri6"){ 
+                    $("#cri6").val(crit);   }  
+                else if (fieldname == "cri7"){ 
+                    $("#cri7").val(crit);   }  
+                else if (fieldname == "cri8"){ 
+                    $("#cri8").val(crit);   }  
+                else if (fieldname == "cri9"){  
+                    $("#cri9").val(crit);   }  
+                else if (fieldname == "cri10"){ 
+                    $("#cri10").val(crit);   } 
+                else if (fieldname == "cri11"){ 
+                    $("#cri11").val(crit);   }  
+                else if (fieldname == "cri12"){ 
+                    $("#cri12").val(crit);   }  
+                else if (fieldname == "cri13"){ 
+                    $("#cri13").val(crit);   }  
+                else if (fieldname == "cri14"){ 
+                    $("#cri14").val(crit);   }  
+                else if (fieldname == "cri15"){ 
+                    $("#cri15").val(crit);   }   
+         {% endfor %}
+         });
+         </script> 
+         {% if shared == "Y" %}
+          <span style="float:right;"><a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Flowchart"/></a></span>     
+         {% else %}
+          <span style="float:right;"><input class="btn btn-success btn-sm" type="submit" name="submit" id="submit" value="Save and Back to Flowchart"/></span> 
+          {% endif %}   
+        </form>   
+      </div>
+</div>
+</body>
+
+{% endblock %}
+
+

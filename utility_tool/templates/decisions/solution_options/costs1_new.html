@@ -1,0 +1,153 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }   
+                                                                                                       
+.td1 {background:#EEEEEE;color:#000;border:1px solid #000;}
+.th{background:blue;color:white;border:1px solid #000;}
+A:link {COLOR: #0000EE;}
+A:hover {COLOR: #0000EE;}
+A:visited {COLOR: #0000EE;}
+A:hover {COLOR: #0000EE;}
+.div_freezepanes_wrapper{
+    position:relative;
+    /*width:160%;*/
+    /*height:500px;*/
+    /*overflow:hidden;*/
+    background:#fff;
+    border-style: ridge;
+}
+#t1_fixed tr td {
+  height: 121px;
+}
+#t1 tr td {
+  height: 121px;
+}
+#t1_fixed tr td {
+  max-width: 150px;
+}
+                                                                                                                                                                                                                 
+#t1 tr:nth-of-type(1) td {
+  min-width: 300px;
+}
+.table_container {
+  width: calc(110% - 420px);
+  overflow-x: scroll;
+  position: absolute;
+  top: 0;
+  left: 420px;
+}
+#form1 {
+  width:90%;
+}
+.div_verticalscroll{
+    position: absolute;right:0px;width:18px;height:100%;
+    background:#EAEAEA;border:1px solid #C0C0C0;
+}
+.buttonUp{
+    width:20px;position: absolute;top:2px;
+}
+.buttonDn{
+    width:20px;position: absolute;bottom:22px;
+}
+.div_horizontalscroll{
+    position: absolute;bottom:-22px;width:110%;height:22px;
+    background:#EAEAEA;border:1px solid #C0C0C0;
+}
+.buttonRight{                                                                                                                                                                                                    
+    width:20px;position: absolute;left:0px;padding-top:2px;
+}
+.buttonLeft{
+    width:20px;position: absolute;right:0px;padding-top:2px;
+}
+                                                                                                          
+</style>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+    <div class="container-fluid">
+             <form id="decform" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             <h2 class="form-signin-heading">Input Cost Information</h2>
+             <br>
+             {{ setupform }} 
+             <br/> 
+             If you already have the cost estimates for each solution option in hand, please enter the costs below.
+             <br/><br />
+            <table title="Costs" id="t1" style="font-size:16px;align:center;">
+             <tr> 
+                <td bgcolor="lightblue" style="border: 1px solid grey;"><b>Solution Option</b></td>
+                 <td bgcolor="lightblue" style="border: 1px solid grey;"><b>Number of participants served</b></td>
+                 <td bgcolor="lightblue" style="border: 1px solid grey;"><b>{{cost_text}}</b></td>
+            </tr>
+            <tbody>
+            {% for c  in costs_table  %}
+            <tr>
+             <td bgcolor="lightgrey" style="border: 1px solid grey;" id="option{{c.id}}">{{ c.sol_option }}</td>
+             {% if loggedinuser == created_by %}
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="no_of_participants{{c.id}}" contenteditable>{{ c.no_of_participants }}</div></td>
+                 <td bgcolor="white" style="border: 1px solid grey;"><div id="cost{{c.id}}" contenteditable>{{ c.cost }}</div></td>
+             {% else %}
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;" id="no_of_participants{{c.id}}">{{ c.no_of_participants }}</td>
+                 <td bgcolor="lightgrey" style="border: 1px solid grey;" id="cost{{c.id}}">{{ c.cost }}</td>
+             {% endif %}
+            </tr>
+            </tbody>
+            <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+            <script type="text/javascript">
+            var loggedinuser = '{{loggedinuser}}';
+            var created_by = '{{created_by}}';
+            $(document).ready(function () {
+                    $('#no_of_participants{{c.id}}').html() = "";
+            }); 
+
+           $('#submit').off('click');
+           $("#submit").on('click', function (e) {
+           if ($('#cost{{c.id}}').html() < 0) {
+              alert('Cost should not be less than 0');
+              e.preventDefault();
+           }
+           else {
+              e.preventDefault();
+              $.ajax({
+                 type:"POST",
+                 url:"{% url 'cost_table' %}",
+                 data: {
+                        csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                        'id':{{c.id}},
+                        'sol_option':$('#sol_option{{c.id}}').text(),
+                        'no_of_participants':$('#no_of_participants{{c.id}}').html(),
+                        'cost':$('#cost{{c.id}}').html()
+                        },
+                  success: function(){
+                  //alert('success');
+                  window.location.reload();
+                  },
+                  error: function(){
+                  //alert('failure');
+                  }    
+            });}
+            return false;
+            });
+          </script>
+          {% endfor %}
+          </table> 
+          <br><br> 
+             If not, you can use a free, online tool,<a href="https://www.cbcsecosttoolkit.org/" target="_blank"> CostOut </a>, funded by the Institute of Education Sciences at the U.S. Department of Education, to help you estimate the cost of each solution option. You will need information about all the resources or ingredients used to implement the program. 
+         <!-- Provide a button to click to submit the form. -->
+         <br><br>
+         {% if loggedinuser == created_by %}
+            <input class="btn btn-primary" type="submit" name="submit" value="Save and Back to Flowchart"/>
+         {% else %}   
+            <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" id="cancel" value="Back to Decision Flowchart"/></a>
+         {% endif %}   
+
+         </form>
+      </div>
+</div>
+
+
+{% endblock %}

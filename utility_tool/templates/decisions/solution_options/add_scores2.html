@@ -1,0 +1,111 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style>
+.slider-wrapper input {
+  width: 800px;
+  height: 20px;
+}
+
+.textfield input {
+    width: 100px;
+    height: 20px;
+    padding: 0px;
+    margin: 0px;
+}
+ 
+.slidecontainer {
+    width: 800%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 800%;
+    height: 25px;
+    border-radius: 5px;   
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; 
+    background: #2c3e50;
+    cursor: pointer;
+}
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #2c3e50;
+    cursor: pointer;
+}
+
+</style>
+
+<!-- https://codepen.io/seanstopnik/pen/CeLqA --> 
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="scoresform">
+         <form method="post" id="scoresform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Add Importance Scores to Evaluation Criteria</h2>
+             <table>
+                <thead>
+                    <th>Criterion</th>
+                    <th>Score</th>
+                    <th></th>
+                    <th>Added By</th>
+                 </thead>
+                 <tbody>
+                 {% csrf_token %}
+                 {{ scoresform.management_form }}
+                      {% for form in scoresform %}
+                      {{ form.id }}
+                        <tr>
+                            <td>{{form.criterion}}</td> 
+                            <td class="slider-wrapper"><input type="range" min="1" max="100" id="{{form.prefix}}" name="{{form.prefix}}"  class="slider"  onchange="updateTextInput(this.value,'{{form.prefix}}');"></td>
+                            <td> {{form.score}}</td>
+                            <td>{{form.created_by}}</td>
+                        </tr> 
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+          var passvar = '{{ dec_id }}';
+
+
+         function updateTextInput(val, prefix) {
+             $('#id_' + prefix + '-score').val(val); 
+         }
+
+         $(document).ready(function() {
+           var prefix = '{{form.prefix}}';   
+           var score = $('#id_' + prefix + '-score').val();
+           //$('#prefix_foo').val(score); 
+           //$('#page').page();
+           //$('#prefixfoo').slider('value', 3);
+           //$('#pewfixfoo').slider('refresh');
+           //document.getElementById("prefix").value = "75"; 
+           $("#prefix").slider('value',50); 
+           $('#prefix').slider('refresh');
+         });         
+
+         </script>
+         {% endfor %}
+         </tbody>
+         </table>
+         <input class="btn btn-primary" type="submit" name="submit" value="Save"/>                
+         <!--<input class="btn btn-primary" type="submit" name="submit2" value="Add / View Information on Criteria"/>-->
+         <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"/></a>
+     </form>  
+      </div>
+</div>
+
+
+{% endblock %}
+
+

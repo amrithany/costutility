@@ -1,0 +1,63 @@
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="{% static 'css/Header.css' %}" rel="stylesheet"> 
+  <link href="{% static 'css/Style.css' %}" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600&display=swap" rel="stylesheet">
+</head>
+<!--AMRITHA make sure to remove starting here and ending where I indicate--><div class="navbar">
+  <div class="nav-upper">
+      <span style="padding-right: 1%"><i>DecisionMaker</i>&reg; – the CBCSE Cost-Utility Tool Kit&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>© 2019 Teachers College, Columbia University. All rights reserved.</span>
+    </div>
+  <a class="active" href="Home.html">Home</a>
+  <a href="Home.html#About-Us">About DM</a>
+  <a href="tutorials.html">Tutorials</a> 
+  <a href="/utility_tool/decisions/decisions_list.html">My Decisions</a>
+  <a href="/utility_tool/stakeholders/stakeholders.html">My Stakeholders</a>
+  <a href="Resources-Guidance.html">Resources & Guidance</a>
+  <a href="license2.html">License</a>
+  <a href="Contact-Us.html">Contact Us</a>
+  <a href="Who-We-Are.html">Who We Are</a>
+  {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+     <a href="/utility_tool/users/login.html">Login</a>
+  {% else %}
+     <a href="/logout.html">Logout</a>
+  {% endif %}
+  </div>
+<div class="mobile-nav">
+  <div class="nav-upper-mobile">
+    <span style="padding-right: 1%"><i>DecisionMaker</i>&reg; – the&nbspCBCSE&nbspCost-Utility&nbspTool&nbspKit&nbsp©&nbsp2019&nbspTeachers&nbspCollege,&nbspColumbia&nbspUniversity</span>
+</div>
+<div class="menuToggle">
+    <input type="checkbox">
+    <span></span>
+    <span></span>
+    <span></span>
+      <ul class="nav-mobile">
+        <a href="Home.html"><li class="nav">Home</li></a>
+        <a href="Home.html#About-Us"><li class="nav">About DM</li></a>
+        <a href="tutorials.html"><li class="nav">Tutorials</li></a> 
+        <a href="/utility_tool/decisions/decisions_list.html"><li class="nav">My Decisions</li></a>
+        <a href="/utility_tool/decisions/decisions_list.html/stakeholders.html"><li class="nav">My Stakeholders</li></a>
+        <a href="Resources-Guidance.html"><li class="nav">Resources & Guidance</li></a>
+        <a href="license2.html"><li class="nav">License</li></a>    
+        <a href="Contact-Us.html"><li class="nav">Contact Us</li></a>
+        <a href="Who-We-Are.html"><li class="nav">Who We Are</li></a>  
+        {% if loggedinuser == '' or loggedinuser == ' ' or loggedinuser is None or loggedinuser == 'not found' %}
+             <a href="/utility_tool/users/login.html"><li class="nav">Login</li></a>
+        {% else %}
+             <a href="/logout.html">Logout</a>
+        {% endif %}
+      </ul>
+      </div>
+    </div>
+    <div class="body">
+        <br>     <br>  <br>  <br>  <br>  <br>  <br>  
+        <h5><a href="tutorials_dm.html"><li class="nav">DecisionMaker Tutorials</li></a>
+            <br><a href="tutorials_ca.html"><li class="nav">Cost Analysis Tutorials</li></a>
+            <br><a href=""><li class="nav">Relevance and Credibility Indices Tutorials</li></a> </h5>
+    </div>
+</html>

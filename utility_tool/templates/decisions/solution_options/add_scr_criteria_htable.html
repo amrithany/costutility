@@ -1,0 +1,169 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style type="text/css">
+body .handsontable .grey {
+  color: black;
+    background: #DCDCDC;
+    }
+
+body .handsontable .htAutocompleteArrow {
+         color: black;
+    }
+    </style>    
+</style><script src="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.css">
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+    <div class="container-fluid">
+             <form method="post" enctype="multipart/form-data">
+               {% csrf_token %} 
+                <script src="{% static 'js/bootstrap.min.js' %}"></script>  
+             <h2 class="form-signin-heading">Screening Criteria</h2>
+             <h5 style="border: 2px solid grey;padding-left: 15px;">
+                 <br>Screening criteria are non-negotiable requirements that you can use to help you narrow down the list of Solution Options to a number that will be feasible to evaluate fully
+                 <br><br>If you click on the light grey triangle at the right-hand side of each cell in the Screening Criteria column below, you can select from a list of possible screening criteria. You can also write in your own screening criteria 
+                 <br><br>You can think about screening criteria either before you identify Solution Options or after you have identified a list of Solution Options
+
+                 <br><br>Screening criteria should be items that can be answered yes/no quickly for each possible Solution Option. Any criterion that cannot be assessed quickly should be entered as an "Evaluation Criterion" a step later in the flowchart so you can gather more information to more thoroughly evaluate whether each option meets this criterion.
+
+                 <br><br>For example, if you are choosing a digital tool for middle school math practice, initial screening criteria might include:
+                  <ul><li type="square" style="color: #888;"> Works on Chromebooks
+                  <li type="square" style="color: #888;"> Existing research evidence to show tool helps middle school students improve performance on standardized math tests </li> </ul>
+              It may be easy to determine whether a tool works on Chromebooks but it may take more time and effort to look for or collect your own evidence of effectiveness. As a result, you may decide to move the second item to Evaluation Criteria
+              <br><br>Once screening criteria have been listed, the PA can click “Map Against Solution Options” to determine which Solution Options pass the screening 
+
+              <br><br>If you don’t need to narrow the list of Solution Options, skip this step and proceed straight to the “Evaluation Criteria” step in the flowchart 
+
+             <br><br></h5>
+             <!-- Provide a button to click to submit the form. -->
+             <input class="btn btn-primary" type="submit" name="submit" id="save" value="Save and Back to Flowchart"/>     
+             <!--<input class="btn btn-primary" type="submit" name="submit2" value="Add / View Information on Criteria"/>-->
+              {% if mapping_allowed == 'Y' %}
+                 {% if solopt_count == 0 %} 
+                     <a href="/utility_tool/decisions/solution_options/add_solopt_det.html"><input class="btn btn-primary" type="submit" name="solopt" id="solopt" value="Save and Map against Solution Options"></a>
+                 {% else %}
+                     <a href="/utility_tool/decisions/solution_options/handsontable.html"><input class="btn btn-primary" type="submit" name="map" id="map" value="Save and Map against Solution Options"></a>
+                 {% endif %}
+              {% endif %}
+              {% if loggedinuser == created_by  %} 
+                 <input class="btn btn-primary" type="submit" name="st" id="st" value="Save and Add/View Stakeholders"/>    
+              {% endif %}    
+             <br><b><font color="red">{{ err }} </font></b><br>
+         
+         <div id="example1" class="hot handsontable htColumnHeaders"></div>
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+         var dec_id = '{{ dec_id }}';
+         var stakeholdersNow = '{{stakeholdersNow}}';
+
+        $(document).ready(function () {
+            var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+            function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+
+            $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+             }
+            });
+ 
+            $("input[type='submit']").click(function(){
+            var buttonid = this.id;
+            $.ajax({
+                url: "{% url 'add_scr_criteria' %}",
+                data: {'getdata': JSON.stringify(hot.getData())},
+                dataType: 'json',
+                type: 'POST',   
+                success: function (res) {
+                    window.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html";
+                    console.log(res);                                                                                                                                                                                    
+                },
+                error: function (res) {
+                    if (buttonid == 'save') {
+                        window.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html";   
+                    } else if (buttonid == 'solopt') {
+                       window.location.href = "/utility_tool/decisions/solution_options/add_solopt_det.html";
+                    } else if (buttonid == 'map') {
+                       window.location.href = "/utility_tool/decisions/solution_options/handsontable.html";
+                    } else if (buttonid == 'st') {
+                      if (stakeholdersNow == 'Y') { 
+                          window.location.href = "/utility_tool/decisions/solution_options/assign_tasks.html";
+                       } else {
+                          window.location.href = "/utility_tool/decisions/solution_options/add_st_all.html";
+                       }
+                    }   
+
+                    console.log(res);            
+             }
+            });
+            return false;
+            });
+
+          var data=[[]];  
+          var hiddencols = [0,2,3];
+          {% for c in qset  %}
+          data.push(['{{c.id}}','{{c.criterion}}','{{c.created_by}}','{{c.updated_by}}']);
+          hiddencols = [0];
+          {% endfor %} 
+
+             
+          var
+          container = document.getElementById('example1'),
+          hot;
+
+            hot = new Handsontable(container, {
+                colHeaders: ['','Screening Criteria', 'Created By', 'Updated By'],
+                columns: [{},{},{},{}],
+                cells: function(row, col) {
+                     var cellProperties = {};
+                        if ((col === 2) || (col === 3)){
+                         cellProperties.readOnly = true;
+                         cellProperties.className = 'grey';
+                        }
+                        else if (col=== 1) {
+                        cellProperties = {
+                          type: 'autocomplete', 
+                          source: ['','Fits within available budget', 'Can be implemented by date required', 'Comports with privacy standards', 'Evidence of effectiveness exists', 'Fits within school schedule', 'Meets content requirements/ learning objectives', 'Meets state code and/or other regulations', 'Serves target population (grade level, ESL etc.)'],
+                         default: '',
+                         strict: false,
+                       } 
+                       }
+                return cellProperties;
+                },   
+                data: data,
+                colWidths: [0,600, 200, 200],
+                minSpareRows: 8,
+                contextMenu: true,
+                allowInsertRow: false,
+                allowInsertColumn: false,
+                allowRemoveRow: false,
+                allowRemoveColumn: false,
+                hiddenColumns: {
+                  columns: hiddencols,
+                  indicators: true
+                },     
+                licenseKey: "e1ccf-05a6d-60e20-84d04-71653", 
+                beforeValidate: function(value, row, prop){
+                console.log(prop);
+                    if (prop === 1){
+                    return ''
+                  }
+                }
+              });
+           });
+         </script> 
+         </form>
+      </div>
+</div>
+
+
+{% endblock %}
+
+

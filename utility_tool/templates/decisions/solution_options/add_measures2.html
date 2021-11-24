@@ -1,0 +1,474 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css" MEDIA=all>
+.handsontable th {
+    white-space: normal!important;
+    }
+
+    body .handsontable .htAutocompleteArrow {
+             color: black;                                                                                                                                                                                           
+             }    
+
+    body * { font-family: "Playfair Display", serif; }             
+/*.handsontable tr > td:nth-child(7) {
+  background-color: #ADD8E6;
+}
+
+.handsontable tr > td:nth-child(8) {
+  background-color: #ADD8E6;                                                                                                                      
+}*/
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+<div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+<div class="container-fluid">
+<form method="post"  enctype="multipart/form-data">
+{% csrf_token %}    
+<script src="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.1.0/dist/handsontable.full.css">
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>         
+<h2 class="form-signin-heading">Assessing Each Solution Option Against the Evaluation Criteria
+<a  href="#" title="After collecting relevant information to evaluate each Solution Option against each Evaluation Criterion, the Project Administrator should complete the table on this page in order to obtain utility results. This page is view-only for stakeholders."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+<a href="/Steps.html#Evidence-Gathering" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a> 
+</h2>
+<p></p>
+<font color="blue">
+<b>Note:</b><p>You will probably need to visit this page multiple times to complete all the information.  Each time you enter any information, save before you leave.
+<!--{% if loggedinuser == created_by %}
+   <input class="btn btn-success btn-sm" type="submit" name="save" value="Save and Back to Flowchart"/>
+{% else %}
+   <input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>                                 
+{% endif %} -->
+<br><p></p>
+<b>Step 1:</b><p>The columns labeled “How will you measure this?” and “Data to collect,” are pre-populated from the “Evaluation Measures Table” on the previous page. If you need to change either one, click <a href="/utility_tool/decisions/solution_options/idn_measures.html"><b><u><font color="green">here</font></u></b></a> to return to that table.
+<br><p></p>
+<b>Step 2:</b><p>In the columns labeled “Likely lowest score” and “Likely highest score,” enter the lowest and highest data values you could reasonably expect. These may not always be the same as the highest and lowest possible scores. If, when you collect the data, the actual values turn out to be higher or lower than you expect, you can return and adjust these later. These values set the range for utility.
+<br><p></p>
+<b>Step 3:</b><p>In the column labeled “Higher scores are better,” enter “Yes” if higher values are preferable for this Evaluation Criterion (e.g., in the case of academic test scores) and “No” if lower values are preferable (e.g., in the case of a dropout rate).
+<br><p></p>
+<b>Step 4:</b><p>Collect the data for each Solution Option and enter it in the relevant column labeled with the Solution Option name. 
+<br><p></p>
+<a id="button" href="#"><b><i>Example</i></b></a>
+<!--<b>Other Actions:</b><p>
+<input class="btn btn-primary btn-sm" type="button" name="export" value="Export to Excel"/>-->
+            <div id="myDIV">     
+            <img src="{% static "evamea.PNG" %}" alt="Example"/>  
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">                                                                                                                                                                     
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>
+</font>
+<br>
+<b><font color="red">{{ err }} </font></b><br>
+<b>Evaluation Data Table</b><br><br>
+<div id="example1" class="hot handsontable htColumnHeaders"></div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var dec_id = {{dec_id}};
+var loggedinuser = '{{loggedinuser}}';
+var created_by = '{{created_by}}';
+
+
+function goback() {
+  document.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html"; 
+}
+
+$(document).ready(function () {
+        var json = '{{table}}';
+        var sarray = [];
+        var carray = [];
+        var sugarray = [];
+        var darray = [];
+        var archived_pos = [];
+        var deleted_pos = [];
+        var orig_eva_array =[];
+        var container2 = document.getElementById('example1'), hot;
+        var tot_num = 0; 
+        var columnsTypes = ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']; 
+        var data = [['Evaluation Criterion', 'How will you measure this?', 'Data to Collect','Likely lowest score','Likely highest score','Higher scores are better? (Yes/No)']];  
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+        var loggedinuser = '{{loggedinuser}}';
+        var created_by = '{{created_by}}';
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+ 
+ $("input[name='save']").click(function(){
+    var is_err = 'N';
+    var is_err2 = 'N';
+    //var data = JSON.stringify(hot.getData());
+    //var stripped = data.replace(/,(?!["{}[\]])/g, "\\,");
+
+    //alert(data);
+    $.ajax({
+        url: "{% url 'add_measures' %}",
+        data: {'getdata': JSON.stringify(hot.getData())},
+        dataType: 'json',
+        type: 'POST',   
+        success: function (res) {
+            console.log(res);    
+        },
+        error: function (res) {
+            for (var j = 1; j <= tot_num; j++){
+                //alert(hot.getDataAtCell(j, 4));
+                //alert(hot.getDataAtCell(j, 3)); 
+                if (hot.getDataAtCell(j, 4) != null && hot.getDataAtCell(j, 3) != null) { 
+                if (hot.getDataAtCell(j, 4) <= hot.getDataAtCell(j, 3)) 
+                  {
+                    rownum = j + 1;
+                    //alert(archived_pos);
+                    //m = archived_pos.includes(rownum); 
+                    n = deleted_pos.includes(j);
+                    //alert(n);
+                    if (n != true){ 
+                    //alert('The likely highest score should be greater than the likely lowest score. This is for criterion "' + hot.getDataAtCell(j, 0) + '".'); 
+                    //window.location.reload();
+                    //err_cr = hot.getDataAtCell(j, 0);    
+                    is_err = 'Y';
+                    } else { is_err = 'N'; }
+                  }}
+                  pos = 6;
+                  plusone_length = sarray.length + 1;
+                  for (var i = 1; i < plusone_length; i++){
+                      n = deleted_pos.includes(i);
+                      if (n != true){
+                      if (hot.getDataAtCell(j, 4) != null && hot.getDataAtCell(j, 3) != null && hot.getDataAtCell(j, pos)) { 
+                      if ((hot.getDataAtCell(j, pos) < hot.getDataAtCell(j, 3)) || (hot.getDataAtCell(j, pos) > hot.getDataAtCell(j, 4))) {
+                        rownum = j + 1;
+                        m = archived_pos.includes(pos);
+                        n = deleted_pos.includes(j);
+                        //alert(i);
+                        //alert(j);
+                        //alert(pos);
+                        //alert(hot.getDataAtCell(0, pos));
+                        //alert(hot.getDataAtCell(j, 0));
+                        str = hot.getDataAtCell(0, pos);
+                        res = str.replace("(Average Rating or Score)", "");
+                        res = res.slice(0, -1);
+                        //alert(res);
+                        if ((m != true) && (n != true)) {
+                        //alert('The Rating or Score for option "' + res + '" and criterion "' + hot.getDataAtCell(j, 0) + '" should be less than or equal to the likely highest score and more than or equal to the likely lowest score.');  
+                        //window.location.reload();
+                        is_err2 = 'Y';
+                        //err_opt = res;
+                        } else { is_err2 = 'N'; }
+                      }}
+                      }
+                      pos = pos + 1;
+                } 
+            }
+            if (is_err == 'Y') {
+               alert('The likely highest score should be greater than the likely lowest score.'); 
+               window.location.reload();
+            } else if (is_err2 == 'Y') {   
+                alert('The Rating or Score should be less than or equal to the likely highest score and more than or equal to the likely lowest score.');              
+                window.location.reload();
+            } else {     
+                window.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html"; 
+            } 
+            console.log(res);            
+        }
+    });
+    return false;
+});
+
+
+// when you are setting up the table for the first time
+if (json == 'doesnotexist') {
+
+      // read all the solution options and append them to the FIRST ROW of the data array   
+      justpos = 6;
+      {% for s in solopt %} 
+         if ('{{s.archived}}' == 'Y') {
+           archived_pos.push(justpos);
+         }
+         if ('{{s.deleted}}' == 'Y') {
+            archived_pos.push(justpos);                                                                                                                                                                         
+         }   
+         sol = '{{s.sol_option}}';
+         sol = sol.replace(/&#39;/g,"'"); 
+         sol = sol.replace(/&amp;/g, "&");   
+         sol = sol + ' (Average Rating or Score)';       
+         sarray.push(sol);
+        justpos = justpos + 1; 
+      {% endfor %}
+
+      for (var i = 0; i < sarray.length; i++){
+           data[0] = data[0].concat([sarray[i]]);
+      }  
+
+      // read all the evaluation criteria and push them to the FIRST COLUMN of the data array
+       pos2 = 1; 
+      {% for e in evacr %}
+      if ('{{e.deleted}}' == 'Y'){ 
+          deleted_pos.push(pos2);
+      } 
+              crit1  = '{{e.criterion}}';  
+              crit2  = '{{e.criterion2}}';                                                                                          
+              crit1 = crit1.replace(/,(?!["{}[\]])/g, "");
+              crit2 = crit2.replace(/,(?!["{}[\]])/g, "");
+              crit1 = crit1.replace(/&#39;/g,"'");                                                                                                                                                       
+              crit2 = crit2.replace(/&#39;/g,"'");    
+              crit1 = crit1.replace(/&amp;/g, "&");  
+              crit2 = crit2.replace(/&amp;/g, "&");  
+              combined = crit1 + ': ' + crit2; 
+              sugg_evam = '{{e.suggested_evam}}';
+              data_unit = '{{e.data}}';  
+              sugg_evam = sugg_evam.replace(/,(?!["{}[\]])/g, "");
+              data_unit = data_unit.replace(/,(?!["{}[\]])/g, "");
+              sugg_evam = sugg_evam.replace(/&#39;/g,"'");                                                                                                                                                   
+              data_unit = data_unit.replace(/&#39;/g,"'");          
+              data_unit = data_unit.replace(/&amp;/g, "&");  
+              sugg_evam = sugg_evam.replace(/&amp;/g, "&");  
+              if (('{{e.criterion2}}' !== 'None') &&  ('{{e.criterion2}}' !== '')){
+                 data.push([combined,sugg_evam,data_unit]);
+              } else { 
+                 data.push([crit1,sugg_evam,data_unit]);    
+             }
+         pos2 = pos2 + 1;     
+         tot_num = tot_num + 1;
+      {% endfor %}
+
+// if the table has already been saved once
+} else {
+
+     // read all the solution options and append them to the FIRST ROW of the data array                                                              
+      justpos = 6;
+      {% for s in solopt %} 
+         if ('{{s.archived}}' == 'Y') {
+            archived_pos.push(justpos);
+         } 
+         if ('{{s.deleted}}' == 'Y') {
+            archived_pos.push(justpos);                                                                                                                                                                         
+         }  
+      //else {   
+         sol = '{{s.sol_option}}';
+         sol = sol.replace(/&#39;/g,"'"); 
+         sol = sol.replace(/&amp;/g, "&");   
+         sol = sol + ' (Average Rating or Score)';
+
+         sarray.push(sol);
+      //}   
+      justpos = justpos + 1; 
+      {% endfor %}
+
+    // read all the evaluation criteria and UPDATE FIRST COLUMN of the data array 
+      json = json.replace(/&quot;/g, '"');
+      sol = sol.replace(/&amp;/g, "&");  
+      data = JSON.parse(json);
+      // position of first option
+      pos = 6;
+      for (var i = 0; i < sarray.length; i++){
+          data[0][pos] = sarray[i];
+          pos = pos + 1;
+      }
+      // read all the criteria and hide the ones with deleted set to Y
+      pos2 = 1; 
+      {% for e in evacr %}
+      //alert('{{e.criterion}}');
+      //alert('{{e.deleted}}');
+      if ('{{e.deleted}}' == 'Y'){ 
+          deleted_pos.push(pos2);
+          //pos2 = pos2 + 1;  
+          //alert(pos2);
+      } 
+      //else {   
+          //if ('{{e.criterion}}' != ''){
+              crit1 = '{{e.criterion}}';
+              crit1 = crit1.replace(/&#39;/g,"'");  
+              crit2 = '{{e.criterion2}}';
+              crit2 = crit2.replace(/&#39;/g,"'");         
+              crit1 = crit1.replace(/&amp;/g, "&");  
+              crit2 = crit2.replace(/&amp;/g, "&");  
+              combined = crit1 + ': ' + crit2; 
+              if (('{{e.criterion2}}' !== 'None') &&  ('{{e.criterion2}}' !== '')){
+                  carray.push([combined]);
+              } else { carray.push([crit1]); 
+                       //alert('{{e.criterion}}');
+              }
+              //alert('{{e.suggested_evam}}');  
+              sugarray.push('{{e.suggested_evam}}');
+              darray.push('{{e.data}}');  
+              orig_eva_array.push('{{e.orig_eva_id}}'); 
+              //}
+      //}   
+      pos2 = pos2 + 1;  
+      {% endfor %}        
+      
+      pos = 1;
+      //alert(data[5][0]);
+      tot_num = carray.length; 
+      sarraylength = sarray.length + 6;
+      for (var i = 0; i < carray.length; i++){
+          eva_before_change = data[pos][0];
+          data[pos][0] = carray[i];
+          //if (data[pos][1] == null){
+            data[pos][1] = sugarray[i];
+          //}
+          //if (data[pos][2] == null){                                                                                                                   
+            data[pos][2] = darray[i];
+          //}
+          data_unit = data[pos][2]; 
+          data_measure = data[pos][1];
+          stripped = data_unit.replace(/,(?!["{}[\]])/g, "");
+          stripped = stripped.replace(/&#39;/g,"'");
+          stripped = stripped.replace(/&amp;/g, "&");  
+          data[pos][2] = stripped;
+          stripped = data_measure.replace(/,(?!["{}[\]])/g, "");
+          stripped = stripped.replace(/&#39;/g,"'");
+          stripped = stripped.replace(/&amp;/g, "&");  
+          data[pos][1] = stripped;
+          for (var j = 3; j < sarraylength; j++){
+              if (eva_before_change == "") {
+                 data[pos][j] = "";
+              }
+          }    
+          /*if (orig_eva_array[i] == 'None'){
+            data[pos][3] = '';
+            data[pos][4] = '';
+            data[pos][5] = '';  
+            for (var a = 6; a < justpos; a++){
+               data[pos][a] = ''; 
+            } 
+          }*/    
+          //alert(data[pos][2]);
+          //alert(carray[i]);
+             
+          pos = pos + 1;
+      }
+
+}
+      function optionRenderer(instance, td, row, col, prop, value, cellProperties) {
+          Handsontable.renderers.TextRenderer.apply(this, arguments);
+          td.style.fontWeight = 'bold';
+          td.style.color = 'blue';
+          td.style.background = '#ADD8E6';
+      }
+
+      function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
+          Handsontable.renderers.TextRenderer.apply(this, arguments);                                                                                  
+          td.style.fontWeight = 'bold';
+          td.style.color = 'black';
+          //td.style.background = '#F8F8F8';
+      }
+
+      hot = new Handsontable(container2, {
+         beforeCreateCol: function(index, amount) {
+         for (var i = 0; i < amount; i++) {
+         columnsTypes.splice(index + i, 0, 'text');
+         }
+        },
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+         }
+        },
+         data: data,
+         colWidths: 150, 
+         //colWidths: [170,300,170,170,170,170,170,170,170,170],
+         //colHeaders: true,
+         //colHeaders: ['<span title="Increases 4-year high school graduation rate"> Example </span>', '<span title="Change in % of students who graduate high school in four years"> Example </span>', '<span title="% change in 4-year graduation rate"> Example </span>', '<span title="-5"> Example </span>', '<span title="10"> Example </span>', '<span title="Yes"> Example </span>', '','','','','','','','',''],
+         //headerTooltips: true,
+         manualColumnResize: true,
+         minSpareRows: 20,
+         allowInsertRow: false,
+         allowInsertColumn: false,
+         allowRemoveRow: false,
+         allowRemoveColumn: false, 
+         cells: function(row, col) {
+            var cellProperties = {};
+            if ((col === 0) || (row === 0)){
+             cellProperties.readOnly = true;
+             cellProperties.renderer = firstRowRenderer;   
+             if (col > 5) {
+             cellProperties.renderer = optionRenderer;
+             }
+             }   
+            else if (col === 5) {  
+            cellProperties = {
+            type: 'dropdown', 
+            source: ['Yes','No']
+           }}
+           else if ((col === 1) || (col === 2)) {
+              cellProperties.readOnly = true;
+            }     
+           else if ((col === 4) || (col === 3)) {
+           cellProperties = {
+           type: 'numeric',
+           format:'0.00'
+           }} 
+          return cellProperties;
+        },
+       hiddenColumns: {
+        columns: archived_pos,
+        indicators: true
+       },
+       hiddenRows: {
+        rows: deleted_pos,
+        indicators: true
+       },    
+       licenseKey: "e1ccf-05a6d-60e20-84d04-71653",                
+     });
+    hot.loadData(data);
+    console.log(JSON.parse(json))
+
+    if (loggedinuser != created_by) {
+       hot.updateSettings({
+          readOnly: true
+       });
+    }
+
+    /*hot.addHook('afterChange', function(changes, src){
+    let row = changes[0][0];
+    let col = changes[0][1];
+    let val = changes[0][3];
+    let parsed = val.replace(/,/g, " ");
+    
+    // val.replace(/,/g, " ");
+    if(src !== 'myChange'){
+        hot.setDataAtCell(row, col, parsed, 'myChange')
+    }
+   }) */   
+
+    hot.render();   
+    //for (var a = 0; a < archived_pos.length; a++){ 
+        //alert(archived_pos[a]);   
+        //hot.alter('remove_col', archived_pos[a])
+    //}
+    //hot.updateSettings({
+       //colHeaders: ['Increases 4-year high school graduation rate','Change in % of students who graduate high school in four years','% change in 4-year graduation rate','-5','10','Yes']
+   //});
+});
+</script>
+<br>
+<span style="float:right;">
+{% if loggedinuser == created_by %}
+ <input class="btn btn-success btn-sm" type="submit" name="save" value="Save and Back to Flowchart"/>
+{% else %}
+ <input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>     
+{% endif %} 
+</span>
+</form>
+</div>
+</div>
+</body>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+ ul li {
+            list-style: none;    
+       }  
+
+.errorlist
+{
+       color: red;                                                                                                                                                                                          
+}
+
+.sticky {
+   position: -webkit-sticky;
+   position: sticky;
+   position: -moz-sticky;
+   position: -ms-sticky;
+   position: -o-sticky;
+   top: 15px;
+}
+
+.center{
+  position: fixed;
+  top: 15%;
+  right: 100px;
+  width: 115px;
+  height: 0px;
+}            
+ body * { font-family: "Playfair Display", serif; }             
+</style>
+<body>
+<div class="hero-unit">
+    <div class="container-fluid">
+             <form id="decform" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             <h2 class="form-signin-heading">Review Decision Problem Details</h2>
+             <p></p>
+            <font color="blue">        
+                <b>Step 1:</b><p>You can edit the decision problem details below.
+                <p></p>
+                <!--<b>Step 2:</b><p>When you are done, click here:   
+             {% if loggedinuser == created_by %}
+                {% if whereamI  == 'dec_list' %}
+                      <input class="btn btn-success" type="submit" name="submit" value="Save and Go to My Decisions"/>
+                {% else %}
+                      <input class="btn btn-success" type="submit" name="submit" value="Save and Go to Flowchart"/>
+                {% endif %}    
+             {% else %}   
+                 {% if whereamI  == 'dec_list' %} 
+                   <a href="/utility_tool/decisions/decisions_list.html"><input class="btn btn-success btn-sm" type="button" name="goto"  value="Back to My Decisions"/></a> 
+                {% else %}
+                  <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="goto"  
+value="Back to Flowchart"/></a>
+                {% endif %}            
+             {% endif %}   -->
+             </font>
+             <br><br>
+             <b><font color="red">{{ err }} </font></b>
+             {{ decform }}
+             <br />
+             <span style="float:right;">
+             {% if loggedinuser == created_by %}
+                {% if whereamI  == 'dec_list' %}
+                      <input class="btn btn-success" type="submit" name="submit" value="Save and Go to My Decisions"/>
+                {% else %}
+                      <input class="btn btn-success" type="submit" name="submit" value="Save and Go to Flowchart"/>
+                {% endif %}    
+             {% else %}  
+                {% if whereamI  == 'dec_list' %} 
+                   <a href="/utility_tool/decisions/decisions_list.html"><input class="btn btn-success btn-sm" type="button" name="goto"  value="Back to My Decisions"/></a> 
+                {% else %}
+                  <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="goto"  value="Back to Flowchart"/></a>
+                {% endif %}                
+             {% endif %}
+             </span> 
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+            var whereamI = '{{whereamI}}';
+            var dec_id = '{{dec_id}}';
+         </script> 
+         </form>
+      </div>
+</div>
+</body>
+
+{% endblock %}

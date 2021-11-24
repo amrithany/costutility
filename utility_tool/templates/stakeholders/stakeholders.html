@@ -1,0 +1,183 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<style>
+/* Create two equal columns that floats next to each other */
+.column {
+    float: left;
+    width: 45%;
+    padding: 5px;                                                                                                                      
+    padding-left: 40px;                                                                                                                
+    text-align:justify;
+}
+
+body * { font-family: "Playfair Display", serif; }
+</style>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="right"><h4>Logged in as {{loggedinuser}}</h4></div>
+    <div class="table-responsive">
+    <form id="form1" method="post"  enctype="multipart/form-data">
+       {% csrf_token %}
+        <h2 class="form-signin-heading">My Stakeholders
+        <a id="button" href="#" title="Click here to view / hide more information"><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+        <a href="/Steps.html#Identify-Stakeholders" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>
+        </h2>
+        <div id="myDIV">
+        <h5 style="border: 2px solid grey;padding-left: 15px;">
+            <br>Stakeholders are people who you wish to involve in the decision you are making. This may include administrators, board members, teachers, parents, and students.
+            <br><br>You are automatically a stakeholder in any decision you create.
+            <br><br>This page is your master list of possible stakeholders to invite to participate in decisions online via <i>DecisionMaker</i>.
+            <br><br>Each time you create a new decision, you will have the opportunity to invite some or all of these people to participate in any of the four steps of the decision process: suggesting Solution Options, Screening Criteria, and Evaluation Criteria; and contributing Importance Scores. For each decision you facilitate, you will be able to choose which of these people will be invited for each step. 
+            <br><br>To invite stakeholders to participate in decisions via <i>DecisionMaker</i>, you will need their names and email addresses. Of course, you can also engage stakeholders offline in meetings, hallways and phone calls and then input the information yourself.
+            <br><br>If you are making this decision solo or don’t want to invite any stakeholders to participate in the decision online via <i>DecisionMaker</i>, go back to the flowchart and skip this step.
+            <br><br></h5> <br> 
+       </div>
+            <p></p>                                                                                                                                                                                              
+            <font color="blue">        
+                <b>Step 1:</b><p>Check whether the list of stakeholders below includes everyone who you plan to invite to participate in the decision you are currently working on. 
+            <br><p></p>
+            <b>Step 2:</b><p>If anyone is missing, add them manually here: <a href="/utility_tool/stakeholders/add_stakeholder.html"> <input class="btn btn-primary btn-sm" type="button" name="add" id="add" value="Add New Stakeholders" /></a> 
+            <!--<br><p></p>
+             OR fill out this Excel template  and upload here: <a href="/utility_tool/stakeholders/import_excel.html"><input class="btn btn-primary btn-sm" type="button" name="excel" id="excel" value="Import List from Excel"/></a>-->
+             {% if whereamI == "menu" %}
+             <br><p></p>
+             <b>Step 3:</b><p>Check the box next to all the stakeholders you want to involve in this decision. <!--and click here: <input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Next Step"/>-->
+            {% endif %}       
+            <br><p></p>
+            <b>Other actions:</b> 
+            <br><p></p>
+            {% if dec_id != 0 %}
+            <!--<a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success btn-sm" type="button" name="cancel" value="Go to Decision Flowchart"></a>-->
+            {% endif %}  
+            <input class="btn btn-primary btn-sm" type="button" name="add" id="view" value="View / Edit Stakeholder" onclick="PasstoView();">&emsp;
+            <input class="btn btn-primary btn-sm" type="button" name="delete" value="Delete Stakeholder" onclick="PasstoDel();" />&emsp;
+            <a href="/utility_tool/stakeholders/export_stakeholders.html"><input class="btn btn-primary btn-sm" type="button" name="excel" id="excel" value="Export Stakeholder List"/></a>&emsp;
+            </font>
+            <table class="table table-condensed"> 
+            <!--    
+            {% if whereamI == "menu" %}
+               <a href="/utility_tool/decisions/solution_options/assign_tasks.html"><input class="btn btn-success" type="button" name="assign" value="Assign Tasks"/></a>
+            {% endif %}
+            -->
+            <br><br> 
+                <thead>
+                    <th></th>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Title</th>
+                    <th>Organization</th>
+                    <th>Email</th>
+                    {% localtime on %}
+                    {% for st in stakeholders %}
+                           <!-- <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">-->
+                            <tr> 
+                            {% if st.id in idList and whereamI != 'dec_list'%}    
+                            <td><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="id"  onclick="setId(this);"  style="margin-left:auto; margin-right:auto;" checked></td>
+                            {% else %}
+                            <td><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="id"  onclick="setId(this);"  style="margin-left:auto; margin-right:auto;"></td>
+                            {% endif %}
+		                    <td>{{st.id}}</td>
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                            <td>{{st.email}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endlocaltime %}
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var passvar = 000;
+                     var selected = [];
+                     var whereamI = '{{whereamI}}';
+                     $( "#myDIV" ).hide();
+
+                     $( "#button" ).click(function() {
+                        $( "#myDIV" ).toggle();
+                     });
+                    $(document).ready(function()
+                           {        
+                             $("tr:even").css("background-color", "#F0FFFF");
+                             $("tr:odd").css("background-color", "#DCDCDC");                                                                                                                                  
+                           });
+                       $(function() {$('input[type=checkbox]').attr('checked', false)});                      
+                       window.onhashchange = function() {
+                         if (window.innerDocClick) {
+                           window.innerDocClick = false;
+                         } else {
+                           if (window.location.hash != '#undefined') {
+                              goBack();
+                           } else {
+                             history.pushState("", document.title, window.location.pathname);
+                             location.reload();
+                            }
+                          }
+                        }              
+
+                     /*function setId(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id != chkBox.id) {
+                                   inputs[i].checked = false;
+                                }
+                                else { inputs[i].checked = true;}
+                             }
+                          }
+                          passvar = chkBox.id;
+                       }*/
+
+
+                     function setId(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id == chkBox.id) {
+                                       selected.push(chkBox.id);
+                                   }
+                             }
+                          }
+                          passvar = chkBox.id;
+                     }  
+
+
+                       function PasstoView () {
+                          if (passvar == 000){
+                             alert('Select a Stakeholder to edit');}
+                          else {
+                             document.location.href = "/utility_tool/stakeholders/" + passvar +"/edit_stakeholder.html";}
+                       }
+
+                       function PasstoSend () {
+                          alert("Working on this. Will let you know when it is ready :-)"); 
+                          /*
+                          if (passvar == 000){
+                             alert('Select a Stakeholder to send an email to');}
+                          else {
+                             document.location.href = "/utility_tool/stakeholders/" + passvar +"/send_email.html";}*/
+                       }
+
+                       function PasstoDel () {
+                          if (passvar == 000){
+                             alert('Select a Stakeholder to delete');}
+                          else {
+                             if (confirm('Are you sure you want to delete this stakeholder (ID - ' + passvar + ')? This stakeholder\'s contributions to past decisions will remain unchanged. If you want to remove them from individual decisions, go to the "Assign Tasks" page for every decision.')) {
+                             document.location.href = "/utility_tool/stakeholders/" + passvar +"/delete_stakeholder.html";
+                             }
+                          }  
+                       }
+                    </script> 
+               </thead>
+            </table>
+            <span style="float:right;"><input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Next Step"/></span>
+    </form>
+    </div>
+</div>
+</body>
+{% endblock %}
+

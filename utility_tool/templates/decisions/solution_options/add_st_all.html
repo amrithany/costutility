@@ -1,0 +1,101 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+{% load tz %}
+
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid">
+   <form id="form1" method="post"  enctype="multipart/form-data">
+       {% csrf_token %}
+        <h3 class="form-signin-heading">Select Stakeholders for this Decision</h3>
+        <h5 style="border: 2px solid grey;padding-left: 15px;">
+            <br>Stakeholders are people who should be involved in making this decision or who may be affected by it, such as administrators, board members, teachers, parents, and students
+            <br><br>You can invite stakeholders to contribute online to any of the following aspects of this decision process via <i>DecisionMaker</i>: suggesting Solution Options, screening criteria, and evaluation criteria; and contributing Importance Scores. In a later step, you can choose who will be invited to do what
+            <br><br>You can also engage stakeholders offline in meetings, hallways and phone calls and then input the information yourself
+            <br><br>To invite stakeholders to participate in this decision online via <i>DecisionMaker</i>, you will need their names and email addresses. 
+            <br><br>The first time you see this screen, your list of stakeholders may be empty. Click on the blue “My Directory of Stakeholders” button to build your list of stakeholders
+
+            <br><br></h5>
+        <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"/></a>
+        <br><br>
+        If you have not created your Directory of Stakeholders, please go to <a href="/utility_tool/stakeholders/stakeholders.html"><input class="btn btn-primary" type="button" name="cancel" value="My Directory of Stakeholders"/></a>  
+        <!--<br><br>
+        Stakeholders invited to contribute to Solution Options, Screening Criteria, Evaluation Criteria and/or Importance Scores   
+            <table class="table table-condensed">
+                <a href="/utility_tool/decisions/solution_options/assign_tasks.html"><input class="btn btn-success" type="button" name="submit2" value="Assign Tasks to Stakeholders"/></a>&nbsp;
+                <input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+                <br>
+                <thead>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Organization</th>
+                    <br />
+                    {% localtime on %}
+                    {% for st in st_dec %}
+                           <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.email}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                        </tr>
+                </thead>
+                {% endfor %}
+                {% endlocaltime %}
+            </table>-->
+        <br><br>
+        Check the box next to each person who you would like to invite as a stakeholder to participate online in the current decision
+            <table class="table table-condensed">
+                <input class="btn btn-primary" type="submit" name="submit" value="Add from List Below"/> <br>
+                <thead>
+                    <th></th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Title</th>
+                    <th>Organization</th><br />
+                    {% localtime on %}
+                    {% for st in stakeholders %}
+                            <tr onmouseover="javascript:style.background='#dcfac9'" onmouseout="javascript:style.background='#DCDCDC'" bgcolor="#DCDCDC">
+                                <td><input type="checkbox" id="{{st.id}}" value="{{st.id}}" name="id" onclick="setId(this);"  style="margin-left:auto; margin-right:auto;"></td>
+                            <td>{{st.firstName}}</td>
+                            <td>{{st.lastName}}</td>
+                            <td>{{st.email}}</td>
+                            <td>{{st.title}}</td>
+                            <td>{{st.organisation}}</td>
+                        </tr>
+                    {% endfor %}
+                    {% endlocaltime %}
+                   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                   <script type="text/javascript">
+                     var selected = [];
+                     var passvar = '{{ dec_id }}';
+                    
+                     function goback() {
+                       document.location.href = "/utility_tool/decisions/" + passvar +"/menu.html"; 
+                     }
+
+                     function setId(chkBox){
+                          var inputs = document.getElementsByTagName("input");
+                          for (i = 0; i<inputs.length; i++ ) {
+                             if (inputs[i].type == 'checkbox'){
+                                if (inputs[i].id == chkBox.id) {
+                                       selected.push(chkBox.id);
+                                   }
+                             }
+                          }
+                     }
+
+                    </script> 
+               </thead>
+            </table>
+    </form>
+    </div>
+</div>
+{% endblock %}
+
+
+

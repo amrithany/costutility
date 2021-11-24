@@ -1,0 +1,206 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style>
+.slider-wrapper input {
+  width: 800px;
+  height: 30px;
+}
+
+.textfield input {
+    width: 100px;
+    height: 20px;
+    padding: 0px;
+    margin: 0px;
+}
+ 
+.slidecontainer {
+    width: 800%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 800%;
+    height: 25px;
+    border-radius: 5px;   
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; 
+    background: #003EFF;
+    cursor: pointer;
+}
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #003EFF;
+    cursor: pointer;
+}
+
+input[type="number"] {
+  background-color : #003EFF; 
+  color: white;
+}
+body * { font-family: "Playfair Display", serif; }
+</style>
+<!-- https://codepen.io/seanstopnik/pen/CeLqA #2c3e50 #003EFF --> 
+<!-- style="color:#0000FF" -->
+<body>
+<div class="hero-unit">
+    <div style="color:#0000FF" align="left"><h4>Decision you are working on: {{dec_title}}</h4></div>
+    <div class="container-fluid" id="scoresform">
+         <form method="post" id="scoresform"  enctype="multipart/form-data">
+             <h2 class="form-signin-heading">Assign Importance Scores to Evaluation Criteria
+                 {% if loggedinuser == created_by  %}   
+               <a id="button" href="#" title="Use this page to indicate the relative importance of each Evaluation Criterion. The PA can also use it to determine how many votes are awarded to each stakeholder."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>   
+               {% else %}
+               <a id="button" href="#" title="Use this page to indicate the relative importance of each Evaluation Criterion."><img src="{% static "info_am1.PNG" %}" alt="Info"/></a>
+               {% endif %} 
+               <a href="/Steps.html#Importance-Scores" title="Click here for Resources & Guidance"><img src="{% static "book_am3.PNG" %}" alt="Book" /></a>      
+             </h2>
+            <div id="myDIV">                                                                                                                          
+                <font color="maroon">   
+                        <br>For example, if your Evaluation Criterion is “Impact on student math achievement,” you might:
+                        <br>·         Find existing data at your education agency such as course grades that teachers assign, average student scores on school-administered tests, or percent of students achieving proficiency on standardized test scores.
+                        <br>.         Search for studies that investigated the Solution Options you are interested in and measured impact on math achievement.  See here  for suggestions on how to do this and how to assess whether the information you find is credible and relevant in your context.
+                        <br> ·         Collect new data/information to evaluate the options.  For example, you might design a pilot study to test each tool and use pre- and post-tests to assess changes in student math performance.
+                        <br> If one of your Evaluation Criteria is “Capacity/skill level of current teachers/staff to implement option with fidelity,” you could ask teachers and instructional coaches to review each of the tools and respond to a brief survey asking them to indicate on a scale of 0-10  the likelihood they could implement each tool with fidelity.
+                <br><br></font>
+            </div>
+             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+             <script type="text/javascript">
+                   $( "#myDIV" ).hide();
+                   $( "#button" ).click(function() {
+                       $( "#myDIV" ).toggle();
+                   });
+             </script>
+             <p></p>    
+             <font color="blue">   
+             {% if stakeholdersNow == 'Y' %}                                                                                                                                                                            
+             You are one of several individuals who have been invited to contribute Importance Scores for this decision. Your scores will be averaged with the others. <br>
+             <br> Different Evaluation Criteria will hold more or less importance to different stakeholders. For example, Teacher Alex may care a great deal about how each Solution Option will affect her/his existing workload while Teacher Jo may be concerned most about how each Solution Option best meets the needs of her/his special education students. Allowing stakeholders to assign an Importance Score between 0 and 100 to each Evaluation Criterion helps to factor these concerns into the decision about which Solution Option to adopt. 
+             <br>
+             {% endif %}
+             <br>
+            <b>Step 1:</b><p>Use the sliders on this page to assign Importance Scores (0-100) to each Evaluation Criterion for your decision. Start with scoring the criterion that is the least important to you and score each of the others relative to this one. You can also enter numbers directly in the blue boxes if you prefer. 
+            <br><p></p>   
+            <!--<b>Step 2:</b><p> When you are done, click here: <input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Flowchart"></a>
+            <br><p></p>-->
+            {% if loggedinuser == created_by or shared == "Y" %} 
+                <b>Other Actions:</b> 
+                <br><p></p>   
+                If you need to revisit the number of votes assigned to each stakeholder’s Importance Scores, e.g., if you added a new stakeholder to contribute Importance Scores, click here:  <input class="btn btn-primary" type="submit" name="setup" value="Setup for Importance Scores">
+                <br><p></p>
+                <!--If you want to see the Importance Scores contributed by each stakeholder and how DecisionMaker combines these scores with their votes to calculate the final weights assigned to each of the Evaluation Criteria, click here:  <input class="btn btn-primary" type="submit" name="summary" value="View Summary of Importance Scores">
+                <br><p></p> -->
+             {% endif %}
+               </font> 
+                <!--
+                 <input class="btn btn-primary" type="submit" name="submit" value="Save and Back to Flowchart"/>                                                                                                         
+                 {% if loggedinuser == created_by  %} 
+                    <input class="btn btn-primary" type="submit" name="setup" value="Save and Go to Setup">
+                    {% if votes_yn == 'Y' %}
+                        <input class="btn btn-primary" type="submit" name="votes" id="votes" value="Save and Add / View Votes for Stakeholders"/>
+                    {% endif %}   
+                    <input class="btn btn-primary" type="submit" name="st" value="Save and Add/View Stakeholders"/> 
+                 {% endif %}    -->
+                 <!--<input class="btn btn-primary" type="submit" name="submit2" value="Add / View Information on Criteria"/>
+                <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"><input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart"/></a>-->
+                <br><br> 
+                <table>
+                <thead>
+                    <th>Criterion</th>
+                    <th></th> 
+                    {% if shared != "Y"  %}  
+                    <th><span style="float:left;font-size:10px;color:#003EFF;">Not at all important</span> <span style="float:center;"> Score (0-100) </span> <span style="float:right;font-size:10px;color:#003EFF;"> Extremely important </span></th>
+                    {% endif %}
+                    <!--<th>Added By</th>-->
+                 </thead>
+                 <tbody>
+                 {% csrf_token %}
+                 {{ scoresform.management_form }}
+                      {% for form in scoresform %}
+                      {{ form.id }}
+                        <tr>
+                            <td><a title="Sample Title">{{form.criterion}}</a></td> 
+                            <td>                                                                                                                                                                                 
+                                {% if shared == "Y"  %}
+                                <input type="number" id="js-amount-input{{form.prefix}}" value="0" min="0" max="100" style='width:3em' oninput="updateTextInput(this.value,'{{form.prefix}}','i');" readonly>
+                                {% else %}
+                                 <input type="number" id="js-amount-input{{form.prefix}}" value="0" min="0" max="100" style='width:3em' oninput="updateTextInput(this.value,'{{form.prefix}}','i');">  
+                                {% endif %}
+                            </td>
+                            <td class="slider-wrapper">
+                                {% if shared != "Y"  %}
+                                <input type="range" value="0" min="0" max="100" id="js-amount-range{{form.prefix}}"  class="slider"  oninput="updateTextInput(this.value,'{{form.prefix}}','r');">          
+                                {% endif %}
+                            </td>
+                            <!--<td>{{form.created_by}}</td>--> 
+                            <td style="display:none;"> {{form.score}}</td>
+                        </tr> 
+         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+         <script type="text/javascript">
+          var passvar = '{{ dec_id }}';
+          var prefix = '{{form.prefix}}'; 
+          var score = $('#id_' + prefix + '-score').val();
+          var crit = $('#id_' + prefix + '-criterion').val();   
+          $('#id_' + prefix + '-criterion').prop('title', crit);  
+
+          if (score == "") { score = 0; }
+
+          $('#js-amount-input' + prefix).val(score);
+          $('#js-amount-range' + prefix).val(score);
+          $('#js-amount-range' + prefix).slider('refresh');
+
+         function updateTextInput(val, prefix,where) {
+             $('#id_' + prefix + '-score').val(val); 
+             if (where == 'r') {
+             $('#js-amount-input' + prefix).val(val); 
+             } else { 
+                 $('#js-amount-range' + prefix).val(val); 
+                 $('#js-amount-range' + prefix).slider('refresh');
+             }
+         }
+         </script>
+         {% endfor %}
+         </tbody>
+         </table>
+         <br>
+         Notes to explain your thinking:
+         {% if shared == "Y"  %}
+         <textarea name="thinking" id="thinking" rows="6" cols="200" style="width:100%;word-wrap:break-word;" readonly></textarea>         
+         {% else %}
+         <textarea name="thinking" id="thinking" rows="6" cols="200" style="width:100%;word-wrap:break-word;"></textarea>   
+         {% endif %}
+         <br><br>
+          <script type="text/javascript">
+            thinking = '{{thinking}}';
+            thinking = thinking.replace(/&#39;/g,"'");  
+           document.getElementById("thinking").value = thinking; 
+          </script> 
+         <span style="float:right;">
+          {% if shared == "Y"  %}
+            <a href="/utility_tool/decisions/{{ dec_id }}/menu.html"> <input class="btn btn-success btn-sm" type="button" name="cancel" value="Back to Decision Flowchart"/></a>
+           {% else %}
+             <input class="btn btn-success btn-sm" type="submit" name="submit" value="Save and Back to Flowchart">
+           {% endif %} 
+         </span> 
+     </form>  
+      </div>
+</div>
+</body>
+
+{% endblock %}
+
+
+

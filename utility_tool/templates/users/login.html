@@ -1,0 +1,24 @@
+{% extends 'Header-Footer.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+    body * { font-family: "Playfair Display", serif; }
+</style>
+<body>
+<div class="hero-unit">
+    <div class="container">
+        <form class="form-signin span8" id="loginform" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">Login</h2>
+             <b><font color="red">{{ err }} </font></b><br>
+             {{ loginform.as_p}}
+             <!-- Provide a button to click to submit the form. -->
+             <input class="btn btn-primary" type="submit" name="submit" value="Login" />
+             <a href="/utility_tool/users/forgot.html"><input class="btn btn-success" type="button" name="pass" value="Forgot User Name / Password"/></a>
+        </form>
+     </div>
+</div>
+</body>
+{% endblock %}
+

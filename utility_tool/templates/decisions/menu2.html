@@ -1,0 +1,202 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css">
+.circle-container a {
+    display: block;
+    position: absolute;
+    top: 50%; left: 50%;
+    height: 4em;
+    margin: -2em;
+    margin-left:auto;
+    margin-right:auto;
+    width:960px;
+}
+
+.circle-container img { display: block; top: 25%; margin-left:auto; margin-right:auto; width:960px;}
+.deg0 { transform: translate(12em); } /* 12em = half the width of the wrapper */
+.deg45 { transform: rotate(45deg) translate(12em) rotate(-45deg); }
+.deg135 { transform: rotate(135deg) translate(12em) rotate(-135deg); }
+.deg180 { transform: translate(-12em); }
+.deg190 { transform: rotate(200deg) translate(11.5em) rotate(-200deg); }
+.deg315 { transform: rotate(315deg) translate(12em) rotate(-315deg); }
+.circle-container img { display: block; margin-left:auto; margin-right:auto; width:960px;}
+.deg225 { transform: rotate(225deg) translate(16em) rotate(-225deg); }
+.deg220 { transform: rotate(220deg) translate(14.5em) rotate(-220deg); }
+.deg340 { transform: rotate(340deg) translate(20em) rotate(-340deg); } /* 12em = half the width of the wrapper */
+.deg200 { transform: rotate(200deg) translate(-35em) rotate(-200deg); }
+.deg380 { transform: rotate(380deg) translate(20em) rotate(-380deg); }
+.deg400 { transform: rotate(400deg) translate(20em) rotate(-400deg); }
+.deg65 { transform: rotate(65deg) translate(16em) rotate(-65deg); }
+.deg120 { transform:rotate(120deg) translate(16em) rotate(-120deg);}
+.deg155 { transform: rotate(155deg) translate(24em) rotate(-155deg);}
+.deg135 { transform: rotate(135deg) translate(12em) rotate(-135deg); }                                                                             
+.deg00 { transform: translate(-24em); }
+.line2 {
+    margin-top:330px;
+    margin-left:510px;
+    background:black;
+    height:2px;
+    float:left;
+    margin-left:auto; margin-right:auto; width:960px;
+    position:absolute; 
+}
+.right2 {
+        transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+}
+.left2 {
+        transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+}
+.up2 {
+        transform: rotate(-135deg);
+            -webkit-transform: rotate(-135deg);
+}
+.down2 {
+        transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+}
+
+.arrow {
+    width:20px;
+}
+.line {
+    margin-top:330px;
+    margin-left:510px;
+    width:120px;
+    background:black;
+    height:2px;
+    float:left;
+}
+.point {    
+    width: 0;
+    height: 0;
+    margin-top:130px;
+    margin-left:510px; 
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid black;
+    float:left;                                                                                                                                   
+}
+i {
+      border: solid black;
+        border-width: 0 3px 3px 0;
+          display: inline-block;
+            padding: 3px;
+}
+
+.right {
+        transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+}
+
+.left {
+        transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+}
+
+.up {
+        transform: rotate(-135deg);
+            -webkit-transform: rotate(-135deg);
+}
+
+.down {
+        transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+}
+</style>
+
+<div class="hero-unit" style="background-color: white">
+    <div style="color:#0000FF" align="right"><h4>Decision you are working on: {{dec_title}}</h4></div> 
+    <div class='circle-container'>
+    <h2 class="form-signin-heading">Decision Flowchart</h2>   
+    <a href='#' class='deg00'><input class="btn btn-info active" type="button" value="Decision Problem" onclick="PasstoEdit();"></a>
+    <a href='/utility_tool/decisions/solution_options/add_solopt.html' class='deg225'><input class="btn btn-info active" type="button" value="Solution Options"></a> 
+    <a href='/utility_tool/decisions/solution_options/add_st_solopt.html' class='deg220'><input class="btn btn-info active" type="button" value="Stakeholders for Solution Options"></a>
+    <a href='/utility_tool/decisions/solution_options/add_eva_criteria.html' class='deg340'><input class="btn btn-info active" type="button" value="Evaluation Criteria"></a>
+    <a href='/utility_tool/decisions/solution_options/add_eva_weights.html' class='deg380'><input class="btn btn-info active" type="button" value="Importance Weights"></a>
+    <a href='#'><input class="btn btn-default active" type="button" value="Assign Votes to Stakeholders"></a><br>
+    <a href='#'><input class="btn btn-default active" type="button" value="Stakeholders for Evaluation Criteria"></a><br>
+    <a href='#'><input class="btn btn-default active" type="button" value="Stakeholders for Importance Weights"></a><br>
+    <a href='#'><input class="btn btn-default active" type="button" value="Importance scores"></a>  <br>
+    <a href='#' class='deg200'><input class="btn btn-default active" type="button" value="Evaluation Strategies"></a>
+    <a href='#' class='deg400'><input class="btn btn-default active" type="button" value="Evaluation Results"></a>
+    <a href='#' class='deg65'><input class="btn btn-default active" type="button" value="Costs"></a>
+    <a href='#' class='deg120'><input class="btn btn-default active" type="button" value="Cost Utility Results"></a>
+    <a href='#' class='deg155'><input class="btn btn-default active" type="button" value="Make a Decision"></a>
+    <a href='/utility_tool/decisions/solution_options/guidance.html' class='deg135'><input class="btn btn-info active" type="button" value="Resources Page"></a>
+    <a href='/utility_tool/decisions/solution_options/add_st_scrcr.html' class='deg180'><input class="btn btn-info active" type="button" value="Stakeholders for Screening criteria"></a>
+    <a href='/utility_tool/decisions/solution_options/add_scr_criteria.html' class='deg190'><input class="btn btn-info active" type="button" value="Screening criteria"></a>
+    <!-- <line x1="100" y1="100" x2="150" y2="100" transform="rotate(0  100 100)" /><i class="right2"></i><i class="left2"></i><i class="up2"></i><i class="down2"></i>
+
+    <div class="arrow">
+          <div class="line"></div>
+            <div class="point"></div>     
+        </div>
+
+    <p><div class="line"></div><i class="right"></i></p>
+    <p><i class="left"></i></p>
+    <p><i class="up"></i></p>
+    <p><i class="down"></i></p>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+function drawArrow(fromx, fromy, tox, toy){
+                //variables to be used when creating the arrow
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                //var headlen = 10;
+
+                //var angle = Math.atan2(toy-fromy,tox-fromx);
+
+                //starting path of the arrow from the start square to the end square and drawing the stroke
+                ctx.beginPath();
+                ctx.moveTo(fromx, fromy);
+                ctx.lineTo(tox, toy);
+                ctx.strokeStyle = "#cc0000";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                /*
+                //starting a new path from the head of the arrow to one of the sides of the point
+                ctx.beginPath();
+                ctx.moveTo(tox, toy);
+                ctx.lineTo(tox-headlen*Math.cos(angle-Math.PI/7),toy-headlen*Math.sin(angle-Math.PI/7));
+
+                //path from the side point of the arrow, to the other side point
+                ctx.lineTo(tox-headlen*Math.cos(angle+Math.PI/7),toy-headlen*Math.sin(angle+Math.PI/7));
+
+                //path from the side point back to the tip of the arrow, and then again to the opposite side point
+                ctx.lineTo(tox, toy);
+                ctx.lineTo(tox-headlen*Math.cos(angle-Math.PI/7),toy-headlen*Math.sin(angle-Math.PI/7));
+
+                //draws the paths created above
+                //ctx.strokeStyle = "#cc0000";
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                //ctx.fillStyle = "#cc0000";
+                ctx.fill();
+                */ 
+            }            
+
+            window.onload = function(){ 
+                drawArrow(200,200,400,400);
+            }; 
+
+    </script>
+ <canvas id="myCanvas" width="1750" height="750"> 
+ </canvas>-->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var passvar = '{{dec_id}}';
+
+function PasstoEdit () {
+   document.location.href = "/utility_tool/decisions/" + passvar +"/edit_decision.html";
+}
+</script> 
+</div>
+</div>
+
+
+{% endblock %}
+

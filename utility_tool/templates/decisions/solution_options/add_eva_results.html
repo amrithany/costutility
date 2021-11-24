@@ -1,0 +1,144 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block body_block %}
+
+<style TYPE="text/css" MEDIA=all>
+.handsontable th {
+    white-space: normal!important;
+    }
+</style>
+<div class="hero-unit">
+<div style="color:#0000FF" align="right"><h4>Decision you are working on: {{dec_title}}</h4></div>    
+<div class="container">
+<form class="form-signin span8"  method="post"  enctype="multipart/form-data">
+{% csrf_token %}    
+<script src="{% static 'js/handsontable.full.js' %}"></script>
+<link href="{% static 'css/handsontable.full.css' %}" rel="stylesheet">
+<script src="{% static 'js/bootstrap.min.js' %}"></script>         
+<br>
+<h2 class="form-signin-heading">Evaluation Measures</h2>
+<h5>For each criterion, indicate a measure by which you can compare the solution options. For example, if the criterion is “evidence of improving reading comprehension for elementary school students,”  a suitable measure might be “increase in the percentage of students per grade meeting ELA standards compared with last year.” The units in this case would be “percentage points compared to last year.”
+    <br><br>
+    Enter the lowest plausible value for this measure (probably zero in the example given as there may be no increase), and the highest plausible value (perhaps 20% in the example given).
+    <br><br>
+    Also indicate whether a positive value is preferable or a negative value, e.g., you might want to raise test scores but reduce the number of dropouts.
+    <br><br>
+    You may find useful resources for collecting data on the Resources page under “Instruments and tools for collecting data”
+</h5>
+<br>
+<div id="example1" class="hot handsontable htColumnHeaders"></div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+var dec_id = {{dec_id}};
+
+function goback() {
+  document.location.href = "/utility_tool/decisions/" + dec_id +"/menu.html"; 
+}
+
+$(document).ready(function () {
+
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            // if not safe, set csrftoken
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+ 
+ $("input[name='save']").click(function(){
+    $.ajax({
+        url: "{% url 'add_measures' %}",
+        data: {'getdata': JSON.stringify(hot.getData())},
+        dataType: 'json',
+        type: 'POST',   
+        success: function (res) {
+            console.log(res);    
+        },
+        error: function (res) {
+            console.log(res);            
+        }
+    });
+    return false;
+});
+
+
+var json = '{{table}}';
+var sarray = [];
+if (json == 'doesnotexist') {
+      var data=[];
+
+      {% for e in evacr %}
+         data.push(['{{e.criterion}}']);
+      {% endfor %}
+
+} else {
+
+    {% for e in evacr %}
+        sarray.push('{{e.criterion}}');
+    {% endfor %}
+
+      json = json.replace(/&quot;/g, '"');
+      data = JSON.parse(json);                                                                                                                                                                               
+      for (var i = 0; i < data.length; i++){
+           var obj = data[i];
+           obj[0]= sarray[i];
+
+      }
+}
+
+      var
+      container2 = document.getElementById('example1'),
+      hot;
+ 
+      var columnsTypes = ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text']; 
+ 
+      hot = new Handsontable(container2, {
+         beforeCreateCol: function(index, amount) {
+         for (var i = 0; i < amount; i++) {
+         columnsTypes.splice(index + i, 0, 'text');
+         }
+        },
+        beforeRemoveCol: function(index, amount) {
+         for (var i = index + amount; i > index; i--) {
+         columnsTypes.splice(i, 1);
+         }
+        },
+         colHeaders: ['Criterion', 'Evaluation Measure', 'Unit','Lowest plausible value','Highest plausible value','The higher the value is, the better'],
+         data: data,
+         colWidths: 200,
+         manualColumnResize: true,
+         minSpareRows: 1,
+         cells: function(row, col) {
+            var cellProperties = {};
+            if (col === 0) {
+             cellProperties.readOnly = true;          }   
+            else if (col === 5) {  
+            cellProperties = {
+            type: 'dropdown', 
+            source: ['Yes','No']
+           }}
+           else if ((col === 4) || (col === 3)) {
+           cellProperties = {
+           type: 'numeric'
+           }} 
+          return cellProperties;
+        },
+     });
+    hot.loadData(data);
+    console.log(JSON.parse(json))
+});
+</script>
+<br><input class="btn btn-primary" type="submit" name="save" value="Save"/>
+<input class="btn btn-success" type="button" name="cancel" value="Back to Decision Flowchart" onclick="goback();"/>
+</form>
+</div>
+</div>
+{% endblock %}
