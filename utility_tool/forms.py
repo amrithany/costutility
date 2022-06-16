@@ -3,8 +3,8 @@ from django.forms import Textarea, ComboField
 from utility_tool.models import Decisions, Solution_Options, Screening_Criteria, Evaluation_Criteria, Importance_Scores, Users, Stakeholders, Stakeholders_Decisions, PA_Setup, Cost_Setup, Decision_Made, Solution_Options_Storage, SD_dec_file, SD_dec_link, SD_st_file, SD_st_link, SD_solopt_file, SD_solopt_link, SD_scr_file, SD_scr_link, SD_mapp_file, SD_mapp_link, SD_eva_file, SD_eva_link, SD_iw_file, SD_iw_link, SD_evam_file, SD_evam_link, SD_cost_file, SD_cost_link,SD_makedec_file, SD_makedec_link, FileUpload
 from django.core.validators import URLValidator
 from django.template.defaultfilters import filesizeformat
-import selectable.forms as selectable
-from selectable.forms import AutoCompleteSelectField, AutoCompleteWidget, AutoComboboxSelectWidget
+#import selectable.forms as selectable
+#from selectable.forms import AutoCompleteSelectField, AutoCompleteWidget, AutoComboboxSelectWidget
 
 class StakeholdersForm(forms.ModelForm):
     firstName = forms.CharField(label = "First Name")

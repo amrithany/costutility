@@ -347,7 +347,7 @@ class SD_makedec_link(m.Model):
         return self.id
 
 class Solution_Options_Storage(m.Model):
-    solopt_file = m.FileField(storage=MyFileStorage(),upload_to='/costutility/static',null=True, blank=True)
+    solopt_file = m.FileField(storage=MyFileStorage(),upload_to='costutility/static',null=True, blank=True)
     dec_id = m.IntegerField()
     created_date = m.DateTimeField(default=datetime.datetime.now)
     created_by = m.CharField(max_length=200)

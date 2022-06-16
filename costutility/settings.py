@@ -41,19 +41,30 @@ INSTALLED_APPS = [
     'utility_tool',
     #'bootstrap3',
     #'crispy_forms',
-    'easy_timezones',
+    #'easy_timezones',
     #'selectable',
     #'multiselectfield',
 ]
 
-MIDDLEWARE_CLASSES = [
-    'django.contrib.sessions.middleware.SessionMiddleware',     
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ]
+#MIDDLEWARE_CLASSES = [
+    #'django.contrib.sessions.middleware.SessionMiddleware',
+    #'django.middleware.common.CommonMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.contrib.sessions.middleware.SessionMiddleware',
+    #'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    #'django.contrib.auth.middleware.AuthenticationMiddleware',
+    #'django.contrib.messages.middleware.MessageMiddleware',
+    #'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#]
 
 ROOT_URLCONF = 'utility_tool.urls'
 
@@ -83,10 +94,13 @@ WSGI_APPLICATION = 'costutility.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'amritha$costutility',
-        'USER': 'amritha',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        },
+        'NAME': 'amritha19$costutility',
+        'USER': 'amritha19',
         'PASSWORD': 'lilies19',
-        'HOST' :'amritha.mysql.pythonanywhere-services.com',
+        'HOST' :'amritha19.mysql.pythonanywhere-services.com',
         'PORT':'',
    }
 }
@@ -131,7 +145,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/amritha/costutility/costutility/static/'
+STATIC_ROOT = '/home/amritha19/costutility/costutility/static/'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 #STATICFILES_DIRS = (
@@ -146,7 +160,7 @@ EMAIL_HOST_USER = 'decisionmaker.cbcse@gmail.com'
 EMAIL_HOST_PASSWORD = 't0dayisag00dday$'
 EMAIL_PORT = 587
 
-MEDIA_ROOT = '/home/amritha/costutility/utility_tool/documents/'
+MEDIA_ROOT = '/home/amritha19/costutility/utility_tool/documents/'
 MEDIA_URL = '/media/'  
 
 context_processors = [
@@ -159,4 +173,4 @@ TEMPLATE_DIRS = (
     join(BASE_DIR,  'templates'),
 )
 
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

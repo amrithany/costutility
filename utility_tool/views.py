@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django import forms
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse, FileResponse
-from django.shortcuts import redirect,render, render_to_response
+from django.shortcuts import redirect,render
 from django.template.loader import render_to_string
 from django.forms.models import modelformset_factory,inlineformset_factory
 from django.db.models import Q,F
@@ -23,7 +23,6 @@ import io
 import itertools
 from django.core import serializers
 from django.http import Http404
-from selectable.registry import registry
 from utility_tool.functions import check_required, group_cal, individual_cal, further_cal, update_text_criteria, redistribution_func, IdforUser, StValue, PartValue, Participate, TotalST,LocVal,CleanupOpt,selectOption
 from reportlab.pdfgen import canvas
 from io import BytesIO
@@ -182,21 +181,21 @@ def upload(request):
         if sform.is_valid():
            id = sform.save(commit=False)
            id.docName = request.FILES['docfile']  
-           id.docfile = '/home/amritha/costutility/costutility/static/' + request.FILES['docfile'].name
+           id.docfile = '/home/amritha19/costutility/costutility/static/' + request.FILES['docfile'].name
            id.save()
            try:  
               getfile = request.POST.get('docfile', False)
-              loc = '/home/amritha/costutility/costutility/static/' + request.FILES['docfile'].name
+              loc = '/home/amritha19/costutility/costutility/static/' + request.FILES['docfile'].name
               f = request.FILES['docfile']
               with open(loc, 'wb+') as destination:
                    for chunk in f.chunks():
                        destination.write(chunk)
            except:  
-              print 'Please upload a file.'
+              print ('Please upload a file.')
     else:
         sform = FileUploadForm()
     # Load documents for the list page
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     cursor = database.cursor ()
     mysql = """SELECT docName, MAX(CONVERT_TZ(docDate,'GMT','EST')) from utility_tool_fileupload group by docName"""
     try:
@@ -208,7 +207,7 @@ def upload(request):
         ret['Date'] = row[1]
         DocList.append(ret)
     except:
-      print "Error: unable to fetch data"
+      print ("Error: unable to fetch data")
 
     return render(request, 'admin/upload.html',{'DocList':DocList,'sform':sform,'loggedinuser':loggedinuser})
 
@@ -218,7 +217,7 @@ def updatedemo(request):
     else:
        loggedinuser = 'not found'
     if request.method == 'POST':
-       print request.POST.get('decidfordemoadmin')
+       print (request.POST.get('decidfordemoadmin'))
        returned_decId = request.POST.get('decidfordemoadmin')
        try:
           val = int(returned_decId)
@@ -245,7 +244,7 @@ def remove_dec(request, dec_id):
        dec.save(update_fields=['demoDec','updated_by', 'updated_date'])
        dupl_dec = Duplicated_DecIds.objects.get(id = dec_id).delete()
     except ObjectDoesNotExist:
-       print 'nothing to do'
+       print ('nothing to do')
 
     return HttpResponseRedirect('/utility_tool/admin/updatedemo.html')
 
@@ -293,10 +292,10 @@ def userlist(request):
         ret['orig_reg_date'] = str(u.orig_reg_date)
         UsersList.append(ret)
     if request.method == 'POST':
-       print 'in user list' 
-       print request.POST
+       print ('in user list') 
+       print (request.POST)
        for val in request.POST.getlist('deleted'):
-           print val
+           print (val)
            val = val.strip()
            y = val.replace('[','')
            z = y.replace(']','')     
@@ -305,9 +304,9 @@ def userlist(request):
            for l2 in z.split(','):                                                                                                                 
                l3 = l2.replace('"', '')
                temp_list.append(l3) 
-           print temp_list
+           print (temp_list)
            for uid in temp_list:
-               print uid
+               print (uid)
                try:
                   u = Users.objects.get(id = uid)
                   for d in Decisions.objects.filter(created_by = u.user):
@@ -331,7 +330,7 @@ def userlist(request):
                       Detailed_Costs.objects.filter(dec_id=d.id).delete()
                   Decisions.objects.filter(created_by = u.user).delete()
                except ObjectDoesNotExist:                                                                                                                   
-                 print 'user does not exist'
+                 print ('user does not exist')
                Users.objects.get(id = uid).delete() 
     return render(request, 'admin/userlist.html', {'UsersList': UsersList, 'users_count':users_count, 'loggedinuser':loggedinuser})   
 
@@ -352,17 +351,15 @@ def usageinfo(request):
     real_dec_list = []
     dec1 = Decisions.objects.all()
     #aug7
-    print dec1.count()
+    #print dec1.count()
     dec2 = dec1.exclude(real_dec_yn = 'X')
     dec = dec2.exclude(demoDec = 'Y')
-    print dec2.count()
+    #print dec2.count()
     dec_count = dec.count()
-    print dec_count
+    #print dec_count
     real_dec1 = dec1.filter(real_dec_yn = 'R')
     real_dec = real_dec1.exclude(demoDec = 'Y')
     real_dec_count = real_dec.count()
-    print 'Nov24'
-    print real_dec_count
     for r in real_dec:
         real_dec_list.append(r.id) 
    
@@ -377,7 +374,7 @@ def usageinfo(request):
     demo_dec_list = []
     demo_dec = dec1.filter(demoDec = 'Y')
     demo_dec_count = demo_dec.count()
-    #print 'demo_dec_count'
+    #print ('demo_dec_count'
     #print demo_dec_count
     for d in demo_dec:
         demo_dec_list.append(d.id) 
@@ -390,43 +387,52 @@ def usageinfo(request):
     dist_users_count = dist_users.count()
     # exclude DM_ADMIN  
     dist_users_count = dist_users_count - 1
-    print 'dist_users'
-    print dist_users_count
     # select distinct(created_by) from utility_tool_decisions where demoDec = 'Y';
 
     iw2  = Importance_Scores.objects.all()
     iw1 = iw2.exclude(deleted = 'Y') 
     iw_count = iw1.count()                                                                                                                           
-    #print 'all imp sc count'
+    iw1_count = 0
+    #print ('all imp sc count'
     #print iw_count
     iw_nodemo = iw1.exclude(dec_id__in=demo_dec_list)
     #print iw_nodemo.count()
     final_iw = iw_nodemo.values_list('dec_id',flat = True).distinct()    
     iw1_count = final_iw.count()
-    #print 'final number iw'
-    #print iw1_count
-    perc_iw = round(float(iw1_count) / float(dec_count),2) * 100
-
+    #print ('final number iw'
+    #print ('feb28')
+    #print (iw1_count)
+    #print (dec_count)
+    if iw1_count > 0:
+       perc_iw = round(float(iw1_count) / float(dec_count),2) * 100
+    else:   
+       perc_iw = ''
     mapp1  = MappingTable.objects.all()
+    mapp_count = 0
     mapp1_count = mapp1.count()                                                                                                                           
-    #print 'all mapp count'
+    #print ('all mapp count'
     #print mapp1_count
     mapp_nodemo = mapp1.exclude(dec_id__in=demo_dec_list)
     #print mapp_nodemo.count()
     mapp = mapp_nodemo.values_list('dec_id',flat = True).distinct()    
     mapp_count = mapp.count()
     #print mapp_count 
-    perc_mapp = round(float(mapp_count) / float(dec_count),2) * 100
-
+    if mapp_count > 0:
+       perc_mapp = round(float(mapp_count) / float(dec_count),2) * 100
+    else:   
+       perc_mapp = ''  
     stdec2 = Stakeholders_Decisions.objects.all()
     stdec1 = stdec2.exclude(deleted = 'Y') 
     stdec = stdec1.exclude(dec_id__in=demo_dec_list)
+    stdec_count = 0
     stdec_count = stdec.count()
     stdec_participate = stdec.filter(evacr_type = 'Y') | stdec.filter(scrcr_type = 'Y') | stdec.filter(iw_type = 'Y') | stdec.filter(solopt_type = 'Y')
     #we must remove the stakeholder who is the decision owner 
     stdec_participate_count = stdec_participate.count() - dec_count
-    ave_stdec = round(float(stdec_count) / float(dec_count),2)
-
+    if stdec_count > 0:
+       ave_stdec = round(float(stdec_count) / float(dec_count),2)
+    else:   
+       ave_stdec = ''  
     stdec_real = stdec.filter(dec_id__in=real_dec_list)
     stdec_real_participate = stdec_real.filter(evacr_type = 'Y') | stdec_real.filter(scrcr_type = 'Y') | stdec_real.filter(iw_type = 'Y') | stdec_real.filter(solopt_type = 'Y')
     stdec_real_participate_count = stdec_real_participate.count() - real_dec_count
@@ -436,22 +442,38 @@ def usageinfo(request):
     solopt1 = solopt2.exclude(archived = 'Y')  
     solopt = solopt1.exclude(dec_id__in=demo_dec_list) 
     solopt_real = solopt.filter(dec_id__in=real_dec_list)
+    solopt_count = 0
+    ave_real_count = 0
     solopt_count = solopt.count()
     solopt_real_count = solopt_real.count()
-    #print 'solopt_count'       
+    #print ('solopt_count'       
     #print solopt_count
-    ave_solopt = round(float(solopt_count) / float(dec_count),2)      
-    ave_real_solopt = round(float(solopt_real_count) / float(real_dec_count),2)
+    if solopt_count > 0:
+       ave_solopt = round(float(solopt_count) / float(dec_count),2)     
+    else:   
+       ave_solopt = ''     
+    if solopt_real_count > 0:   
+       ave_real_solopt = round(float(solopt_real_count) / float(real_dec_count),2)
+    else:   
+       ave_real_solopt = ''     
 
     scrcr1 = Screening_Criteria.objects.all()
     scrcr = scrcr1.exclude(dec_id__in=demo_dec_list)
     scrcr_real = scrcr.filter(dec_id__in=real_dec_list)
+    scrcr_count = 0
+    scrcr_real_count = 0
     scrcr_count = scrcr.count()
     scrcr_real_count = scrcr_real.count()
-    print 'scrcr_count'
-    print scrcr_count
-    ave_scrcr = round(float(scrcr_count) / float(dec_count),2)     
-    ave_real_scrcr = round(float(scrcr_real_count) / float(real_dec_count),2)
+    #print ('scrcr_count'
+    #print scrcr_count
+    if scrcr_count > 0:
+       ave_scrcr = round(float(scrcr_count) / float(dec_count),2)    
+    else:   
+       ave_scrcr = ''     
+    if scrcr_real_count > 0:   
+       ave_real_scrcr = round(float(scrcr_real_count) / float(real_dec_count),2)
+    else:   
+       ave_real_scrcr = ''  
     scrcr1_count = scrcr.filter(criterion = 'Fits within available budget').count() 
     scrcr2_count = scrcr.filter(criterion = 'Can be implemented by date required').count() 
     scrcr3_count = scrcr.filter(criterion = 'Meets privacy standards').count() 
@@ -473,17 +495,20 @@ def usageinfo(request):
     evacr1 = evacr2.exclude(deleted = 'Y')  
     evacr = evacr1.exclude(dec_id__in=demo_dec_list)
     evacr_real = evacr.filter(dec_id__in=real_dec_list)
+    evacr_count = 0
+    evacr_real_count = 0
     evacr_count = evacr.count()
     evacr_real_count = evacr_real.count()
-    print evacr_count
-    print 'nov24_2'
-    print evacr_real_count
     dec_evacr_real = evacr_real.values_list('dec_id',flat = True).distinct()
-    print 'nov24_4'
-    print dec_evacr_real.count()
     #evacr_real_count = dec_evacr_real.count()
-    ave_evacr = round(float(evacr_count) / float(dec_count),2)      
-    ave_real_evacr = round(float(evacr_real_count) / float(real_dec_count),2)    
+    if evacr_count > 0:
+       ave_evacr = round(float(evacr_count) / float(dec_count),2)     
+    else:   
+       ave_evacr = ''     
+    if ave_real_count > 0:   
+       ave_real_evacr = round(float(evacr_real_count) / float(real_dec_count),2)    
+    else:   
+       ave_real_evacr = ''     
     evacr1_countx = evacr.filter(criterion = 'Content meets learning objectives') 
     evacr1_count = evacr1_countx.values_list('dec_id',flat = True).distinct().count() 
     evacr2_countx = evacr.filter(criterion = 'Number of students in need who can be served') 
@@ -888,69 +913,97 @@ def usageinfo(request):
     r_evacr_totalcount12 = evacr69_real_count + evacr70_real_count + evacr71_real_count + evacr72_real_count + evacr73_real_count + evacr74_real_count
     r_evacr_totalcount13 = evacr75_real_count + evacr76_real_count + evacr77_real_count + evacr78_real_count + evacr79_real_count + evacr80_real_count
 
+    sol_count = 0
+    scr_count = 0
+    eva_count = 0
+    std_count = 0
+
     sol  = solopt.values_list('dec_id',flat = True).distinct()
     sol_count = sol.count()
-    perc_sol = round(float(sol_count) / float(dec_count),2) * 100
-
+    if scr_count > 0:
+       perc_sol = round(float(sol_count) / float(dec_count),2) * 100
+    else:   
+       perc_sol = ''  
     scr  = scrcr.values_list('dec_id',flat = True).distinct()
     scr_count = scr.count()
-    perc_scr = round(float(scr_count) / float(dec_count),2) * 100
-
+    if scr_count > 0:
+       perc_scr = round(float(scr_count) / float(dec_count),2) * 100
+    else:   
+       perc_scr = ''  
     eva  = evacr.values_list('dec_id',flat = True).distinct()
     eva_count = eva.count()
-    perc_eva = round(float(eva_count) / float(dec_count),2) * 100
+    if eva_count > 0:
+       perc_eva = round(float(eva_count) / float(dec_count),2) * 100
+    else:   
+       perc_eva = ''     
 
     std  = stdec.values_list('dec_id',flat = True).distinct()
     std_count = std.count()
-    print 'nov25_3'
-    print std_count
-    print dec_count
-    perc_std = round(float(std_count) / float(dec_count),2) * 100
-    print perc_std
+    if std_count > 0:
+       perc_std = round(float(std_count) / float(dec_count),2) * 100
 
     costs3 = Cost_Utility.objects.all()
     costs1 = costs3.exclude(archived = 'Y')
     costs2 = costs1.exclude(dec_id__in=demo_dec_list)
     costs = costs2.values_list('dec_id',flat = True).distinct()
     costs_real = costs.filter(dec_id__in=real_dec_list).values_list('dec_id',flat = True).distinct()
+    costs_count = 0
+    costs_real_count = 0
     costs_count = costs.count()
     costs_real_count = costs_real.count()
-    print 'costs count'
-    print costs_count
-    ave_costs = round(float(costs_count) / float(dec_count),2) * 100
-    ave_real_costs = round(float(costs_real_count) / float(real_dec_count),2) * 100
+    if costs_count > 0:
+       ave_costs = round(float(costs_count) / float(dec_count),2) * 100
+    else:
+       ave_costs = ''     
+    if costs_real_count > 0:   
+       ave_real_costs = round(float(costs_real_count) / float(real_dec_count),2) * 100
+    else:   
+       ave_real_costs = ''     
 
     # when you try to exclude votes not equal to 10 results are weird so am using greater than 10 
+    iw_count = 0
+    iw_real_count = 0
     iw = stdec.filter(iw_type = 'Y',votes__gt=10).values_list('dec_id',flat = True).distinct()
     iw_count =iw.count()
-    print 'iw_count'
-    print iw_count
-    ave_iw = round(float(iw_count) / float(dec_count),2) * 100   
+    if iw_count > 0:
+       ave_iw = round(float(iw_count) / float(dec_count),2) * 100   
+    else:   
+       ave_iw = ''     
     iw_real = stdec.filter(iw_type = 'Y', dec_id__in=real_dec_list, votes__gt=10).values_list('dec_id',flat = True).distinct()    
     iw_real_count =iw_real.count()
-    print iw_real_count
-    ave_real_iw = round(float(iw_real_count) / float(real_dec_count),2) * 100  
+    if iw_real_count > 0:
+       ave_real_iw = round(float(iw_real_count) / float(real_dec_count),2) * 100  
+    else:   
+       ave_real_iw = ''     
 
     evm3 = Evaluation_Measures.objects.all()
     evm1 = evm3.exclude(deleted = 'Y')
     evm2 = evm1.exclude(dec_id__in=demo_dec_list)
     evm = evm2.values_list('dec_id',flat = True).distinct()
+    evm_count = 0
     evm_count = evm.count()
-    print 'evm count'
-    print evm_count
-    ave_evm = round(float(evm_count) / float(dec_count),2) * 100   
+    if evm_count > 0:
+       ave_evm = round(float(evm_count) / float(dec_count),2) * 100   
+    else:   
+       ave_evm = ''     
     evm_real = evm.filter(dec_id__in=real_dec_list).values_list('dec_id',flat = True).distinct()
+    evm_real_count = 0
     evm_real_count = evm_real.count()
-    ave_real_evm = round(float(evm_real_count) / float(real_dec_count),2) * 100  
-
+    if evm_real_count >0:
+       ave_real_evm = round(float(evm_real_count) / float(real_dec_count),2) * 100  
+    else:   
+       ave_real_evm = ''  
     dm1 = Decision_Made.objects.all()
     dm2 = dm1.exclude(dec_id__in=demo_dec_list)
     dm = dm2.values_list('dec_id',flat = True).distinct()
-    print 'dm count'
+    dm_count = 0
     dm_count = dm.count()
-    print dm_count
-    perc_dm = round(float(dm_count) / float(dec_count),2) * 100
-
+    if dm_count > 0:
+       perc_dm = round(float(dm_count) / float(dec_count),2) * 100
+    else:   
+       perc_dm = ''  
+    decmade_2_count = 0
+    decmade_r2_count = 0
     decmade = dm2.filter(sol_option__isnull=False)
     decmade_real = dm2.filter(dec_id__in=real_dec_list, sol_option__isnull=False)
     decmade_1 = decmade.exclude(sol_option = 'NULL')
@@ -959,17 +1012,20 @@ def usageinfo(request):
     decmade_r1 = decmade_real.exclude(sol_option = 'NULL')
     decmade_r2 = decmade_r1.exclude(sol_option = '[]')
     decmade_r2_count = decmade_r2.count()
-    print decmade_2_count
-    ave_decmade = round(float(decmade_2_count) / float(dec_count),2) * 100 
-    ave_real_decmade = round(float(decmade_r2_count) / float(real_dec_count),2) * 100 
+    if decmade_2_count > 0:
+       ave_decmade = round(float(decmade_2_count) / float(dec_count),2) * 100 
+    else:   
+       ave_decmade = ''     
+    if decmade_r2_count > 0:
+       ave_real_decmade = round(float(decmade_r2_count) / float(real_dec_count),2) * 100 
+    else:   
+       ave_real_decmade = ''     
 
     start = datetime.date(2019, 8, 31) 
     today = datetime.date.today()
     end = today - start
     login_sinceAug31 = Users.objects.filter(lastLogin__gte = start).values_list('lastLogin',flat = True).distinct() 
     login31_count = login_sinceAug31.count()
-    print 'login_sinceAug31_count'
-    print login31_count
 
     one_week_back = timezone.now().date() - timedelta(days=7)
     #monday_of_last_week = some_day_last_week - timedelta(days=(some_day_last_week.isocalendar()[2] - 1))
@@ -980,7 +1036,6 @@ def usageinfo(request):
     login_lastweek_count = login_lastweek.count()
 
     one_month_back = timezone.now().date() - timedelta(days=30)
-    print one_month_back
     users_lastmonth = Users.objects.filter(lastLogin__gte=one_month_back)
     users_lastmonth_count = users_lastmonth.count()
     login_lastmonth = Login.objects.filter(loggedindate__gte=one_month_back)
@@ -2600,15 +2655,13 @@ def summary_report(request, dec_id):
               user_solopt = Users.objects.get(email = ss.email)
               try:
                  solopt_user = Solution_Options.objects.filter(dec_id=dec_id, created_by = user_solopt.user)
-                 print 'I AM HERE'
                  solopt_user_count = solopt_user.count()   
-                 print solopt_user_count
                  if solopt_user_count > 0:
                     st_solopt_contrib_count = st_solopt_contrib_count + 1
               except:
-                 print 'something wrong with the solopt user count'
+                 print ('something wrong with the solopt user count')
            except ObjectDoesNotExist:
-              print 'user does not exist'
+              print ('user does not exist')
     except ObjectDoesNotExist:
        text= text + ""
     except MultipleObjectsReturned:                                                                                                           
@@ -2620,7 +2673,7 @@ def summary_report(request, dec_id):
        std_count = std.exclude(email = user_email).count()     
        sugg_scr = std_count
        if std_count > 0:
-          if text <> "": 
+          if text != "": 
              text = text + ",\n providing Screening Criteria"
           else:
              text = text + "\n providing Screening Criteria"
@@ -2633,13 +2686,13 @@ def summary_report(request, dec_id):
                  if scr_user_count > 0:
                     st_scr_contrib_count = st_scr_contrib_count + 1
               except:
-                 print 'something wrong with the scr user count'
+                 print ('something wrong with the scr user count')
            except ObjectDoesNotExist:
-              print 'user does not exist'
+              print ('user does not exist')
     except ObjectDoesNotExist:
        text= text + ""
     except MultipleObjectsReturned:                                                                                                           
-          if text <> "": 
+          if text != "": 
              text = text + ",\n providing Screening Criteria"
           else:
              text = text + "\n providing Screening Criteria"
@@ -2649,7 +2702,7 @@ def summary_report(request, dec_id):
        std_count = std.exclude(email = user_email).count()     
        sugg_evacr = std_count
        if std_count > 0: 
-          if text <> "": 
+          if text != "": 
              text = text + ",\n developing a list of Evaluation Criteria"
           else:
              text = text + "\n developing a list of Evaluation Criteria"
@@ -2662,13 +2715,13 @@ def summary_report(request, dec_id):
                  if eva_user_count > 0:
                     st_evacr_contrib_count = st_evacr_contrib_count + 1
               except:
-                 print 'something wrong with the evacr user count'
+                 print ('something wrong with the evacr user count')
            except ObjectDoesNotExist:
-              print 'user does not exist'
+              print ('user does not exist')
     except ObjectDoesNotExist:
        text= text + ""
     except MultipleObjectsReturned:                       
-          if text <> "": 
+          if text != "": 
              text = text + ",\n developing a list of Evaluation Criteria"
           else:
              text = text + "\n developing a list of Evaluation Criteria"   
@@ -2682,15 +2735,15 @@ def summary_report(request, dec_id):
        sugg_iw = std_count
        if std_count > 0: 
           stakeholdersNow = 'Y'      
-          if text <> "": 
+          if text != "": 
              text = text + ",\n contributing Importance Scores"
           else:
              text = text + "\n contributing Importance Scores"
        else:
           stakeholdersNow = 'N'     
        for ss in std1:
-           print 'ss.email'
-           print ss.email
+           print ('ss.email')
+           print (ss.email)
            try:
               user_iw = Users.objects.get(email = ss.email)
               try:
@@ -2699,15 +2752,15 @@ def summary_report(request, dec_id):
                  if iw_user_count > 0:
                     st_iw_contrib_count = st_iw_contrib_count + 1
               except:
-                 print 'something wrong with the iw user count'
+                 print ('something wrong with the iw user count')
            except ObjectDoesNotExist:
-              print 'user does not exist' 
+              print ('user does not exist') 
     except ObjectDoesNotExist:
        text= text + ""
        stakeholdersNow = 'N'       
     except MultipleObjectsReturned:                                                                                                          
           stakeholdersNow = 'Y'      
-          if text <> "": 
+          if text != "": 
              text = text + ",\n contributing Importance Scores"
           else:
              text = text + "\n contributing Importance Scores"  
@@ -2722,21 +2775,21 @@ def summary_report(request, dec_id):
        solopt_archived = solopt1.filter(archived='Y')
        total_archived = solopt_archived.count()
     except:
-       print 'no solution options'
+       print ('no solution options')
 
     scrcr_count = 0
     try:
        scrcr = Screening_Criteria.objects.filter(dec_id=dec_id)
        scrcr_count = scrcr.count()
     except:
-       print 'no screening criteria'
+       print ('no screening criteria')
     
     mapp_count = 0
     try:
        mapp = MappingTable.objects.filter(dec_id=dec_id)
        mapp_count = mapp.count()
     except:
-       print 'no mapping table'
+       print ('no mapping table')
 
     evacr_count = 0
     try:
@@ -2744,19 +2797,19 @@ def summary_report(request, dec_id):
        evacr_notdeleted = evacr.exclude(deleted = 'Y')  
        evacr_count = evacr_notdeleted.count()
     except:
-       print 'no evaluation criteria'
+       print ('no evaluation criteria')
 
     iw_count = 0
     try:
        iw = Importance_Scores.objects.filter(dec_id=dec_id).order_by('criterion', '-score') 
        iw_count = iw.count()
     except:
-       print 'no iw'
+       print ('no iw')
 
     try:
        adj_w = evacr_notdeleted.order_by('criterion', '-adjusted_weight') 
     except:
-       print 'no adj_w'
+       print ('no adj_w')
 
     evm_count = 0
     try:
@@ -2772,24 +2825,24 @@ def summary_report(request, dec_id):
        evm_distinct_cri = evm_forever.values_list('criterion').distinct()
        evm_distinct_opt = evm2.values_list('sol_option').distinct()
        evm_opt_count = evm_distinct_opt.count()
-       print 'evm_opt_count'
-       print evm_opt_count
+       print ('evm_opt_count')
+       print (evm_opt_count)
        evm_count = evm.count()
     except:
-       print 'no evm'
+       print ('no evm')
 
     for e in evm2:
-        print 'TTTY'
-        print e.criterion
-        print e.sol_option
+        print ('TTTY')
+        print (e.criterion)
+        print (e.sol_option)
     det_count = 0
     try:
        det = Detailed_Costs.objects.filter(dec_id=dec_id)
        for d in det:
-           if d.personnel_cost <> 0 or d.facilities_cost <> 0 or d.materials_cost <> 0 or d.training_cost <> 0 or d.other_cost <> 0:
+           if d.personnel_cost != 0 or d.facilities_cost != 0 or d.materials_cost != 0 or d.training_cost != 0 or d.other_cost != 0:
               det_count = det_count + 1
     except:
-       print 'no det'
+       print ('no det')
 
     type_of_cost = ''
     cost_text = ''  
@@ -2809,7 +2862,7 @@ def summary_report(request, dec_id):
           cost_text = "Marginal Cost"
           type_of_cost = 'Marginal'
     except ObjectDoesNotExist: 
-       print 'no cost setup'
+       print ('no cost setup')
 
     wu = ''
     so1 = ''
@@ -2846,9 +2899,9 @@ def summary_report(request, dec_id):
              costzero = 'Y'
           else:   
              costzero = 'N' 
-       print 'aug3408'
-       print costzero
-       if wu is not None and  wu <> '' and wu <> ' ':
+       print ('aug3408')
+       print (costzero)
+       if wu is not None and  wu != '' and wu != ' ':
           wu_w = "%.1f" % onerec.weighted_utility
        so1 = ""
        so1_one = "Y"
@@ -2857,13 +2910,13 @@ def summary_report(request, dec_id):
        else:                                                                                                                                                                                                        
           wuzero = 'N'
        for c in cc:
-           print c.cost
-           if c.cost <> 0:                                                                                                                                                                                          
+           print (c.cost)
+           if c.cost != 0:                                                                                                                                                                                          
               costzero = 'N'
            if c.weighted_utility == 0:                                                                                                                                                                              
               wuzero = 'Y'
-           if wu == c.weighted_utility and (c.weighted_utility is not None and c.weighted_utility <> '' and c.weighted_utility <> ' '):
-              if so1 <> "":
+           if wu == c.weighted_utility and (c.weighted_utility is not None and c.weighted_utility != '' and c.weighted_utility != ' '):
+              if so1 != "":
                  so1 = so1 + ", " + c.sol_option
                  so1_one = "N"
               else:
@@ -2880,7 +2933,7 @@ def summary_report(request, dec_id):
           so2_one = 'Y'
           for c in cd:
              if co == c.cost:
-                if so2 <> "":
+                if so2 != "":
                    so2 = so2 + ", " + c.sol_option
                    so2_one = 'N'
                 else:
@@ -2888,16 +2941,19 @@ def summary_report(request, dec_id):
 
           ce1 = cost_utility.exclude(weighted_utility = 0) 
           ce = ce1.order_by('cost_utility_ratio') 
-          onerec3 = ce.first()                                                                                                                                                                                    
-          if cur_w is not None and  cur_w <> '' and cur_w <> ' ':
+          onerec3 = ce.first()                                                           
+          #change done on Apr4, 2022
+          #if cur_w is not None and  cur_w != '' and cur_w != ' ':
+          if onerec3.cost_utility_ratio is not None and onerec3.cost_utility_ratio != '':
              cur_w = "%.1f" % onerec3.cost_utility_ratio
-          if cur is not None and  cur <> '' and cur <> ' ':     
+          #if cur is not None and  cur != '' and cur != ' ':     
+          if onerec3.cost_utility_ratio is not None and onerec3.cost_utility_ratio != '':
              cur = onerec3.cost_utility_ratio
           so3 = ""
           so3_one = 'Y'
           for c in ce:
-             if cur == c.cost_utility_ratio and (c.cost_utility_ratio is not None and c.cost_utility_ratio <> '' and c.cost_utility_ratio <> ' '):
-                if so3 <> "":
+             if cur == c.cost_utility_ratio and (c.cost_utility_ratio is not None and c.cost_utility_ratio != '' and c.cost_utility_ratio != ' '):
+                if so3 != "":
                    so3 = so3 + ", " + c.sol_option
                    so3_one = "Y" 
                 else:
@@ -2905,7 +2961,7 @@ def summary_report(request, dec_id):
 
        # atleast one sol option with cost_utility_ratio not equal to zero
        for counter in cost_utility:
-           if counter.cost_utility_ratio <> 0:
+           if counter.cost_utility_ratio != 0:
               cost_utility_exists = 'Y' 
     except ObjectDoesNotExist:
        try:
@@ -2918,8 +2974,8 @@ def summary_report(request, dec_id):
           so3 = c1.sol_option
           cu_rec_exists = 'Y'
           cu_rec_one = 'Y'
-          print 'cu_rec two'
-          print cu_rec_exists
+          print ('cu_rec two')
+          print (cu_rec_exists)
           co_w = "%.1f" % co
           if wu is not None:
              wu_w = "%.1f" % wu
@@ -2931,8 +2987,8 @@ def summary_report(request, dec_id):
              costzero = 'N'              
        except ObjectDoesNotExist:
           cu_rec_exists = 'N'
-          print 'cu_rec three'
-          print cu_rec_exists  
+          print ('cu_rec three')
+          print (cu_rec_exists)  
     dm_rec_exists = ''
     chosen = ''
     x = ''
@@ -2942,36 +2998,24 @@ def summary_report(request, dec_id):
        reason = dec_made.reason
        primary_factor = dec_made.primary_factor
        other_cons = dec_made.other_cons
-       print opt
        z = opt.replace('[', '')
-       print z
        yy = z.replace("u", "")
        y = yy.replace("'", "") 
-       print y
        m = y.replace("L", "") 
-       print 'm'
-       print m
        x = m.replace("]","")
-       print x
        for sc in x.split(','): 
-           print sc
            s = Solution_Options.objects.get(id=sc)
-           print 'chosen'
-           print s.sol_option
            chosen = s.sol_option + ", " + chosen
        dm_rec_exists = 'Y'
     except:
        dm_rec_exists = 'N'
     
     chosen = chosen[:-2] 
-    print chosen
 
     # using a function here
     retval = check_required(request, dec_id)
     dec_mesg = ''
     check_again = 'Y'
-    print 'retval'
-    print retval
     if 'solopt' in retval:
         dec_mesg = dec_mesg + 'Solution Options'
     if 'eva' in retval:   
@@ -3003,7 +3047,6 @@ def summary_report(request, dec_id):
           else:  
              dec_mesg =  dec_mesg + ', Evaluation Measures'
 
-    print dec_mesg
     document = Document()
     p4 = inflect.engine()
     p2 = document.add_heading(' ',0)
@@ -3021,8 +3064,6 @@ def summary_report(request, dec_id):
     #p.font = p.style.font
     #p.font.name = 'Calibri'
     p.add_run('DecisionMaker').italic = True
-    print 'cu_rec four'
-    print cu_rec_exists
     p.add_run('’s cost-utility decision-making framework, ' +  name_decisionmaker + " engaged in a")
     if real_dec_yn == 'R':
        p.add_run(" real ")
@@ -3032,16 +3073,13 @@ def summary_report(request, dec_id):
        p.add_run(" test ")
     p.add_run("decision about: ")
     p.add_run(decision_prob).bold = True
-    print 'last char'
-    if decision_prob[-1:] <> '.' and decision_prob[-1:] <> '?' and decision_prob[-1:] <> ';' and decision_prob[-1:] <> ':' and decision_prob[-1:] <> '!' and decision_prob[-1:] <> ',':
+    if decision_prob[-1:] != '.' and decision_prob[-1:] != '?' and decision_prob[-1:] != ';' and decision_prob[-1:] != ':' and decision_prob[-1:] != '!' and decision_prob[-1:] != ',':
        p.add_run(".") 
-    print stdec_count
-    print text
     p.add_run(" The decision ID is " + str(dec_id) + ".") 
     run = p.add_run()
     run.add_break() 
     run.add_break()   
-    if stdec_count > 0 and text <> "":
+    if stdec_count > 0 and text != "":
        if stdec_count == 1:
           p.add_run(p4.number_to_words(stdec_count).capitalize() + " stakeholder was ")
        else:
@@ -3055,17 +3093,11 @@ def summary_report(request, dec_id):
     run.add_break() 
     run.add_break()
     if cu_rec_exists == 'Y':
-       print 'aug25 cu_rec_one'
-       print cu_rec_one
-       print so3
        if cu_rec_one == 'Y': 
           p.add_run('Among ' +  p4.number_to_words(solopt_count) + ' solution option that was evaluated, it appears that, before considering costs, ') 
        else:
           p.add_run('Among ' +  p4.number_to_words(solopt_count) + ' solution options that were evaluated, it appears that, before considering costs, ')
-       print 'tuesday'
-       print wu_w  
-       print cur_w
-       #if wu_w is not None and wu_w <> '' and wu_w <> ' ':
+       #if wu_w is not None and wu_w != '' and wu_w != ' ':
        p.add_run(so1).bold = True   
        if so1_one == 'Y':
           p.add_run(' yields the highest stakeholder satisfaction, i.e., it best meets your stakeholders’ criteria, earning an overall utility value of ' + str(wu_w) + ' out of 10.')
@@ -3086,8 +3118,8 @@ def summary_report(request, dec_id):
           run = p.add_run()
           run.add_break()
           run.add_break()
-       if so3 is not None and so3 <> '' and so3 <> ' ':
-          if cur_w is not None and cur_w <> '' and cur_w <> ' ': 
+       if so3 is not None and so3 != '' and so3 != ' ':
+          if cur_w is not None and cur_w != '' and cur_w != ' ': 
              if so3_one == 'Y':
                 p.add_run(so3).bold = True 
                 p.add_run(' provides the best return on investment because it costs the least per unit of utility or stakeholder satisfaction: ' + str(cur_w) + '.') 
@@ -3099,27 +3131,27 @@ def summary_report(request, dec_id):
              run.add_break()
 
     if dm_rec_exists == 'Y': 
-       if chosen <> '' and chosen <> ' ' and chosen is not None:  
+       if chosen != '' and chosen != ' ' and chosen is not None:  
           p.add_run(name_decisionmaker + ' chose ')
           p.add_run(chosen).bold = True 
-       if reason <> '' and reason <> ' ' and reason is not None: 
+       if reason != '' and reason != ' ' and reason is not None: 
           reason = reason.replace('#', '')
           p.add_run(' based on the following rationale or consideration: ' + reason)
-          if reason[-1:] <> '.' and reason[-1:] <> '?' and reason[-1:] <> ';' and reason[-1:] <> ':' and reason[-1:] <> '!' and reason[-1:] <> ',':
+          if reason[-1:] != '.' and reason[-1:] != '?' and reason[-1:] != ';' and reason[-1:] != ':' and reason[-1:] != '!' and reason[-1:] != ',':
              p.add_run(".") 
           run = p.add_run()
           run.add_break()
           run.add_break()
-       if primary_factor <> '' and primary_factor <> ' ' and primary_factor is not None:   
+       if primary_factor != '' and primary_factor != ' ' and primary_factor is not None:   
           p.add_run('The primary factor in making this decision was: ' + primary_factor)
-          if primary_factor[-1:] <> '.' and primary_factor[-1:] <> '?' and primary_factor[-1:] <> ';' and primary_factor[-1:] <> ':' and primary_factor[-1:] <> '!' and primary_factor[-1:] <> ',':                        
+          if primary_factor[-1:] != '.' and primary_factor[-1:] != '?' and primary_factor[-1:] != ';' and primary_factor[-1:] != ':' and primary_factor[-1:] != '!' and primary_factor[-1:] != ',':                        
              p.add_run(".") 
           run = p.add_run()
           run.add_break()
           run.add_break()
-       if other_cons <> '' and other_cons <> ' ' and other_cons is not None:   
+       if other_cons != '' and other_cons != ' ' and other_cons is not None:   
           p.add_run('Considerations outside of the cost-utility analysis that were important included: ' + other_cons)
-          if other_cons[-1:] <> '.' and other_cons[-1:] <> '?' and other_cons[-1:] <> ';' and other_cons[-1:] <> ':' and other_cons[-1:] <> '!' and other_cons[-1:] <> ',': 
+          if other_cons[-1:] != '.' and other_cons[-1:] != '?' and other_cons[-1:] != ';' and other_cons[-1:] != ':' and other_cons[-1:] != '!' and other_cons[-1:] != ',': 
              p.add_run(".") 
     document.add_page_break()
  
@@ -3133,7 +3165,6 @@ def summary_report(request, dec_id):
     runner = d.add_run(decision_prob)
     runner.bold = True
     runner.italic = True
-    print 'DP' 
     run = d.add_run()                                                                                                                                                                                            
     run.add_break()
     run.add_break()
@@ -3188,7 +3219,6 @@ def summary_report(request, dec_id):
     # Solution Options
     document.add_heading('Solution Options', level=1)
     d = document.add_paragraph('')
-    print 'SO'
     if sugg_solopt > 0:
        if sugg_solopt == 1:
           d.add_run(p4.number_to_words(sugg_solopt).capitalize() + ' stakeholder was invited to contribute to the list of possible Solution Options, out of which ' + p4.number_to_words(st_solopt_contrib_count) + ' did so (see Appendix A for details).')  
@@ -3244,7 +3274,7 @@ def summary_report(request, dec_id):
        d.add_run('Information about the options can be accessed at the following link: ')
        run = d.add_run()     
        run.add_break()
-       d.add_run('http://amritha.pythonanywhere.com/utility_tool/decisions/' + dec_id2 + '/solution_options/view_solopt_det.html')
+       d.add_run('http://amritha19.pythonanywhere.com/utility_tool/decisions/' + dec_id2 + '/solution_options/view_solopt_det.html')
        run = d.add_run()     
        run.add_break()
        if total_archived > 0:
@@ -3265,7 +3295,6 @@ def summary_report(request, dec_id):
     # Screening Criteria
     document.add_heading('Screening Criteria', level=1)
     d = document.add_paragraph('')
-    print 'SC'
     if sugg_scr > 0:
        if sugg_scr == 1:
           if st_scr_contrib_count > 0:
@@ -3287,7 +3316,7 @@ def summary_report(request, dec_id):
        criteria = ""
        d.add_run('The following Screening Criteria were proposed:')
        for s in scrcr:
-           if s.criterion2 is not None and s.criterion2 <> '':                                                                            
+           if s.criterion2 is not None and s.criterion2 != '':                                                                            
               criteria = s.criterion + " " + s.criterion2
            else:   
               criteria = s.criterion
@@ -3354,7 +3383,7 @@ def summary_report(request, dec_id):
        criteria = ""
        d.add_run('The Evaluation Criteria listed were:')
        for e in evacr_notdeleted:
-           if e.criterion2 is not None and e.criterion2 <> '':
+           if e.criterion2 is not None and e.criterion2 != '':
               criteria = e.criterion + " " + e.criterion2
            else:   
               criteria = e.criterion 
@@ -3382,7 +3411,7 @@ def summary_report(request, dec_id):
              d.add_run(p4.number_to_words(sugg_iw).capitalize() + ' stakeholders were invited to contribute Importance Scores but none did so.')
     if iw_count > 0: 
        d = document.add_paragraph('')
-       d.add_run('Importance Scores were used to assign a weight to each Evaluation Criterion indicating its relative importance to the stakeholder(s). The weights (which are between 0 and 1 for each criterion and sum to 1 across all Evaluation Criteria) are shown in Table 1. Refer to Appendix C for a summary of Importance Scores and how the importance weights are calculated. Visit the Resources and Guidance page in DecisionMaker to see how the importance weights are calculated: http://amritha.pythonanywhere.com/Steps.html#Importance-Scores.')
+       d.add_run('Importance Scores were used to assign a weight to each Evaluation Criterion indicating its relative importance to the stakeholder(s). The weights (which are between 0 and 1 for each criterion and sum to 1 across all Evaluation Criteria) are shown in Table 1. Refer to Appendix C for a summary of Importance Scores and how the importance weights are calculated. Visit the Resources and Guidance page in DecisionMaker to see how the importance weights are calculated: http://amritha19.pythonanywhere.com/Steps.html#Importance-Scores.')
        run = d.add_run()
        run.add_break()
        run.add_break()
@@ -3414,7 +3443,6 @@ def summary_report(request, dec_id):
     new_section.page_width = new_width
     new_section.page_height = new_height
 
-    print new_section.orientation
     document.add_heading('Evaluation Measures and Data to Collect', level=1)
     d = document.add_paragraph('')
     if evm_count > 0: 
@@ -3481,8 +3509,6 @@ def summary_report(request, dec_id):
        d.add_run('Table 3. Scores on Evaluation Measures and the Criterion-level Utility Values.').italic = True
        no_of_cols = 2 + evm_opt_count + evm_opt_count
        counter = 1
-       print 'no of cols'
-       print no_of_cols 
        table = document.add_table(rows=1, cols=no_of_cols)
        table.style = 'LightShading-Accent1'
        hdr_cells = table.rows[0].cells
@@ -3533,7 +3559,6 @@ def summary_report(request, dec_id):
     new_section.orientation = WD_ORIENT.PORTRAIT
     new_section.page_width = new_width
     new_section.page_height = new_height
-    print new_section.orientation  
     document.add_heading('Costs and Numbers of Participants Served', level=1)
     d = document.add_paragraph('')
     if costzero == 'N':
@@ -3577,7 +3602,7 @@ def summary_report(request, dec_id):
     # Decision Made
     document.add_heading('Results: Cost, Utility and Cost-Utility Ratios', level=1)
     d = document.add_paragraph('')
-    if dec_mesg <> '':
+    if dec_mesg != '':
        d.add_run('The utility values cannot be calculated because information on ' +  dec_mesg + ' is missing.')
     else:
        d.add_run('Utility is a measure of stakeholder satisfaction or “usefulness” reported in ')
@@ -3662,27 +3687,27 @@ def summary_report(request, dec_id):
     if dm_rec_exists == 'Y':
        #document.add_heading('Final decision and rationale', level=1)          
        d = document.add_paragraph('')
-       if chosen <> '' and chosen <> ' ' and chosen is not None:  
+       if chosen != '' and chosen != ' ' and chosen is not None:  
           d.add_run(name_decisionmaker + ' chose ')
           d.add_run(chosen).bold = True
-       if reason <> '' and reason <> ' ' and reason is not None: 
+       if reason != '' and reason != ' ' and reason is not None: 
           reason = reason.replace('#', '')
           d.add_run(' based on the following rationale or consideration: ' + reason)
-          if reason[-1:] <> '.' and reason[-1:] <> '?' and reason[-1:] <> ';' and reason[-1:] <> ':' and reason[-1:] <> '!' and reason[-1:] <> ',':
+          if reason[-1:] != '.' and reason[-1:] != '?' and reason[-1:] != ';' and reason[-1:] != ':' and reason[-1:] != '!' and reason[-1:] != ',':
              d.add_run(".") 
           run = d.add_run()
           run.add_break()
           run.add_break()
-       if primary_factor <> '' and primary_factor <> ' ' and primary_factor is not None:   
+       if primary_factor != '' and primary_factor != ' ' and primary_factor is not None:   
           d.add_run('The primary factor in making this decision was: ' + primary_factor)
-          if primary_factor[-1:] <> '.' and primary_factor[-1:] <> '?' and primary_factor[-1:] <> ';' and primary_factor[-1:] <> ':' and primary_factor[-1:] <> '!' and primary_factor[-1:] <> ',':              
+          if primary_factor[-1:] != '.' and primary_factor[-1:] != '?' and primary_factor[-1:] != ';' and primary_factor[-1:] != ':' and primary_factor[-1:] != '!' and primary_factor[-1:] != ',':              
              d.add_run(".") 
           run = d.add_run()
           run.add_break()
           run.add_break()
-       if other_cons <> '' and other_cons <> ' ' and other_cons is not None:   
+       if other_cons != '' and other_cons != ' ' and other_cons is not None:   
           d.add_run('Considerations outside of the cost-utility analysis that were important included: ' + other_cons)
-          if other_cons[-1:] <> '.' and other_cons[-1:] <> '?' and other_cons[-1:] <> ';' and other_cons[-1:] <> ':' and other_cons[-1:] <> '!' and other_cons[-1:] <> ',': 
+          if other_cons[-1:] != '.' and other_cons[-1:] != '?' and other_cons[-1:] != ';' and other_cons[-1:] != ':' and other_cons[-1:] != '!' and other_cons[-1:] != ',': 
              d.add_run(".") 
     else:
        d = document.add_paragraph('') 
@@ -3705,19 +3730,19 @@ def summary_report(request, dec_id):
     d.add_run('When the rating or score on an evaluation measure is ')
     d.add_run('positively').bold = True
     d.add_run(' associated with the utility values (i.e., higher scores are better), the likely lowest score you entered is assumed to provide zero utility and the likely highest score you entered is assumed to provide a utility value of 10. The criterion-level unweighted utility value for a Solution Option is:')
-    document.add_picture('/home/amritha/decisionmaker/utility_tool/positiveformula2.PNG',width=Inches(6))
+    document.add_picture('/home/amritha19/costutility/utility_tool/positiveformula2.png',width=Inches(6))
     d = document.add_paragraph('')
     d.add_run('When the rating or score on an evaluation measure is ')
     d.add_run('negatively').bold = True
     d.add_run(' associated with the utility values (i.e., lower scores are better), the likely lowest score you entered is assumed to provide a utility value of 10 while the likely highest score you entered is now assumed to provide zero utility. The criterion-level unweighted utility value for a Solution Option is:')
-    document.add_picture('/home/amritha/decisionmaker/utility_tool/negativeformula2.PNG',width=Inches(6))                                              
+    document.add_picture('/home/amritha19/costutility/utility_tool/negativeformula2.png',width=Inches(6))                                              
     d = document.add_paragraph('Visit ')
-    add_hyperlink(d, 'https://amritha.pythonanywhere.com/Steps.html#Utility', "https://amritha.pythonanywhere.com/Steps.html#Utility")
+    add_hyperlink(d, 'https://amritha19.pythonanywhere.com/Steps.html#Utility', "https://amritha19.pythonanywhere.com/Steps.html#Utility")
     d.add_run(' to see an example of this calculation.')
     document.add_heading('Overall Utility Value', level=1)
     d = document.add_paragraph('')
     d.add_run('The overall utility value is the sum of the criterion-level utility values multiplied by the importance weights. Visit ')
-    add_hyperlink(d, 'https://amritha.pythonanywhere.com/Steps.html#Utility', "https://amritha.pythonanywhere.com/Steps.html#Utility")
+    add_hyperlink(d, 'https://amritha19.pythonanywhere.com/Steps.html#Utility', "https://amritha19.pythonanywhere.com/Steps.html#Utility")
     d.add_run(' to see an example of this calculation.')
     
     if real_dec_yn == 'R':
@@ -3728,7 +3753,7 @@ def summary_report(request, dec_id):
        filename = 'SummaryReport-' + str(dec_id) + '-X.docx'      
     document.save(filename)
     #fs = FileSystemStorage("/tmp")
-    with open(filename) as docx:
+    with open(filename, 'rb') as docx:
         response = HttpResponse(docx.read(), content_type='application/docx')
         response['Content-Disposition'] = 'inline; filename="%s"' % filename
         return response
@@ -4045,7 +4070,7 @@ def stakeholders(request):
         idList = 'no idList'
 
     if request.method == 'POST':
-       print request.POST.getlist('id') 
+       print (request.POST.getlist('id')) 
        if whereamI == 'dec_list':
           return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html')
        else: 
@@ -4117,7 +4142,7 @@ def add_stakeholder(request):
             elif 'menu' in request.POST:
                return HttpResponseRedirect('/utility_tool/decisions/%s/menu.html' % dec_id)
         else:
-            print stform.errors
+            print (stform.errors)
 
     else:
         qset = Stakeholders.objects.none()
@@ -4164,7 +4189,7 @@ def edit_stakeholder(request, st_id):
                     s.save(update_fields=['name','email','updated_by', 'updated_date']) 
             return HttpResponseRedirect('/utility_tool/stakeholders/stakeholders.html')
         else:
-            print stform.errors
+            print (stform.errors)
     else:    
         stform = StakeholdersForm(instance=st)
     t = loader.get_template('stakeholders/edit_stakeholder.html')
@@ -4221,19 +4246,17 @@ def send_email(request):
               for l2 in z.split(','):                                                                                                                                                                          
                   l3 = l2.replace('"', '')
                   temp_list.append(l3) 
-              print temp_list
               for l in temp_list:
                    try: 
                       solopt = Stakeholders_Decisions.objects.get(dec_id=dec_id, id=l)
                       st = Stakeholders.objects.get(id=solopt.st_id)
-                      print st.firstName
                       user = Users.objects.get(email = user_email)
                       username = user.firstName + ' '+ user.lastName
                       solopt.solopt_date = datetime.datetime.strptime(request.POST.get('sol_date'),'%m/%d/%Y')
-                      if user.organisation <> '' and user.organisation <> ' ' and user.organisation is not None:
-                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on decisionmaker (https://amritha.pythonanywhere.com)  and log in to contribute:\nIdeas for Solution Options by ' + request.POST.get('sol_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + solopt.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
+                      if user.organisation != '' and user.organisation != ' ' and user.organisation is not None:
+                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on decisionmaker (https://amritha19.pythonanywhere.com)  and log in to contribute:\nIdeas for Solution Options by ' + request.POST.get('sol_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + solopt.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
                       else:
-                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha.pythonanywhere.com) and log in to contribute:\nIdeas for Solution Options by ' + request.POST.get('sol_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + solopt.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
+                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha19.pythonanywhere.com) and log in to contribute:\nIdeas for Solution Options by ' + request.POST.get('sol_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + solopt.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
                       subject = 'Invitation to Contribute Solution Options'
                       from_email = user_email
                       to_email = solopt.email
@@ -4249,7 +4272,7 @@ def send_email(request):
                       solopt.updated_date = datetime.datetime.now()
                       solopt.save(update_fields=['solopt_date','updated_by', 'updated_date'])  
                    except ObjectDoesNotExist:
-                      print 'id does not exist'
+                      print ('id does not exist')
     #Suggestions for Screening Criteria by [date entered by PA]
     if 'selected_scrcr' in request.POST:
        for val in request.POST.getlist('selected_scrcr'):
@@ -4262,19 +4285,17 @@ def send_email(request):
               for l2 in z.split(','):                                                                                                                                                                          
                   l3 = l2.replace('"', '')
                   temp_listetappend(l3) 
-              print temp_list
               for l in temp_list:
                    try: 
                       scrcr = Stakeholders_Decisions.objects.get(dec_id=dec_id, id=l)
                       st = Stakeholders.objects.get(id=scrcr.st_id)
-                      print st.firstName
                       user = Users.objects.get(email = user_email)
                       username = user.firstName + ' '+ user.lastName
                       scrcr.scrcr_date = datetime.datetime.strptime(request.POST.get('scr_date'),'%m/%d/%Y')
-                      if user.organisation <> '' and user.organisation <> ' ' and user.organisation is not None:
-                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha.pythonanywhere.com)  and log in to contribute:\nSuggestions for Screening Criteria by ' + request.POST.get('scr_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + scrcr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username                                                          
+                      if user.organisation != '' and user.organisation != ' ' and user.organisation is not None:
+                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha19.pythonanywhere.com)  and log in to contribute:\nSuggestions for Screening Criteria by ' + request.POST.get('scr_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + scrcr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username                                                          
                       else:
-                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha.pythonanywhere.com) and log in to contribute:\nSuggestions for Screening Criteria by ' + request.POST.get('scr_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + scrcr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
+                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha19.pythonanywhere.com) and log in to contribute:\nSuggestions for Screening Criteria by ' + request.POST.get('scr_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + scrcr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
                       subject = 'Invitation to provide Suggestions for Screening Criteria'
                       from_email = user_email
                       to_email = scrcr.email
@@ -4290,7 +4311,7 @@ def send_email(request):
                       scrcr.updated_date = datetime.datetime.now()
                       scrcr.save(update_fields=['scrcr_date','updated_by', 'updated_date'])  
                    except ObjectDoesNotExist:
-                      print 'id does not exist'
+                      print ('id does not exist')
     #Suggestions for Evaluation Criteria by [date entered by PA]
     if 'selected_evacr' in request.POST:
        for val in request.POST.getlist('selected_evacr'):
@@ -4303,19 +4324,17 @@ def send_email(request):
               for l2 in z.split(','):                                                                                                                                                                          
                   l3 = l2.replace('"', '')
                   temp_list.append(l3) 
-              print temp_list
               for l in temp_list:
                    try: 
                       evacr = Stakeholders_Decisions.objects.get(dec_id=dec_id, id=l)
                       st = Stakeholders.objects.get(id=evacr.st_id)
-                      print st.firstName
                       user = Users.objects.get(email = user_email)
                       username = user.firstName + ' '+ user.lastName
                       evacr.evacr_date = datetime.datetime.strptime(request.POST.get('eva_date'),'%m/%d/%Y')
-                      if user.organisation <> '' and user.organisation <> ' ' and user.organisation is not None:
-                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha.pythonanywhere.com)  and log in to contribute:\nSuggestions for Evaluation Criteria by ' + request.POST.get('eva_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + evacr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username                                                    
+                      if user.organisation != '' and user.organisation != ' ' and user.organisation is not None:
+                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha19.pythonanywhere.com)  and log in to contribute:\nSuggestions for Evaluation Criteria by ' + request.POST.get('eva_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + evacr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username                                                    
                       else:
-                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha.pythonanywhere.com) and log in to contribute:\nSuggestions for Evaluation Criteria by ' + request.POST.get('eva_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + evacr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you or contributing to this decision process.\n\n'+ username
+                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha19.pythonanywhere.com) and log in to contribute:\nSuggestions for Evaluation Criteria by ' + request.POST.get('eva_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + evacr.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you or contributing to this decision process.\n\n'+ username
                       subject = 'Invitation to provide Suggestions for Evaluation Criteria'
                       from_email = user_email
                       to_email = evacr.email
@@ -4331,7 +4350,7 @@ def send_email(request):
                       evacr.updated_date = datetime.datetime.now()
                       evacr.save(update_fields=['evacr_date','updated_by', 'updated_date'])  
                    except ObjectDoesNotExist:
-                      print 'id does not exist'
+                      print ('id does not exist')
     #Importance Scores for the evaluation criteria by [date entered by PA]].  
     if 'selected_iw' in request.POST:
        for val in request.POST.getlist('selected_iw'):
@@ -4344,19 +4363,17 @@ def send_email(request):
               for l2 in z.split(','):                                                                                                                                                                          
                   l3 = l2.replace('"', '')
                   temp_list.append(l3) 
-              print temp_list
               for l in temp_list:
                    try: 
                       iw = Stakeholders_Decisions.objects.get(dec_id=dec_id, id=l)
                       st = Stakeholders.objects.get(id=iw.st_id)
-                      print st.firstName
                       user = Users.objects.get(email = user_email)
                       username = user.firstName + ' '+ user.lastName
                       iw.iw_date = datetime.datetime.strptime(request.POST.get('iw_date'),'%m/%d/%Y')
-                      if user.organisation <> '' and user.organisation <> ' ' and user.organisation is not None:
-                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha.pythonanywhere.com)  and log in to contribute:\nImportance Scores by ' + request.POST.get('iw_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + iw.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
+                      if user.organisation != '' and user.organisation != ' ' and user.organisation is not None:
+                         message = 'Dear ' + st.firstName + ',\n' + username + ' from ' +  user.organisation + ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha19.pythonanywhere.com)  and log in to contribute:\nImportance Scores by ' + request.POST.get('iw_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + iw.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
                       else:
-                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha.pythonanywhere.com) and log in to contribute:\nImportance Scores by ' + request.POST.get('iw_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + iw.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
+                          message = 'Dear ' + st.firstName + ',\n' + username +  ' has invited you to participate in the following decision: \n\n' + dec.short_title + '\n\nPlease click on DecisionMaker (https://amritha19.pythonanywhere.com) and log in to contribute:\nImportance Scores by ' + request.POST.get('iw_date') + '\n\nIf this is the first time you will be using DecisionMaker, please register using this email address: ' + iw.email + '\n\nYou may want to visit the “About” page in DecisionMaker and some of the Resources & Guidance pages to learn more about the decision-making framework in which you will be participating.\n\nThank you for contributing to this decision process.\n\n'+ username
                       subject = 'Invitation to Contribute Importance Scores'
                       from_email = user_email
                       to_email = iw.email
@@ -4372,7 +4389,7 @@ def send_email(request):
                       iw.updated_date = datetime.datetime.now()
                       iw.save(update_fields=['iw_date','updated_by', 'updated_date'])  
                    except ObjectDoesNotExist:
-                      print 'id does not exist'
+                      print ('id does not exist')
     return render(request,'decisions/solution_options/send_email.html',{'dec_id':dec_id, 'dec_title':dec_title, 'loggedinuser':loggedinuser,'stdec_solopt':stdec_solopt, 'stdec_scrcr':stdec_scrcr, 'stdec_evacr':stdec_evacr,'stdec_iw':stdec_iw })
 
 def add_st_privs(request):
@@ -4395,8 +4412,6 @@ def add_decision(request):
        user_email = request.session['user_email']
     else:
        user_email = 'not found'
-    print request.session['user']
-    print user_email    
     if request.method == 'POST':
         decform = DecisionForm(data=request.POST)
 
@@ -4409,7 +4424,7 @@ def add_decision(request):
                if d > 0: 
                   return render(request, 'decisions/add_decision.html',{'decform':decform,'err':'This title is already taken. Please enter a unique name.'})
             except ObjectDoesNotExist:
-                print 'something wrong in add decision unique check'
+                print ('something wrong in add decision unique check')
 
             id.save()
             try:
@@ -4418,11 +4433,11 @@ def add_decision(request):
                st_dec = Stakeholders_Decisions(st_id = st.id, name = name, email=st.email, dec_id = id.id,solopt_type = 'Y',scrcr_type = 'Y',evacr_type = 'Y',iw_type = 'Y',PA = 'Y', created_by = request.session['user'],created_date = datetime.datetime.now())      
                st_dec.save()
             except ObjectDoesNotExist:
-                print 'stakeholder does not exist'
+                print ('stakeholder does not exist')
             #return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html') 
             return HttpResponseRedirect('/utility_tool/decisions/%s/menu.html' % id.id)
         else:
-            print decform.errors
+            print (decform.errors)
 
     else:
         decform = DecisionForm()
@@ -4438,6 +4453,8 @@ def add_decision(request):
             #{'decform': decform}, context)
 
 def decisions_list(request):
+    print (request.session['user'])
+    #print (request.session['user_email'])
     if 'user' in request.session:
        loggedinuser = request.session['user']
     else:
@@ -4455,7 +4472,7 @@ def decisions_list(request):
           del request.session['dec_id']    
        request.session['whereamI'] = 'dec_list'   
 
-       #f = open( '/home/amritha/costtool/documents/f.txt', 'w+' )
+       #f = open( '/home/amritha19/costtool/documents/f.txt', 'w+' )
        #f.write('\n') 
        #f.close()
 
@@ -4515,15 +4532,14 @@ def edit_decision(request, dec_id):
                if d > 1: 
                   return render(request, 'decisions/edit_decision.html',{'decform':decform,'err':'This title is already taken. Please enter a unique name.'})
             except ObjectDoesNotExist:
-               print 'something wrong in edit decision unique check'
-            print id.by_when   
+               print ('something wrong in edit decision unique check')
             id.save(update_fields=['short_title','title','name_decisionmaker', 'evidence', 'real_dec_yn', 'decision_prob','goal','target_audience','stakeholders', 'participating_stakeholders', 'potential_sources','by_when', 'updated_date','updated_by']) 
             if whereamI == 'dec_list':
                return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html')
             else:
                return HttpResponseRedirect('/utility_tool/decisions/%s/menu.html' % id.id)
         else:
-            print decform.errors
+            print (decform.errors)
     else:                                                                                                                                                                                                        
         decform = DecisionForm(instance=decision)
         if loggedinuser != created_by:
@@ -4599,7 +4615,7 @@ def unshare_dec(request, dec_id):
        dec.shared = "N"
        dec.save(update_fields=['shared','updated_by', 'updated_date'])
     except ObjectDoesNotExist:
-       print 'nothing to do' 
+       print ('nothing to do') 
     return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html') 
 
 def dupl_decision(request, dec_id):
@@ -4607,17 +4623,14 @@ def dupl_decision(request, dec_id):
     return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html') 
 
 def download_demo(request):
-    print '1'
     dupl_dec = Duplicated_DecIds.objects.all()
     dupl_dec_count = dupl_dec.count()
-    print dupl_dec_count 
     if dupl_dec_count > 0: 
        for d in dupl_dec:
           dupl(request, d.dec_id_for_dupl, 'demo') 
     else: 
-       print 'Duplicated Decision Ids do not exist.'
+       print ('Duplicated Decision Ids do not exist.')
        dupl(request, 767, 'demo')
-    print '4'
     return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html') 
 
 def dupl(request, dec_id, dtype):
@@ -4639,8 +4652,6 @@ def dupl(request, dec_id, dtype):
     dec.short_title = dec.short_title + ' COPY ' + datepart
     #str(randint(0,100))
     #aug14
-    print 'dtype'
-    print dtype
     if dtype == 'demo':
        dec.demoDec = 'Y'
     else:   
@@ -4658,7 +4669,7 @@ def dupl(request, dec_id, dtype):
                  st = Stakeholders.objects.get(created_by = request.session['user'], email = s.email)
               except ObjectDoesNotExist:
                  st_dm = Stakeholders.objects.get(created_by = 'DM_Admin', email = s.email)
-                 if st_dm.email <> 'dm@admin.edu':
+                 if st_dm.email != 'dm@admin.edu':
                     st = Stakeholders(firstName = st_dm.firstName, lastName = st_dm.lastName, email=s.email, title = st_dm.title, organisation = st_dm.organisation, created_by = request.session['user'], created_date = datetime.datetime.now())
                     st.save()
 
@@ -4674,7 +4685,7 @@ def dupl(request, dec_id, dtype):
                     st_dec = Stakeholders_Decisions(st_id = st.id, name = name, email=st.email, dec_id = dec.id,votes = s.votes, solopt_type = s.solopt_type,scrcr_type = s.scrcr_type,evacr_type = s.evacr_type,iw_type = s.iw_type,created_by = request.session['user'],created_date = datetime.datetime.now())      
                  st_dec.save()
        except ObjectDoesNotExist:
-          print 'no stakeholders for decisions in DM_Admin'
+          print ('no stakeholders for decisions in DM_Admin')
 
     else:
        try:
@@ -4688,7 +4699,7 @@ def dupl(request, dec_id, dtype):
              s.updated_date = None 
              s.save()
        except ObjectDoesNotExist:
-          print 'Stakeholders Decisions does not exist'
+          print ('Stakeholders Decisions does not exist')
 
     try: 
        for s in Master_Screening_Criteria.objects.filter(dec_id=dec_id):
@@ -4701,7 +4712,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None     
           s.save()
     except ObjectDoesNotExist:
-          print 'Master Screening Criteria do not exist'
+          print ('Master Screening Criteria do not exist')
 
     try: 
        for s in Master_Evaluation_Criteria.objects.filter(dec_id=dec_id):
@@ -4714,7 +4725,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Master Evaluation Criteria do not exist'                                                                                  
+          print ('Master Evaluation Criteria do not exist')                                                                                  
 
     try: 
        for s in Screening_Criteria.objects.filter(dec_id=dec_id):
@@ -4732,7 +4743,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Screening Criteria do not exist'                                                                                  
+          print ('Screening Criteria do not exist')                                                                                  
 
     try: 
        for s in Solution_Options.objects.filter(dec_id=dec_id):
@@ -4745,7 +4756,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Solution Options do not exist' 
+          print ('Solution Options do not exist') 
 
     try: 
        for s in Evaluation_Criteria.objects.filter(dec_id=dec_id):
@@ -4763,7 +4774,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Evaluation Criteria do not exist' 
+          print ('Evaluation Criteria do not exist') 
 
     try: 
        for s in Importance_Scores.objects.filter(dec_id=dec_id):
@@ -4781,7 +4792,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Importance Scores do not exist' 
+          print ('Importance Scores do not exist') 
 
     try:
        for s in MappingTable.objects.filter(dec_id=dec_id):
@@ -4794,7 +4805,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Mapping Table does not exist'
+          print ('Mapping Table does not exist')
 
 
     try:
@@ -4810,7 +4821,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Cost Utility does not exist'
+          print ('Cost Utility does not exist')
 
     try:
        for s in Cost_Setup.objects.filter(dec_id=dec_id):
@@ -4823,7 +4834,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Cost Setup does not exist'
+          print ('Cost Setup does not exist')
 
     try:
        for s in IdentifyTable.objects.filter(dec_id=dec_id):
@@ -4836,7 +4847,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Identify Table does not exist'
+          print ('Identify Table does not exist')
 
     try:
        for s in EvaluationTable.objects.filter(dec_id=dec_id):
@@ -4849,7 +4860,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Evaluation Table does not exist'
+          print ('Evaluation Table does not exist')
 
     try:
        for s in Evaluation_Measures.objects.filter(dec_id=dec_id):
@@ -4866,7 +4877,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Evaluation Measures does not exist'
+          print ('Evaluation Measures does not exist')
 
     try:
        for s in SummaryTable.objects.filter(dec_id=dec_id):
@@ -4879,7 +4890,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Summary Table does not exist'
+          print ('Summary Table does not exist')
 
     try:
        for s in Detailed_Costs.objects.filter(dec_id=dec_id):
@@ -4894,7 +4905,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Detailed Costs do not exist'
+          print ('Detailed Costs do not exist')
 
     justalist = []      
     try:
@@ -4902,26 +4913,19 @@ def dupl(request, dec_id, dtype):
           s = Decision_Made.objects.get(pk = s.id)
           
           i = s.sol_option
-          print 'i'
-          print i
           if i == '[]':
              s.sol_option = '[]' 
           else: 
              a = i.replace('[','')
              a1 = a.replace(']','')
-             print a1
              a2 = a1.replace('u','')
              b = a2.replace('L','')
-             print 'b'
-             print b
              for l in b.split(','):
                 c = l.replace("'","")
-                print c.strip()
                 oldrec = Solution_Options.objects.get(id = c.strip(), dec_id = dec_id)
                 newrec = Solution_Options.objects.get(sol_option = oldrec.sol_option, dec_id = dec.id)
                 justalist.append(newrec.id)
              s.sol_option = justalist 
-             print justalist
           s.dec_id = dec.id
           s.pk = None
           s.created_by = request.session['user']
@@ -4930,7 +4934,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()
     except ObjectDoesNotExist:
-          print 'Decision Made does not exist'
+          print ('Decision Made does not exist')
     try:
        for s in Scores_Setup.objects.filter(dec_id=dec_id):
           s = Scores_Setup.objects.get(pk = s.id)
@@ -4942,7 +4946,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'Scores Setup does not exist'
+          print ('Scores Setup does not exist')
 
     try:
        for s in SD_dec_file.objects.filter(dec_id=dec_id):
@@ -4955,7 +4959,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_dec_file does not exist'
+          print ('SD_dec_file does not exist')
 
     try:
        for s in SD_dec_link.objects.filter(dec_id=dec_id):
@@ -4968,7 +4972,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_dec_link does not exist'     
+          print ('SD_dec_link does not exist')     
     try:
        for s in SD_st_file.objects.filter(dec_id=dec_id):
           s = SD_st_file.objects.get(pk = s.id)
@@ -4980,7 +4984,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_st_file does not exist'     
+          print ('SD_st_file does not exist')     
     try:
        for s in SD_st_link.objects.filter(dec_id=dec_id):
           s = SD_st_link.objects.get(pk = s.id)
@@ -4992,7 +4996,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_st_link does not exist'     
+          print ('SD_st_link does not exist')     
     try:
        for s in SD_solopt_file.objects.filter(dec_id=dec_id):
           s = SD_solopt_file.objects.get(pk = s.id)
@@ -5004,7 +5008,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_solopt_file does not exist'     
+          print ('SD_solopt_file does not exist')     
     try:
        for s in SD_solopt_link.objects.filter(dec_id=dec_id):
           s = SD_solopt_link.objects.get(pk = s.id)
@@ -5016,7 +5020,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_solopt_link does not exist'     
+          print ('SD_solopt_link does not exist')     
     try:
        for s in SD_scr_file.objects.filter(dec_id=dec_id):
           s = SD_scr_file.objects.get(pk = s.id)
@@ -5028,7 +5032,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_scr_file does not exist'     
+          print ('SD_scr_file does not exist')     
     try:
        for s in SD_scr_link.objects.filter(dec_id=dec_id):
           s = SD_scr_link.objects.get(pk = s.id)
@@ -5040,7 +5044,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_scr_link does not exist'     
+          print ('SD_scr_link does not exist')     
     try:
        for s in SD_mapp_file.objects.filter(dec_id=dec_id):
           s = SD_mapp_file.objects.get(pk = s.id)
@@ -5052,7 +5056,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_mapp_file does not exist'     
+          print ('SD_mapp_file does not exist')     
     try:
        for s in SD_mapp_link.objects.filter(dec_id=dec_id):
           s = SD_mapp_link.objects.get(pk = s.id)
@@ -5064,7 +5068,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_mapp_link does not exist'     
+          print ('SD_mapp_link does not exist')     
     try:
        for s in SD_eva_file.objects.filter(dec_id=dec_id):
           s = SD_eva_file.objects.get(pk = s.id)
@@ -5076,7 +5080,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_eva_file does not exist'     
+          print ('SD_eva_file does not exist')     
     try:
        for s in SD_eva_link.objects.filter(dec_id=dec_id):
           s = SD_eva_link.objects.get(pk = s.id)
@@ -5088,7 +5092,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_eva_link does not exist'     
+          print ('SD_eva_link does not exist')     
     try:
        for s in SD_iw_file.objects.filter(dec_id=dec_id):
           s = SD_iw_file.objects.get(pk = s.id)
@@ -5100,7 +5104,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_iw_file does not exist'     
+          print ('SD_iw_file does not exist')     
     try:
        for s in SD_evam_file.objects.filter(dec_id=dec_id):
           s = SD_evam_file.objects.get(pk = s.id)
@@ -5112,7 +5116,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_evam_file does not exist'     
+          print ('SD_evam_file does not exist')     
     try:
        for s in SD_evam_link.objects.filter(dec_id=dec_id):
           s = SD_evam_link.objects.get(pk = s.id)
@@ -5124,7 +5128,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_evam_link does not exist'     
+          print ('SD_evam_link does not exist')     
     try:
        for s in SD_cost_file.objects.filter(dec_id=dec_id):
           s = SD_cost_file.objects.get(pk = s.id)
@@ -5136,7 +5140,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_cost_file does not exist'     
+          print ('SD_cost_file does not exist')     
     try:
        for s in SD_cost_link.objects.filter(dec_id=dec_id):
           s = SD_cost_link.objects.get(pk = s.id)
@@ -5148,7 +5152,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_cost_link does not exist'     
+          print ('SD_cost_link does not exist')     
     try:
        for s in SD_makedec_file.objects.filter(dec_id=dec_id):
           s = SD_makedec_file.objects.get(pk = s.id)
@@ -5160,7 +5164,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_makedec_file does not exist'     
+          print ('SD_makedec_file does not exist')     
     try:
        for s in SD_makedec_link.objects.filter(dec_id=dec_id):
           s = SD_makedec_link.objects.get(pk = s.id)
@@ -5172,7 +5176,7 @@ def dupl(request, dec_id, dtype):
           s.updated_date = None 
           s.save()                                                                                                                          
     except ObjectDoesNotExist:
-          print 'SD_makedec_file does not exist'     
+          print ('SD_makedec_file does not exist')     
 
     return 1      
     #return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html') 
@@ -5243,17 +5247,16 @@ def pa_setup(request):
                   errtext = 'Please enter the number of votes'
                   return render(request,'decisions/pa_setup.html',{'votesform':votesform,'dec_id':dec_id, 'dec_title':dec_title, 'errtext':errtext, 'total_votes':total_votes,'total_voters':qset_count})  
                allowed_votes = recs.votes + allowed_votes
-           print allowed_votes
            if allowed_votes > total_votes:
               errtext = 'The total number of votes cannot exceed '  + str(total_votes) + ', i.e., ten times the number of Stakeholders.' 
               return render(request,'decisions/pa_setup.html',{'votesform':votesform,'dec_id':dec_id, 'dec_title':dec_title, 'errtext':errtext, 'total_votes':total_votes, 'total_voters':qset_count})  
-           elif allowed_votes <> total_votes:
+           elif allowed_votes != total_votes:
               errtext = 'The total number of votes must be equal to ' + str(total_votes) + ', i.e., ten times the number of Stakeholders.'
               return render(request,'decisions/pa_setup.html',{'votesform':votesform,'dec_id':dec_id, 'dec_title':dec_title, 'errtext':errtext, 'total_votes':total_votes, 'total_voters':qset_count})  
            else:
                for recs in id:                                                                                                                                                                                  
                   #votes_zero = 'N' 
-                  if recs.votes <> '':
+                  if recs.votes != '':
                      recs.updated_by = request.session['user'] 
                      recs.updated_date = datetime.datetime.now()
                      recs.save(update_fields=['votes','updated_by', 'updated_date'])
@@ -5281,7 +5284,7 @@ def pa_setup(request):
               form.fields['votes'].widget.attrs['readonly'] = True
            instance = getattr(form, 'instance', None)
            if not instance.votes:
-              if instance.votes <> 0:
+              if instance.votes != 0:
                  form.initial['votes'] = 10 
     return render(request,'decisions/pa_setup.html',{'dec_id':dec_id,'dec_title':dec_title, 'loggedinuser':loggedinuser, 'stakeholdersNow':stakeholdersNow, 'votesform':votesform,'total_votes':total_votes, 'total_voters':qset_count, 'shared':shared})
 
@@ -5308,7 +5311,7 @@ def pa_setup(request):
         group_yn = setup.scores_group_yn
         votes_yn = setup.votes_yn 
     except ObjectDoesNotExist:
-        #print 'error in setup'
+        #print ('error in setup'
         setup = PA_Setup(dec_id = dec_id, scores_group_yn = 'Y', votes_yn = 'N', created_date = datetime.datetime.now(), created_by = request.session['user'])
         group_yn = setup.scores_group_yn                                                                                                               
         votes_yn = setup.votes_yn
@@ -5472,7 +5475,7 @@ def menu(request, dec_id):
        stiw_created = 'N'
 
     # if PA decides scores are decided by the group and not individually then scores screen should NOT be shown to other stakeholders
-    #if group_yn == 'Y' and loggedinuser <> created_by:
+    #if group_yn == 'Y' and loggedinuser != created_by:
     #if stiw_created == 'Y': 
        #iw_allowed = 'Y' 
 
@@ -5646,7 +5649,6 @@ def question2(request):
        dec_id = 0
 
     if request.method == 'POST':
-        print request.POST 
         if 'whoEntersSO' in request.POST:
             request.session['whoEntersSO'] = request.POST['whoEntersSO']
             request.session['listType'] = request.POST['listType']
@@ -5655,8 +5657,8 @@ def question2(request):
                smtp = smtplib.SMTP('smtp.gmail.com',587)
                smtp.ehlo()
                smtp.starttls()
-               smtp.login('amrithany@gmail.com', 'Daff1911')
-               smtp.sendmail('amrithany@gmail.com', 'amritha_mm@yahoo.com', 'test message from cost utility')
+               smtp.login('amritha19ny@gmail.com', 'Daff1911')
+               smtp.sendmail('amritha19ny@gmail.com', 'amritha19_mm@yahoo.com', 'test message from cost utility')
                smtp.quit()
             except smtplib.SMTPException, error:
                #return render_to_response('login/forgot.html',{'registerform':registerform,'err':str(error)}, context) 
@@ -5778,9 +5780,6 @@ def add_supp_doc(request):
         if sdform1.is_valid() and sdform2.is_valid() and sdform3.is_valid() and sdform4.is_valid() and sdform5.is_valid() and sdform6.is_valid() and sdform7.is_valid() and sdform8.is_valid() and sdform9.is_valid() and sdform10.is_valid() and sdform11.is_valid() and sdform12.is_valid() and sdform13.is_valid() and sdform14.is_valid() and sdform15.is_valid() and sdform16.is_valid() and sdform17.is_valid() and sdform18.is_valid() and sdform19.is_valid() and sdform20.is_valid():
            id = sdform1.save(commit=False)
            for recs in id:
-               print 'add supp doc'
-               print recs.filename                                                                                                                      
-               print recs.file_attachment  
                if recs.filename == '' and recs.file_attachment == '':
                   recs.delete()
                else:
@@ -6087,12 +6086,8 @@ def add_solopt_det(request):
     except ObjectDoesNotExist:
        shared = 'N'
 
-    print 'SHARED'
-    print shared 
     sol_perm = Stakeholders_Decisions.objects.filter(dec_id=dec_id, email = user_email)
     sol_permC = sol_perm.exclude(solopt_type = 'Y').count()
-    print 'SOL_PERMC'
-    print sol_permC
     scr_count = Screening_Criteria.objects.filter(dec_id=dec_id).count()
     MFormSet = modelformset_factory(Solution_Options, form=SolOptForm2, extra=6)
     dec = Decisions.objects.get(pk=dec_id)   
@@ -6102,7 +6097,7 @@ def add_solopt_det(request):
         if soloptform.is_valid():
            id = soloptform.save(commit=False)
            for recs in id:
-              if recs.sol_option <> '':   
+              if recs.sol_option != '':   
                  recs.dec_id = request.session['dec_id']  
                  if recs.deleted == 'Y': 
                     try:
@@ -6116,15 +6111,15 @@ def add_solopt_det(request):
                     try:
                        Evaluation_Measures.objects.filter(opt_id = recs.id, dec_id = dec_id).delete()
                     except ObjectDoesNotExist:
-                       print 'evaluation measures do not exist'
+                       print ('evaluation measures do not exist')
                     try:
                        Cost_Utility.objects.get(opt_id = recs.id, dec_id = dec_id).delete()
                     except ObjectDoesNotExist:
-                       print 'cost utility does not exist'  
+                       print ('cost utility does not exist')  
                     try:
                        Detailed_Costs.objects.get(opt_id = recs.id, dec_id = dec_id).delete()
                     except ObjectDoesNotExist:
-                       print 'detailed costs do not exist'
+                       print ('detailed costs do not exist')
                  else:
                     recs.deleted = 'N'
                     if recs.source == '':
@@ -6142,7 +6137,6 @@ def add_solopt_det(request):
                        recs.archived_date = datetime.datetime.now()
                        recs.created_by = screated_by 
                        recs.updated_by = supdated_by 
-                       print 'why am i in here'
                        for e in Evaluation_Measures.objects.filter(opt_id = recs.id):
                            e.archived = 'Y'
                            e.sol_option = recs.sol_option
@@ -6157,7 +6151,7 @@ def add_solopt_det(request):
                           c.updated_date = datetime.datetime.now()
                           c.save(update_fields=['archived','sol_option','updated_by','updated_date'])      
                        except:
-                          print 'does not exist yet' 
+                          print ('does not exist yet') 
                     else:
                        recs.archived = 'N'
                        if screated_by == '':
@@ -6181,7 +6175,7 @@ def add_solopt_det(request):
                           c.updated_date = datetime.datetime.now()
                           c.save(update_fields=['archived','sol_option','updated_by','updated_date'])           
                        except:
-                          print 'XXX does not exist yet' 
+                          print ('XXX does not exist yet') 
                     something_saved ='yes'
                     request.session['error_message'] = ''
                     recs.save()
@@ -6194,7 +6188,7 @@ def add_solopt_det(request):
                      request.session['error_message'] = '"' + item['sol_option'] + '" has already been suggested as a Solution Option. Please remove it from the list below.'   
                      return redirect('/utility_tool/decisions/solution_options/add_solopt_det.html',{'soloptform':soloptform,'dec_id':dec_id,'dec_title':dec_title, 'mapping_allowed': mapping_allowed, 'scr_count':scr_count,'err':request.session['error_message']})            
            except ObjectDoesNotExist:                                                                                                                                                                        
-                 print 'solution option does not exist' 
+                 print ('solution option does not exist') 
            if something_saved == 'yes':  
               dec.updated_by = request.session['user'] 
               dec.updated_date = datetime.datetime.now()
@@ -6223,7 +6217,7 @@ def add_solopt_det(request):
            elif 'import' in request.POST:
                return HttpResponseRedirect('/utility_tool/decisions/solution_options/solopt_storage.html')    
         else:
-            print soloptform.errors
+            print (soloptform.errors)
     else:
         qset = Solution_Options.objects.filter(dec_id=dec_id, archived='N', deleted='N')
         soloptform = MFormSet(queryset=qset,prefix="soloptform" )
@@ -6307,7 +6301,7 @@ def solopt_archive(request):
            #elif 'solopt' in request.POST:
            return HttpResponseRedirect('/utility_tool/decisions/solution_options/add_solopt_det.html')
         else:
-            print soloptform.errors
+            print (soloptform.errors)
     else:
         qset = Solution_Options.objects.filter(dec_id=dec_id, archived='Y')
         qset_count = Solution_Options.objects.filter(dec_id=dec_id, archived='Y').count()
@@ -6337,7 +6331,7 @@ def view_solopt_det(request, dec_id):
     return render(request,'decisions/solution_options/view_solopt_det.html',{'soloptform':soloptform, 'dec_title':dec_title})
 
 def xlsx1(request):
-    with open('/home/amritha/costutility/documents/Solution Options template.xlsx', 'r') as xlsx:                                           
+    with open('/home/amritha19/costutility/documents/Solution Options template.xlsx', 'r') as xlsx:                                           
        response = HttpResponse(xlsx.read(), content_type='application/xlsx')
        response['Content-Disposition'] = 'inline;filename=Solution Options template.xlsx'                                                   
        return response
@@ -6366,12 +6360,10 @@ def solopt_storage(request):
         if sform.is_valid():
            id = sform.save(commit=False)
            id.dec_id = dec_id
-           print 'what is in here'
-           print id.solopt_file
            id.save()
            try:
               getfile = request.POST.get('solopt_file', False)
-              loc = '/home/amritha/costutility/documents/' + request.FILES['solopt_file'].name
+              loc = '/home/amritha19/costutility/documents/' + request.FILES['solopt_file'].name
               f = request.FILES['solopt_file']
               with open(loc, 'wb+') as destination:
                    for chunk in f.chunks():
@@ -6381,7 +6373,7 @@ def solopt_storage(request):
                  book = xlrd.open_workbook(loc)
                  sheet = book.sheet_by_name("Sheet1")
                  # Establish a MySQL connection
-                 database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")    
+                 database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")    
                  # Get the cursor, which is used to traverse the database, line by line
                  cursor = database.cursor()
                  # Create the INSERT INTO sql query
@@ -6400,7 +6392,7 @@ def solopt_storage(request):
                     linkname4 = sheet.cell(r,9).value
                     link4 = sheet.cell(r,10).value    
                     values  = (dec_id, option, source, details, linkname1, link1, linkname2, link2, linkname3, link3, linkname4, link4, 'N', loggedinuser, datetime.datetime.now())
-                    if (link1 <> '' and 'http://' not in link1 and 'https://' not in link1) or (link2 <> '' and 'http://' not in link2 and 'https://' not in link2) or (link3 <> '' and 'http://' not in link3 and 'https://' not in link3) or (link4 <> '' and 'http://' not in link4 and 'https://' not in link4):
+                    if (link1 != '' and 'http://' not in link1 and 'https://' not in link1) or (link2 != '' and 'http://' not in link2 and 'https://' not in link2) or (link3 != '' and 'http://' not in link3 and 'https://' not in link3) or (link4 != '' and 'http://' not in link4 and 'https://' not in link4):
                         err = 'Enter a valid URL that starts with http:// or https:// for the link fields. Copying and pasting from your browser may be helpful.'
                         return render(request,'decisions/solution_options/solopt_storage.html',{'dec_title':dec_title, 'sform':sform, 'err':err, 'loggedinuser':loggedinuser})
                     try:
@@ -6418,11 +6410,8 @@ def solopt_storage(request):
                  #rows = str(sheet.nrows)
                  return HttpResponseRedirect('/utility_tool/decisions/solution_options/add_solopt_det.html') 
               except Exception as e:
-                 print e 
                  if e == "argument of type 'float' is not iterable": 
                     err = 'Enter a valid URL that starts with http:// or https:// for the link fields. Copying and pasting from your browser may be helpful.'
-                    print 'err'
-                    print err
                  else:    
                     err = e 
                  #err = 'Please check the Excel sheet you have imported. It does not match the template we have provided.'
@@ -6431,7 +6420,7 @@ def solopt_storage(request):
                err = 'Please upload an Excel sheet.'
                return render(request,'decisions/solution_options/solopt_storage.html',{'dec_title':dec_title, 'sform':sform, 'err':err, 'loggedinuser':loggedinuser})
         else:
-           print sform.errors
+           print (sform.errors)
     else:
         sform = Solopt_Storage()
 
@@ -6512,7 +6501,6 @@ def assign_tasks(request):
       Importance_Scores.objects.get(dec_id = dec_id, created_by = loggedinuser)                                                                     
       impexists = 'Y'
     except ObjectDoesNotExist:
-       print 'is' 
        impexists = 'N'
     except MultipleObjectsReturned:                                                                                                                 
        impexists = 'Y'
@@ -6524,7 +6512,6 @@ def assign_tasks(request):
     #stakeholders = Stakeholders.objects.raw("SELECT id, firstName, lastName, email, title, organisation from utility_tool_stakeholders where created_by=%s and id not in (SELECT st_id from utility_tool_stakeholders_decisions where dec_id = %s and deleted = 'Y')", [loggedinuser, dec_id])
     stdec_type = Stakeholders_Decisions.objects.raw("SELECT id, st_id, solopt_type, scrcr_type, evacr_type, iw_type from utility_tool_stakeholders_decisions where dec_id=%s and deleted is null", [dec_id]) 
     if request.method == 'POST':
-        print request.POST
         id_to_use = request.POST.get('id')
         solopt_type = ''
         scrcr_type = ''
@@ -6540,7 +6527,6 @@ def assign_tasks(request):
                        else:   
                           solopt_type = ''
                    if "scrcr" in value:
-                       print value 
                        if "scrcrY" in value: 
                           scrcr_type = 'Y'
                        else:   
@@ -6572,9 +6558,7 @@ def assign_tasks(request):
                    stdec.save(update_fields=['solopt_type','scrcr_type','evacr_type','iw_type','votes','updated_by','updated_date'])        
                    something_saved ='yes' 
         else:
-            print 'in DELETED'
             for val in request.POST.getlist('deleted'):
-                print val
                 val = val.strip()
                 y = val.replace('[','')
                 z = y.replace(']','')     
@@ -6583,18 +6567,13 @@ def assign_tasks(request):
                 for l2 in z.split(','):                                                                                                                                                                             
                     l3 = l2.replace('"', '')
                     temp_list.append(l3) 
-                print temp_list
                 for l in temp_list:
                    try:
-                      print dec_id
-                      print l
                       delsolopt = Stakeholders_Decisions.objects.get(dec_id=dec_id, st_id=l)
-                      print delsolopt.st_id
                       delsolopt.delete()
                       redistribute_yn = 'Y'
                       something_saved ='yes' 
                    except ObjectDoesNotExist:
-                      print 'id does not exist'
                       return HttpResponse('Selected Id does not exist in database. Please contact your Administrator.')
                 
         if redistribute_yn == 'Y':
@@ -6650,7 +6629,6 @@ def add_st_solopt(request):
                        old_stdec.updated_date = datetime.datetime.now()
                        old_stdec.save(update_fields=['solopt_type','updated_by','updated_date'])
                     except ObjectDoesNotExist:
-                       print 'id does not exist'
                        return HttpResponse('Selected Id does not exist in database. Please contact your Administrator.')
 
         else:
@@ -6715,7 +6693,7 @@ def add_scr_criteria(request):
            orig_scr_save = Master_Screening_Criteria(criterion = orig.criterion, dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())  
            orig_scr_save.save()
     except MultipleObjectsReturned:                                                                                                                    
-       print 'multiple rows in master screening criteria'
+       print ('multiple rows in master screening criteria')
  
     qset = Master_Screening_Criteria.objects.filter(dec_id=dec_id)
     qset2 = Screening_Criteria.objects.filter(dec_id=dec_id)
@@ -6729,14 +6707,12 @@ def add_scr_criteria(request):
        #print request.POST 
        for val in request.POST.getlist('hiddenfield'):   
            if val.endswith('U'):
-              print val
-              print val[:-1]
               try: 
                  scrdel = Screening_Criteria.objects.get(orig_scr_id = val[:-1], dec_id=dec_id)
                  request.session['map_list'].append(scrdel.id)
                  scrdel.delete()
               except ObjectDoesNotExist:
-                 print 'cannot delete something that does not exist'  
+                 print ('cannot delete something that does not exist')  
        for value in request.POST.getlist('scrcr'):
            #print value
             
@@ -6769,12 +6745,11 @@ def add_scr_criteria(request):
           old_scr1.updated_by = request.session['user']
           old_scr1.updated_date = datetime.datetime.now()
           old_scr1.save(update_fields=['criterion','updated_by','updated_date'])
-          print old_scr1.criterion
           if old_scr1.criterion == '' or old_scr1.criterion is None:
              request.session['map_list'].append(old_scr1.id)
              old_scr1.delete()   
        except ObjectDoesNotExist:   
-          if request.POST.get('cri1') <> '':                                                                                                                                                                     
+          if request.POST.get('cri1') != '':                                                                                                                                                                     
              scr_save1 = Screening_Criteria(criterion = request.POST.get('cri1'), fieldname = 'cri1', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save1.save()
        try:
@@ -6787,7 +6762,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr2.id)
              old_scr2.delete()  
        except ObjectDoesNotExist:         
-          if request.POST.get('cri2') <> '':                                                                                                                                                                    
+          if request.POST.get('cri2') != '':                                                                                                                                                                    
              scr_save2 = Screening_Criteria(criterion = request.POST.get('cri2'), fieldname = 'cri2', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save2.save()  
        try:
@@ -6800,7 +6775,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr3.id)
              old_scr3.delete()  
        except ObjectDoesNotExist:              
-          if request.POST.get('cri3') <> '':                                                                                                                                                               
+          if request.POST.get('cri3') != '':                                                                                                                                                               
              scr_save3 = Screening_Criteria(criterion = request.POST.get('cri3'), fieldname = 'cri3', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save3.save()
 
@@ -6814,7 +6789,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr4.id)
              old_scr4.delete()  
        except ObjectDoesNotExist:              
-          if request.POST.get('cri4') <> '':                                                                                                                                                               
+          if request.POST.get('cri4') != '':                                                                                                                                                               
              scr_save4 = Screening_Criteria(criterion = request.POST.get('cri4'), fieldname = 'cri4', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save4.save() 
        try:
@@ -6827,7 +6802,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr5.id)
              old_scr5.delete()  
        except ObjectDoesNotExist:              
-          if request.POST.get('cri5') <> '':                                                                                                                                                               
+          if request.POST.get('cri5') != '':                                                                                                                                                               
              scr_save5 = Screening_Criteria(criterion = request.POST.get('cri5'), fieldname = 'cri5', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save5.save() 
        try:
@@ -6840,7 +6815,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr6.id)
              old_scr6.delete()  
        except ObjectDoesNotExist:              
-          if request.POST.get('cri6') <> '':                                                                                                                                                               
+          if request.POST.get('cri6') != '':                                                                                                                                                               
              scr_save6 = Screening_Criteria(criterion = request.POST.get('cri6'), fieldname = 'cri6', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save6.save()  
        try:
@@ -6853,7 +6828,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr7.id)
              old_scr7.delete()  
        except ObjectDoesNotExist:  
-          if request.POST.get('cri7') <> '':                                                                                                                                                                     
+          if request.POST.get('cri7') != '':                                                                                                                                                                     
              scr_save7 = Screening_Criteria(criterion = request.POST.get('cri7'), fieldname = 'cri7', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save7.save()  
        try:
@@ -6866,7 +6841,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr8.id)
              old_scr8.delete()  
        except ObjectDoesNotExist:              
-          if request.POST.get('cri8') <> '':                                                                                                                                                               
+          if request.POST.get('cri8') != '':                                                                                                                                                               
              scr_save8 = Screening_Criteria(criterion = request.POST.get('cri8'), fieldname = 'cri8', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save8.save()  
        try:
@@ -6879,7 +6854,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr9.id)
              old_scr9.delete()  
        except ObjectDoesNotExist:              
-          if request.POST.get('cri9') <> '':                                                                                                                                                               
+          if request.POST.get('cri9') != '':                                                                                                                                                               
              scr_save9 = Screening_Criteria(criterion = request.POST.get('cri9'), fieldname = 'cri9', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save9.save()  
        try:
@@ -6892,7 +6867,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr10.id)
              old_scr10.delete()   
        except ObjectDoesNotExist:              
-          if request.POST.get('cri10') <> '':                                                                                                                                                               
+          if request.POST.get('cri10') != '':                                                                                                                                                               
              scr_save10 = Screening_Criteria(criterion = request.POST.get('cri10'), fieldname = 'cri10', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save10.save() 
        try:
@@ -6905,7 +6880,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr11.id)
              old_scr11.delete()  
        except ObjectDoesNotExist:
-          if request.POST.get('cri11') <> '':
+          if request.POST.get('cri11') != '':
              scr_save11 = Screening_Criteria(criterion = request.POST.get('cri11'), fieldname = 'cri11', dec_id = request.session['dec_id'], created_by =request.session['user'],created_date = datetime.datetime.now())         
              scr_save11.save()
        try:
@@ -6918,7 +6893,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr12.id)
              old_scr12.delete()  
        except ObjectDoesNotExist:
-          if request.POST.get('cri12') <> '':
+          if request.POST.get('cri12') != '':
              scr_save12 = Screening_Criteria(criterion = request.POST.get('cri12'), fieldname = 'cri12', dec_id = request.session['dec_id'], created_by =request.session['user'],created_date = datetime.datetime.now())         
              scr_save12.save()
        try:
@@ -6931,7 +6906,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr13.id)
              old_scr13.delete()   
        except ObjectDoesNotExist:
-          if request.POST.get('cri13') <> '':
+          if request.POST.get('cri13') != '':
              scr_save13 = Screening_Criteria(criterion = request.POST.get('cri13'), fieldname = 'cri13', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save13.save()
        try:
@@ -6944,7 +6919,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr14.id)
              old_scr14.delete()  
        except ObjectDoesNotExist:
-          if request.POST.get('cri14') <> '':
+          if request.POST.get('cri14') != '':
              scr_save14 = Screening_Criteria(criterion = request.POST.get('cri14'), fieldname = 'cri14', dec_id = request.session['dec_id'], created_by =request.session['user'],created_date = datetime.datetime.now())         
              scr_save14.save()
        try:
@@ -6957,7 +6932,7 @@ def add_scr_criteria(request):
              request.session['map_list'].append(old_scr15.id)
              old_scr15.delete()   
        except ObjectDoesNotExist:
-          if request.POST.get('cri15') <> '':                                                                                                                                                                    
+          if request.POST.get('cri15') != '':                                                                                                                                                                    
              scr_save15 = Screening_Criteria(criterion = request.POST.get('cri15'), fieldname = 'cri15', dec_id = request.session['dec_id'], created_by = request.session['user'],created_date = datetime.datetime.now())         
              scr_save15.save()
 
@@ -6993,6 +6968,19 @@ def add_eva_criteria(request):
     else:                                                                                                                                                
        user_email = 'not found'
 
+    qset_add = ""
+    qset_eq = ""
+    qset_ext = ""
+    qset_feas = ""
+    qset_loc = ""
+    qset_pe = ""
+    qset_aced = ""
+    qset_emot = ""
+    qset_staf = ""
+    qset_teac = ""
+    qset_stand = ""
+    qset_qual = ""
+    qset_stx = ""
     try: 
        SharedDec.objects.get(dec_id = dec_id, shared_user = loggedinuser)     
        shared = 'Y'
@@ -7023,17 +7011,16 @@ def add_eva_criteria(request):
            orig_eva_save = Master_Evaluation_Criteria(overreaching_ec = orig.overreaching_ec, granular_ec = orig.granular_ec, suggested_evam = orig.suggested_evam, data = orig.data, dec_id = request.session['dec_id'], created_by = request.session['user'], created_date = datetime.datetime.now())        
            orig_eva_save.save()
     except MultipleObjectsReturned:                                                                                                                    
-       print 'multiple rows in master evaluation criteria'
+       print ('multiple rows in master evaluation criteria')
     
     # just to test
     obj= Evaluation_Criteria.objects.filter(dec_id=dec_id).order_by('-id')[:2]
     for o in obj:
-        print o.id
+        print (o.id)
 
     
     # stop test
     if request.method == 'POST':
-       print request.POST
        # DELETION
        # Check if the hiddenfield list has any IDs. 
        # If there are IDs, check if there is an eva record with that id.  
@@ -7042,8 +7029,6 @@ def add_eva_criteria(request):
        # Set the delete flag in eva meas to Y for IDs existing
        for val in request.POST.getlist('hiddenfield'):                                                                                                                                                           
            if val.endswith('U'):
-              print val
-              print val[:-1]
               try: 
                  evadel = Evaluation_Criteria.objects.get(orig_eva_id = val[:-1], dec_id=dec_id)
                  evadel.deleted = 'Y'
@@ -7062,7 +7047,7 @@ def add_eva_criteria(request):
                      evm.updated_date = datetime.datetime.now()                                                                                                                                               
                      evm.save(update_fields=['deleted','updated_by','updated_date'])
               except ObjectDoesNotExist:
-                 print 'cannot delete something that does not exist'  
+                 print ('cannot delete something that does not exist')  
        # INSERTION  
        # THIS IS FOR FIRST GROUP WHICH COMES FROM EXCEL
        for value in request.POST.getlist('evacr_q'):
@@ -7094,7 +7079,7 @@ def add_eva_criteria(request):
            # Insert into imp scores as well.
            fieldname = value + 'two'
            if old_eva_exists == 'N':
-              if request.POST.get(fieldname) is not None and request.POST.get(fieldname) <> '':
+              if request.POST.get(fieldname) is not None and request.POST.get(fieldname) != '':
                  crit2 = request.POST.get(fieldname).replace(",",";")
                  crit2 = crit2.replace("&#39;","'") 
                  combined = crit + ': ' + crit2
@@ -7106,7 +7091,7 @@ def add_eva_criteria(request):
               eva_save.save() 
               something_saved ='yes'
            else:
-               if request.POST.get(fieldname) is not None and request.POST.get(fieldname) <> '':
+               if request.POST.get(fieldname) is not None and request.POST.get(fieldname) != '':
                   crit2 = request.POST.get(fieldname).replace(",",";")
                   crit2 = crit2.replace("&#39;","'") 
                   old_eva.combined = crit + ': ' + crit2
@@ -7143,7 +7128,7 @@ def add_eva_criteria(request):
                       isw.updated_date = datetime.datetime.now()
                       isw.save(update_fields=['criterion','deleted','updated_by','updated_date'])   
                except ObjectDoesNotExist: 
-                  print 'we know it does not exist'  
+                  print ('we know it does not exist')  
                   
                try: 
                   for evm in Evaluation_Measures.objects.filter(eva_id = old_eva.id, dec_id=dec_id):
@@ -7159,7 +7144,7 @@ def add_eva_criteria(request):
                       evm.updated_date = datetime.datetime.now()    
                       evm.save(update_fields=['criterion','deleted','updated_by','updated_date']) 
                except ObjectDoesNotExist:
-                  print 'evam does not exist' 
+                  print ('evam does not exist') 
 
        # check if there is an existing text field record for cri1
        # if criterion for cri1 is '', then deleted is set to Y
@@ -7223,7 +7208,7 @@ def add_eva_criteria(request):
         elif q['overreaching_ec'] == 'Support from stakeholders':                                                                                                                                            
            qset_stx = qset.filter(overreaching_ec=q['overreaching_ec']) 
     for qq in qset_add:
-        print qq.granular_ec
+        print (qq.granular_ec)
     qset_g = qset.filter(overreaching_ec="Fit with local context")
     qset2 = Evaluation_Criteria.objects.filter(dec_id=dec_id).exclude(deleted = 'Y') 
     qset3 = qset2.exclude(orig_eva_id__isnull=False)                                                                                                      
@@ -7269,7 +7254,7 @@ def add_st_evacr(request):
                        old_stdec.updated_date = datetime.datetime.now()
                        old_stdec.save(update_fields=['evacr_type','updated_by','updated_date'])
                     except ObjectDoesNotExist:
-                       print 'id does not exist'
+                       print ('id does not exist')
                        return HttpResponse('Selected Id does not exist in database. Please contact your Administrator.')
         else:
             return HttpResponseRedirect('/utility_tool/decisions/%s/menu.html' % dec_id)
@@ -7311,10 +7296,10 @@ def add_scores(request):
     try: 
        eva = Evaluation_Criteria.objects.get(dec_id=dec_id) 
     except ObjectDoesNotExist:
-       print 'eva' 
+       print ('eva') 
        return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':'You have not entered evaluation criteria so you cannot view this screen.'})
     except MultipleObjectsReturned:                                                                                                                
-       print 'eva multiple objects returned' 
+       print ('eva multiple objects returned') 
 
     try: 
        std = Stakeholders_Decisions.objects.filter(dec_id = dec_id, iw_type = 'Y')                                                                  
@@ -7342,12 +7327,9 @@ def add_scores(request):
     eva1 = Evaluation_Criteria.objects.filter(dec_id=dec_id).exclude(deleted = 'Y') 
     eva = eva1.exclude(criterion = '')
     ids = set(e.id for e in eva)
-    print ids
     ids2 = set(q.eva_id for q in qset)
-    print ids2
     mylist = ids - ids2
     for l in mylist:
-        print l
         e = Evaluation_Criteria.objects.get(id=l)
         if e.criterion2 is not None:
             criterion = e.combined
@@ -7390,7 +7372,7 @@ def add_scores(request):
               else:
                  return HttpResponseRedirect('/utility_tool/decisions/solution_options/add_st_all.html')  
         else:
-            print scoresform.errors
+            print (scoresform.errors)
     else:
         scoresform = MFormSet(queryset = qset,prefix="scoresform")
         for form in scoresform:
@@ -7442,7 +7424,7 @@ def add_st_iw(request):
                        old_stdec.updated_date = datetime.datetime.now()
                        old_stdec.save(update_fields=['iw_type','updated_by','updated_date']) 
                     except ObjectDoesNotExist:
-                       print 'id does not exist'
+                       print ('id does not exist')
                        return HttpResponse('Selected Id does not exist in database. Please contact your Administrator.')
         else:
             return HttpResponseRedirect('/utility_tool/decisions/%s/menu.html' % dec_id)                                                                                                                         
@@ -7505,12 +7487,12 @@ def add_iw_votes(request):
            if allowed_votes > total_votes:
               errtext = 'The total number of votes cannot exceed '  + str(total_votes) + ', i.e., ten times the number of Stakeholders.' 
               return render(request,'decisions/solution_options/add_iw_votes.html',{'votesform':votesform,'dec_id':dec_id, 'dec_title':dec_title, 'errtext':errtext, 'total_votes':total_votes, 'total_voters':qset_count})
-           elif allowed_votes <> total_votes:
+           elif allowed_votes != total_votes:
               errtext = 'The total number of votes must be equal to ' + str(total_votes) + ', i.e., ten times the number of Stakeholders.'
               return render(request,'decisions/solution_options/add_iw_votes.html',{'votesform':votesform,'dec_id':dec_id, 'dec_title':dec_title, 'errtext':errtext, 'total_votes':total_votes, 'total_voters':qset_count}) 
            else:
                for recs in id:                                                                                                                                                                                   
-                  if recs.votes <> '':
+                  if recs.votes != '':
                      recs.updated_by = request.session['user'] 
                      recs.updated_date = datetime.datetime.now()
                      recs.save(update_fields=['votes','updated_by', 'updated_date'])
@@ -7539,7 +7521,7 @@ def add_iw_votes(request):
            form.fields['updated_by'].widget.attrs['readonly'] = True
            instance = getattr(form, 'instance', None)
            if not instance.votes:
-              if instance.votes <> 0:
+              if instance.votes != 0:
                  form.initial['votes'] = 10
     return render(request,'decisions/solution_options/add_iw_votes.html',{'votesform':votesform,'dec_id':dec_id, 'dec_title':dec_title, 'total_votes':total_votes, 'total_voters':qset_count})
 '''   
@@ -7587,7 +7569,7 @@ def add_st_scrcr(request):
                        old_stdec.updated_date = datetime.datetime.now()
                        old_stdec.save(update_fields=['iw_type','updated_by','updated_date'])  
                    except ObjectDoesNotExist:
-                       print 'id does not exist'
+                       print ('id does not exist')
                        return HttpResponse('Selected Id does not exist in database. Please contact your Administrator.')
         else:
             return HttpResponseRedirect('/utility_tool/decisions/%s/menu.html' % dec_id)
@@ -7622,11 +7604,11 @@ def handsontable(request):
        ss = Solution_Options.objects.get(dec_id=dec_id)
        solopt_exists = 'Y'
     except ObjectDoesNotExist:
-       print 'solopt'
+       print ('solopt')
        solopt_exists = 'N'
     except MultipleObjectsReturned:     
        solopt_exists = 'Y' 
-       print 'solopt multiple objects returned' 
+       print ('solopt multiple objects returned') 
 
     try: 
        ss2 = Screening_Criteria.objects.get(dec_id=dec_id)
@@ -7635,13 +7617,13 @@ def handsontable(request):
        else:   
           scrcr_exists = 'Y'
     except ObjectDoesNotExist:
-       print 'scrcr'
+       print ('scrcr')
        scrcr_exists = 'N'
     except MultipleObjectsReturned:     
-       print 'scrcr multiple objects returned'
+       print ('scrcr multiple objects returned')
        scrcr_exists = 'N'  
        for ss2 in Screening_Criteria.objects.filter(dec_id=dec_id):
-           if ss2.criterion <> '':
+           if ss2.criterion != '':
               scrcr_exists = 'Y'   
 
     mess = ''
@@ -7651,7 +7633,7 @@ def handsontable(request):
         mess = 'You need to enter Screening Criteria before proceeding to this page.'   
     elif scrcr_exists == 'Y' and solopt_exists == 'N':
         mess = 'You need to enter Solution Options before proceeding to this page.'   
-    if mess <> '':    
+    if mess != '':    
        return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':mess})    
     dec = Decisions.objects.get(pk=dec_id) 
     something_saved = 'no'
@@ -7677,13 +7659,13 @@ def handsontable(request):
        lastpos =  arr.find(']') 
        arr1 = arr[firstpos:lastpos]
        #print arr1
-       #print 'arr1'
+       #print ('arr1'
        solopt_list = []
        for l in arr1.split(','):
            ll = l.replace('"','')
            lj = ll.replace('Option: ', '')
            solopt_list.append(lj)
-           #print 'in solopt list'
+           #print ('in solopt list'
            #print lj    
        # remove the first and last array in the array of arrays - first one is the headings and last one is the empty row  
        a = arr.replace(arr1,'')
@@ -7695,31 +7677,29 @@ def handsontable(request):
        firstpos = y.find('[') + 1
        lastpos =  y.find(']')
        w = y[firstpos:lastpos]
-       #print 'w'
+       #print ('w'
        #print w
        z = y.replace('[[','')
        v = z.replace(']]','')
        arr2 = v.replace('"],','",')
-       #print 'arr2'
+       #print ('arr2'
        #print arr2   
        temp_list = []
        # adding each array to a temporary list
        for l2 in arr2.split(','):
            l3 = l2.replace('"', '')
-           #print 'l3'
-           print l3
+           #print ('l3'
            if l3 == "Keep Option" or l3 =="Put it away for now":
-              print l3 
               temp_list.append(l3)
        #for amm in temp_list:
-           #print 'amm'
+           #print ('amm'
            #print amm   
        if 'Keep Option' in temp_list or 'Put it away for now' in temp_list:
           counter = 0
           for j in solopt_list: 
               try:
                  sol = Solution_Options.objects.get(dec_id=dec_id, sol_option = j)
-                 #print 'temp list counter'
+                 #print ('temp list counter'
                  #print j
                  #print temp_list[counter]
                  if temp_list[counter] == "Keep Option":
@@ -7732,7 +7712,7 @@ def handsontable(request):
                  something_saved = 'yes'
                  counter = counter + 1
               except ObjectDoesNotExist:
-                 print 'doesnotexist' 
+                 print ('doesnotexist') 
    
        if something_saved == 'yes':  
           dec.updated_by = request.session['user'] 
@@ -7741,7 +7721,7 @@ def handsontable(request):
 
     solopt = Solution_Options.objects.filter(dec_id=dec_id)
     for s in solopt:
-        print s.sol_option
+        print (s.sol_option)
     scrcr = Screening_Criteria.objects.filter(dec_id=dec_id) 
     scrcr_count = Screening_Criteria.objects.filter(dec_id=dec_id).count()
     test = []
@@ -7749,29 +7729,16 @@ def handsontable(request):
     try:
        mapping = MappingTable.objects.get(dec_id=dec_id)
        maptable =  mapping.table
-       print "maptable"
-       print maptable
-       print 'in map list'                      
-       print map_list
        for m in map_list:
-           print 'am i in here'
-           print m
            #print maptable.find('['+'"964"')
            #print maptable.find('["964"')
            firstposx = maptable.find('["'+ str(m) + '"') + 1
-           print firstposx
-           if firstposx <> 0:
+           if firstposx != 0:
               lastposx =  maptable.find(']', firstposx)
-              print lastposx
               arr1 = maptable[firstposx:lastposx]
-              print arr1
               test = maptable.replace(arr1, '')
-              print test
               test2 = test.replace('[],', '')
               maptable = test2
-              print "maptable and test2"
-              print test2
-              print maptable
     except ObjectDoesNotExist:
        maptable = 'doesnotexist'
 
@@ -7797,19 +7764,19 @@ def is_summary(request):
     try: 
        eva = Evaluation_Criteria.objects.get(dec_id=dec_id)
     except ObjectDoesNotExist:
-       print 'eva' 
+       print ('eva') 
        return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':'You have not entered evaluation criteria so you cannot view this screen.'})
     except MultipleObjectsReturned:          
-       print 'eva multiple objects returned'
+       print ('eva multiple objects returned')
    
     if created_by == loggedinuser:
       try:
          Importance_Scores.objects.get(dec_id = dec_id, created_by = loggedinuser)
       except ObjectDoesNotExist:
-         print 'is' 
+         print ('is') 
          return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':'You have not entered importance scores so you cannot view this screen.'})
       except MultipleObjectsReturned:         
-         print 'is multiple objects returned'
+         print ('is multiple objects returned')
     eva_table = Evaluation_Criteria.objects.filter(dec_id = dec_id).exclude(deleted = 'Y').order_by('id')
     stdec = Stakeholders_Decisions.objects.filter(dec_id = dec_id)
     total_votes = 0
@@ -7822,7 +7789,7 @@ def is_summary(request):
         total_votes = stvotes + total_votes
     scores = Importance_Scores.objects.raw("SELECT i.id, i.score score FROM utility_tool_importance_scores i, utility_tool_stakeholders_decisions s WHERE i.dec_id = s.dec_id AND i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.deleted IS NULL) order by i.created_by, i.eva_id", [dec_id])
     #min_scores = Importance_Scores.objects.raw("SELECT id, MIN(score), eva_id FROM utility_tool_importance_scores WHERE dec_id=%s group by eva_id", [dec_id])
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")        
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")        
     cursor = database.cursor () 
     cursor2 = database.cursor () 
     cursor3 = database.cursor ()
@@ -7851,18 +7818,18 @@ def summary(request):
     try: 
        eva = Evaluation_Criteria.objects.get(dec_id=dec_id) 
     except ObjectDoesNotExist:
-       print 'eva' 
+       print ('eva') 
        return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':'You have not entered evaluation criteria so you cannot view this screen.'}) 
     except MultipleObjectsReturned:                                                                                                                
-       print 'eva multiple objects returned' 
+       print ('eva multiple objects returned') 
 
     try:
       Importance_Scores.objects.get(dec_id = dec_id, created_by = loggedinuser)
     except ObjectDoesNotExist:
-       print 'is' 
+       print ('is') 
        return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':'You have not entered importance scores so you cannot view this screen.'})  
     except MultipleObjectsReturned:                                                                                                                
-       print 'is multiple objects returned'
+       print ('is multiple objects returned')
     eva_table = Evaluation_Criteria.objects.filter(dec_id = dec_id).exclude(deleted = 'Y') 
     scores = Importance_Scores.objects.raw("SELECT i.id, i.eva_id eva_id, i.criterion criterion, i.score score, i.created_by created_by, s.votes votes FROM utility_tool_importance_scores i, utility_tool_stakeholders_decisions s WHERE i.dec_id = s.dec_id AND i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.deleted IS NULL) order by i.criterion, i.created_by", [dec_id])
     return render(request,'decisions/solution_options/summary.html', {'dec_id':dec_id, 'dec_title': dec_title, 'scores':scores, 'eva_table':eva_table})  
@@ -7937,7 +7904,7 @@ def restore_idn(request):
        #something_saved = 'yes'
        h.save(update_fields=['table','updated_by', 'updated_date'])  
     else:
-       print 'nothing to do here as table isnt found'
+       print ('nothing to do here as table isnt found'
     try:
        e_orig = Evaluation_Criteria.objects.filter(dec_id=dec_id)
        for e in e_orig.filter(orig_eva_id__isnull=False):
@@ -7956,13 +7923,16 @@ def restore_idn(request):
            e2.updated_date = datetime.datetime.now()
            e2.save(update_fields=['suggested_evam','data','updated_by','updated_date'])
     except ObjectDoesNotExist:
-       print 'probs' 
+       print ('probs' 
     '''
-    IdentifyTable.objects.filter(dec_id=dec_id).last().delete()
+    count_idn = 0
+    count_idn = IdentifyTable.objects.filter(dec_id=dec_id).count()
+    if count_idn > 0:
+       IdentifyTable.objects.filter(dec_id=dec_id).last().delete()
     
     obj = IdentifyTable.objects.filter(dec_id=dec_id).order_by('-id')[:2]
     for o in obj:
-        print o.id
+        print (o.id)
     return HttpResponseRedirect('/utility_tool/decisions/solution_options/idn_measures.html') 
 
 def export_results(request):
@@ -7975,7 +7945,7 @@ def export_results(request):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet("Results Table")
     row_num = 0  
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")        
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")        
     cursor = database.cursor ()
     sql = """SELECT sol_option, weighted_utility, cost, cost_utility_ratio  FROM utility_tool_cost_utility WHERE dec_id = %(dec_id)s AND (archived = 'N' or archived IS NULL)"""
     #Heading of tables
@@ -8014,24 +7984,23 @@ def export_results(request):
        cursor.execute(sql,{'dec_id' : dec_id})
        results = cursor.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]                                                                                                
        for row in results:
           row_num += 1
-          print row[0]
           sol_option = row[0]
           weighted_utility = round(row[1],2)
           cost = row[2]
           cost_utility_ratio = row[3]
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 0: 
                  ws.write(row_num, col_num, row[col_num], font_style4)
               else:   
                  ws.write(row_num, col_num, row[col_num], num_style) 
     except:
-       print "Error: unable to fetch data"
+       print ("Error: unable to fetch data")
     # disconnect from server
     database.close()
     wb.save(response)                                                                                                                                   
@@ -8057,7 +8026,7 @@ def export_results(request):
        print request.POST.getlist('hotvalue')
        for array in request.POST.getlist('hotvalue'):
            arr = array[1:]
-           print 'arr'
+           print ('arr'
            print arr
            for l in arr.split('\r\n'):
                ln = l.replace("'","")           
@@ -8069,7 +8038,7 @@ def export_results(request):
                       h.save()
                   h = TempTable(temptext='NEXT ROW')
                   h.save()
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")        
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")        
     cursor = database.cursor ()
     sql = """SELECT temptext FROM utility_tool_temptable"""
     #Heading of tables
@@ -8107,7 +8076,7 @@ def export_results(request):
              row_num += 1
              col_num = 0
           else:
-             print 'row 0'
+             print ('row 0'
              print row[0]
              print row_num
              print col_num 
@@ -8172,13 +8141,12 @@ def export_mea(request):
     except MultipleObjectsReturned:
         s = EvaluationTable.objects.filter(dec_id=dec_id).last()
         table =  s.table
-    print table
     arrx = table[1:]                                                                                                                                                                                           
     # get the first and last postion of the solution options list
     firstposx = arrx.find('[') + 1
     lastposx =  arrx.find(']') 
     arrx1 = arrx[firstposx:lastposx]
-    #print 'arr1'
+    #print ('arr1'
     pos = 0
     pos2 = 0
     archived_list = []
@@ -8191,10 +8159,10 @@ def export_mea(request):
               if solopt.archived == 'Y' or solopt.deleted == 'Y':
                  archived_list.append(pos)
            except ObjectDoesNotExist:
-              print 'nothing todo'  
+              print ('nothing todo')  
            pos = pos + 1   
     new_list = []                                                                                                                                    
-    '''print 'archived_list'
+    '''print ('archived_list'
     for a in archived_list:
         print a'''
     # remove the first [ from the array we got from ajax  
@@ -8210,18 +8178,16 @@ def export_mea(request):
        lastpos =  y.find(']')
        arr2 = y[firstpos:lastpos]
        x = arr2.split(',')[0]
-       print arr2
        for l2 in arr2.split(','):
            l3 = l2.replace('"', '')
-           print l3 
-           if ((pos2 not in archived_list) and (x <> '0' and x <> 0 and x <> 'None')):
+           if ((pos2 not in archived_list) and (x != '0' and x != 0 and x != 'None')):
               if row_num == 0:
                  ws.write(row_num, col_num, l3, font_style)
                  col_num = col_num + 1
               else:
                   try:
                      evacr = Evaluation_Criteria.objects.get(combined = l3, dec_id=dec_id)
-                     if evacr.deleted <> 'Y':
+                     if evacr.deleted != 'Y':
                         ws.write(row_num, col_num, l3, font_style4) 
                         col_num = col_num + 1  
                      else:
@@ -8306,13 +8272,12 @@ def export_idn(request):
         s = IdentifyTable.objects.filter(dec_id=dec_id).last()
         table =  s.table
 
-    print table
     arrx = table[1:]                                                                                                                                                                                           
     # get the first and last postion of the solution options list
     firstposx = arrx.find('[') + 1
     lastposx =  arrx.find(']') 
     arrx1 = arrx[firstposx:lastposx]
-    #print 'arr1'
+    #print ('arr1'
     pos = 0
     pos2 = 0
     archived_list = []
@@ -8327,7 +8292,7 @@ def export_idn(request):
               if solopt.archived == 'Y' or solopt.deleted == 'Y':
                  archived_list.append(pos)
            except ObjectDoesNotExist:
-              print 'nothing todo' 
+              print ('nothing todo') 
            except MultipleObjectsReturned:  
               for s in Solution_Options.objects.filter(sol_option = ln, dec_id=dec_id):
                   if s.archived == 'Y' or s.deleted == 'Y':
@@ -8349,18 +8314,16 @@ def export_idn(request):
        lastpos =  y.find(']')
        arr2 = y[firstpos:lastpos]
        x = arr2.split(',')[0]
-       print arr2
        for l2 in arr2.split(','):
            l3 = l2.replace('"', '')
-           print l3 
-           if ((pos2 not in archived_list) and (x <> '0' and x <> 0 and x <> 'None')):
+           if ((pos2 not in archived_list) and (x != '0' and x != 0 and x != 'None')):
               if row_num == 0:
                  ws.write(row_num, col_num, l3, font_style)
                  col_num = col_num + 1
               else:
                   try:
                      evacr = Evaluation_Criteria.objects.get(combined = l3, dec_id=dec_id)
-                     if evacr.deleted <> 'Y':
+                     if evacr.deleted != 'Y':
                         ws.write(row_num, col_num, l3, font_style4) 
                         col_num = col_num + 1  
                      else:
@@ -8423,13 +8386,11 @@ def idn_measures(request):
 
     if request.method == 'POST':
        for array in request.POST.getlist('getdata'):
-            print array
             # insert the handsontable into identify table. If it already exists, update it else create it
             h = IdentifyTable(table = array, dec_id = dec_id,created_by = request.session['user'],created_date = datetime.datetime.now())                                                                       
             something_saved = 'yes'
             h.save()
 
-       print 'Identify table'   
        new_list = [] 
        # remove the first [ from the array we got from ajax  
        arr = array[1:]
@@ -8446,8 +8407,6 @@ def idn_measures(request):
        z = w.replace('[[','[')
        yy = z.replace('[""]','[')
        y = yy.replace('"],"','","')
-       print 'y'
-       print y
 
        # loop through the remaining array of arrays
        while len(y): 
@@ -8461,9 +8420,6 @@ def idn_measures(request):
              l3 = l2.replace('"', '')
              temp_list.append(l3)
           # till here  
-          print 'TEMP LIST 1'
-          print temp_list[1]
-          print temp_list[0]
           try:
              for evm in Evaluation_Measures.objects.filter(criterion = temp_list[0], dec_id=dec_id):
                  evm.measure = temp_list[1]
@@ -8473,7 +8429,7 @@ def idn_measures(request):
                  evm.save(update_fields=['measure','unit','updated_by','updated_date'])
                  something_saved = 'yes'
           except ObjectDoesNotExist:
-              print 'evam does not exist'  
+              print ('evam does not exist') 
           try:
              for e in Evaluation_Criteria.objects.filter(combined = temp_list[0], dec_id=dec_id):
                  e.suggested_evam = temp_list[1]
@@ -8483,8 +8439,7 @@ def idn_measures(request):
                  e.save(update_fields=['suggested_evam','data','updated_by','updated_date'])
                  something_saved = 'yes'
           except ObjectDoesNotExist:
-              print 'evam does not exist' 
-          print 'out of that loop'
+              print ('evam does not exist') 
           z = y.replace(arr2, '')                                                                                                                                                                                
           c = z.replace('[],','')
           # break out of the loop when only []] remains
@@ -8529,15 +8484,13 @@ def add_measures(request):
        table =  evatable.table
     except ObjectDoesNotExist:
        table = 'doesnotexist'
-    print 'AAAAAAAAA'        
     evacr = Evaluation_Criteria.objects.filter(dec_id=dec_id) 
     solopt = Solution_Options.objects.filter(dec_id=dec_id)
     #evacr_count = Evaluation_Criteria.objects.filter(dec_id=dec_id).count()                                                                                                                                     
     solopt_count = Solution_Options.objects.filter(dec_id=dec_id,archived='N', deleted='N').count()
     if request.method == 'POST':
-       print request.POST.getlist('getdata')
        for array in request.POST.getlist('getdata'):
-            print array
+            print (array)
 
        # insert the handsontable into evaluation table. If it already exists, update it else create it
        try: 
@@ -8557,9 +8510,7 @@ def add_measures(request):
              try:
                  m = Evaluation_Measures.objects.get(opt_id=s.id, eva_id = e.id)
              except ObjectDoesNotExist:
-                 print 'this is for testing'
-                 print s.sol_option
-                 if e.criterion2 is not None and e.criterion2 <> '':
+                 if e.criterion2 is not None and e.criterion2 != '':
                      criterion = e.criterion + ': ' + e.criterion2
                  else:   
                     criterion = e.criterion 
@@ -8567,7 +8518,6 @@ def add_measures(request):
                     archived = 'Y'
                  else:
                     archived = 'N' 
-                 print archived   
                  m = Evaluation_Measures(opt_id = s.id, sol_option = s.sol_option, archived = archived, deleted = e.deleted, eva_id = e.id, criterion = criterion,  dec_id = dec_id,created_by = request.session['user'],created_date = datetime.datetime.now())
                  something_saved = 'yes' 
                  m.save() 
@@ -8579,24 +8529,22 @@ def add_measures(request):
        firstpos = arr.find('[') + 1
        lastpos =  arr.find(']') 
        arr1 = arr[firstpos:lastpos]
-       #print 'arr1'
+       #print ('arr1'
        #print arr1
-       #print 'FIRST STEP'  
+       #print ('FIRST STEP'  
        # remove the first and last array in the array of arrays - first one is the headings and last one is the empty row  
        a = arr.replace(arr1,'')
        aa = a.replace('",null,"','",0,"')
        b = aa.replace('null,','0,')
        c = b.replace('[],','')
        w = c.replace(',[null]','')
-       #print 'w'
+       #print ('w'
        #print w
-       #print 'SECOND STEP'
+       #print ('SECOND STEP'
        z = w.replace('[[','[')
        yy = z.replace('[""]','[0')
        #yy = z.replace('[""]','""')
        y = yy.replace('"],"','","')
-       print y
-       print 'AND AT THE Y'
        # loop through the remaining array of arrays
        while len(y): 
           firstpos = y.find('[') + 1
@@ -8611,33 +8559,22 @@ def add_measures(request):
              l3 = l2.replace('"', '')
              temp_list.append(l3)
           #print temp_list  
-          print len(temp_list)         
           if len(temp_list) >= 7:   
              entering_loop_first_time = 6 
-             print 'inside len if'
-             #print 'temp_list[0]'
-             print temp_list[0]
-             #print temp_list[1]
              #sol1 = solopt.exclude(archived = 'Y')    
              for s in solopt:
-                #print 'do i enter this loop' 
+                #print ('do i enter this loop' 
                 #print s.id
                 #print temp_list[0]
                 try:
-                   print 'in try'
-                   #print dec_id
-                   print temp_list[0]
-                   print s.id
                    em = Evaluation_Measures.objects.filter(dec_id = dec_id, criterion = temp_list[0], opt_id = s.id)
                    #em2 = em1.exclude(archived = 'Y')
                    #em = em2.exclude(deleted = 'Y')   
-                   print 'before for'
                    for evam in em:
                        #print evam.id
                        # update each evaluation measure record with the values in the evaluation table
                        # lowest value, highest value etc. are float values
                        # higher_better is only one character
-                       print 'inside evam'
                        m = Evaluation_Measures.objects.get(id = evam.id) 
                        #measure | unit | lowest_value | highest_value | higher_better | option_value
                        m.measure = temp_list[1]
@@ -8655,13 +8592,9 @@ def add_measures(request):
                        m.lowest_value = float(temp_list[3])
                        m.highest_value = float(temp_list[4])
                        m.higher_better = temp_list[5][0][0]
-                       print s.id
-                       print evam.id
-                       print 'entering_loop_first_time' 
-                       print entering_loop_first_time
                        if entering_loop_first_time == 6:
                           m.option_value = float(temp_list[6]) 
-                          #print 'if'
+                          #print ('if'
                           #print m.option_value
                           entering_loop_first_time = entering_loop_first_time + 1
                        else:
@@ -8669,20 +8602,17 @@ def add_measures(request):
                              #print temp_list[entering_loop_first_time] 
                              m.option_value = float(temp_list[entering_loop_first_time])  
                           except:
-                             #print 'ZERO' 
+                             #print ('ZERO' 
                              m.option_value = 0
                           entering_loop_first_time = entering_loop_first_time + 1
-                          #print 'else'                                                                                                                                                                        
-                       print 'option value'   
-                       print m.option_value
+                          #print ('else'                                                                                                                                                                        
                        m.updated_by = request.session['user']
                        m.updated_date = datetime.datetime.now() 
                        m.save(update_fields=['measure','unit','lowest_value','highest_value', 'higher_better', 'option_value', 'updated_by', 'updated_date'])
                        something_saved ='yes'
                 except:
-                   print 'cannot proceed - error'  
+                   print ('cannot proceed - error')  
           # till here  
-          print 'out of that loop'
           z = y.replace(arr2, '')
           c = z.replace('[],','')
           # break out of the loop when only []] remains
@@ -8839,7 +8769,7 @@ def cost_table(request):
        dec.updated_date = datetime.datetime.now()
        dec.save(update_fields=['updated_by','updated_date'])          
     except MultipleObjectsReturned:
-       print 'multiple objects returned'
+       print ('multiple objects returned')
 
     costs1 = Cost_Utility.objects.filter(dec_id = dec_id)
     costs2 = costs1.exclude(archived = 'Y')
@@ -8894,7 +8824,6 @@ def cost_setup(request):
  
     context = RequestContext(request)
     source = ''
-    print 'I AM IN COST SETUP'
     try: 
        c = Cost_Setup.objects.get(dec_id = dec_id) 
        type_of_cost = c.type_of_cost
@@ -8920,7 +8849,7 @@ def cost_setup(request):
     for s in Solution_Options.objects.filter(dec_id=dec_id, deleted = 'N'):    
         try:
            costs = Cost_Utility.objects.get(opt_id = s.id)
-           #if costs.sol_option <> s.sol_option:
+           #if costs.sol_option != s.sol_option:
            costs.sol_option = s.sol_option
            costs.archived = s.archived
            costs.updated_by = request.session['user']
@@ -8938,7 +8867,7 @@ def cost_setup(request):
            else:
               detcosts.archived = 'N' 
            detcosts.save(update_fields=['archived'])       
-           if detcosts.sol_option <> s.sol_option:   
+           if detcosts.sol_option != s.sol_option:   
               detcosts.sol_option = s.sol_option
               detcosts.updated_by = request.session['user']
               detcosts.updated_date = datetime.datetime.now()
@@ -8951,11 +8880,7 @@ def cost_setup(request):
     cost_table = cost_table1.exclude(archived = 'Y')
     detcosts1 = Detailed_Costs.objects.filter(dec_id = dec_id)
     detcosts = detcosts1.exclude(archived = 'Y')
-    print 'before post'
     if request.method == 'POST':
-       print request.POST.get('id')
-       print request.POST.get('part')
-       print request.POST.get('cost')
        if request.POST.get('id'): 
           costs = Cost_Utility.objects.get(pk=request.POST.get('id'))
           if request.POST.get('part') == "None":
@@ -8965,7 +8890,6 @@ def cost_setup(request):
           costs.cost = request.POST.get('cost')
           costs.updated_by = request.session['user']
           costs.updated_date = datetime.datetime.now()
-          print request.POST.get('cost')
           costs.save(update_fields=['no_of_participants','cost','updated_by','updated_date'])
           c.type_of_cost = request.POST.get('radioValue')
           c.source = request.POST.get('source')
@@ -9012,7 +8936,7 @@ def cost_setup(request):
        created_by = 'not found'
  
     context = RequestContext(request)
-    print 'I AM IN COST SETUP'
+    print ('I AM IN COST SETUP'
     try: 
        c = Cost_Setup.objects.get(dec_id = dec_id) 
        type_of_cost = c.type_of_cost
@@ -9039,7 +8963,7 @@ def cost_setup(request):
     for s in Solution_Options.objects.filter(dec_id=dec_id):
         try:
            costs = Cost_Utility.objects.get(opt_id = s.id)
-           #if costs.sol_option <> s.sol_option:
+           #if costs.sol_option != s.sol_option:
            costs.sol_option = s.sol_option
            costs.archived = s.archived
            costs.updated_by = request.session['user']
@@ -9053,7 +8977,7 @@ def cost_setup(request):
            detcosts = Detailed_Costs.objects.get(opt_id = s.id)
            if s.archived == 'Y':
               Detailed_Costs.objects.get(opt_id = s.id).delete()
-           elif detcosts.sol_option <> s.sol_option:
+           elif detcosts.sol_option != s.sol_option:
               detcosts.sol_option = s.sol_option
               detcosts.updated_by = request.session['user']
               detcosts.updated_date = datetime.datetime.now()
@@ -9072,7 +8996,7 @@ def cost_setup(request):
        dec.updated_date = datetime.datetime.now()
        dec.save(update_fields=['updated_by','updated_date'])          
     except MultipleObjectsReturned:
-       print 'multiple objects returned'
+       print ('multiple objects returned'
     cost_table1 = Cost_Utility.objects.filter(dec_id = dec_id)
     cost_table = cost_table1.exclude(archived = 'Y')
     try: 
@@ -9082,7 +9006,7 @@ def cost_setup(request):
            detcosts  = Detailed_Costs(opt_id = s.id, sol_option = s.sol_option,  dec_id = dec_id,created_by = request.session['user'],created_date = datetime.datetime.now())
            detcosts.save()
     except MultipleObjectsReturned:
-       print 'multiple objects returned'
+       print ('multiple objects returned'
     detcosts = Detailed_Costs.objects.filter(dec_id = dec_id)
 
     if request.method == 'POST':
@@ -9163,10 +9087,8 @@ def decision_made(request):
     if 'iw' in retval or 'listerr3' in retval:
         iw_mesg =  '- Add the Importance Scores for the Evaluation Criteria in the "Importance Scores" step' 
     if 'mea' in retval or 'listerr1' in retval or 'listerr2' in retval:
-        print 'retval'
-        print retval
         evm_mesg = '- Specify the evaluation measures and add the average rating/score for each Solution Option in the "Evidence-gathering to Evaluate Options" step' 
-    if retval <> '':
+    if retval != '':
         return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':temp_mesg, 'sol_mesg':sol_mesg,'eva_mesg':eva_mesg,'iw_mesg':iw_mesg,'evm_mesg':evm_mesg,})    
     ''' 
     if retval == 'listerr1':
@@ -9195,14 +9117,12 @@ def decision_made(request):
        stakeholdersNow = 'N'
     except MultipleObjectsReturned:                                                                                                                
        stakeholdersNow = 'Y'  
-    print 'in dec made'
     cost_rec = ''
     # july 19
     #if loggedinuser == created_by:
     if stakeholdersNow == 'Y':
        individual_cal(dec_id, created_by, request)
     else:
-       print 'before group cal' 
        group_cal(dec_id, created_by, request)
     retval = further_cal(dec_id, created_by, request)   
     if retval == 'em':
@@ -9222,20 +9142,18 @@ def decision_made(request):
        type_of_cost = '' 
        cost_rec = 'N'
        cost_text = 'Cost' 
-       print 'cost does not exist'
        #return render(request,'decisions/message.html', {'dec_id':dec_id,'loggedinuser':loggedinuser,'mess':'You have not entered costs so you cannot view this screen.'})   
     
     try: 
        costs = Cost_Utility.objects.get(dec_id = dec_id)
        if costs.cost is None or costs.weighted_utility is None:
-          print 'not checking costs'   
+          print ('not checking costs')   
           #return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':'You have not entered costs so you cannot view this screen.'})   
     except ObjectDoesNotExist:
        cost_rec = 'N' 
-       print 'not checking costs'   
        #return render(request,'decisions/message.html', {'dec_id':dec_id, 'loggedinuser':loggedinuser, 'mess':'You have not entered costs so you cannot view this screen.'})  
     except MultipleObjectsReturned:
-       print 'multiple objects returned'
+       print ('multiple objects returned')
 
     wu = '' 
     so1 = '' 
@@ -9248,11 +9166,9 @@ def decision_made(request):
     cost_utility1 = Cost_Utility.objects.filter(dec_id = dec_id)
     cost_utility = cost_utility1.exclude(archived = 'Y')
     for cu in cost_utility:
-        print 'sol option in dec made'
-        print cu.sol_option
         cu.type_of_cost = type_of_cost
         if cu.weighted_utility is not None and cu.cost is not None:
-           if cu.weighted_utility <> 0: 
+           if cu.weighted_utility != 0: 
               cu.cost_utility_ratio = "%.2f" %  round(float(cu.cost) / float(cu.weighted_utility),2)
            else:
               cu.cost_utility_ratio = None
@@ -9281,21 +9197,16 @@ def decision_made(request):
     else:   
        wuzero = 'N' 
     for c in cc:
-        print 'INSIDE CC'
-        print c.sol_option
-        print wu
-        print c.weighted_utility
-        if c.cost <> 0:
+        if c.cost != 0:
            costzero = 'N'
         if c.weighted_utility == 0:                                                                                                                                                                                          
            wuzero = 'Y'
         if wu == c.weighted_utility:
-           if so1 <> "":
+           if so1 != "":
               so1 = so1 + ", " + c.sol_option
               more_than_one = "Y"
            else:
               so1 = so1 + " " + c.sol_option 
-           print so1   
         #else: 
            #so1 = onerec.sol_option         
                
@@ -9309,7 +9220,7 @@ def decision_made(request):
        so2 = ""
        for c in cd:
           if co == c.cost:
-             if so2 <> "":
+             if so2 != "":
                 so2 = so2 + ", " + c.sol_option
              else:
                 so2 = so2 + " " + c.sol_option
@@ -9324,7 +9235,7 @@ def decision_made(request):
        so3 = ""
        for c in ce:
           if cur == c.cost_utility_ratio:
-             if so3 <> "":
+             if so3 != "":
                 so3 = so3 + ", " + c.sol_option
                 more_than_one = "Y" 
              else:
@@ -9368,7 +9279,6 @@ def decision_made(request):
        if 'submit' in request.POST:                                                                                                            
           return HttpResponseRedirect('/utility_tool/decisions/%s/menu.html' % dec_id)
        elif 'ur' in request.POST:
-          print 'UT' 
           return HttpResponseRedirect('/utility_tool/decisions/solution_options/utility_results.html') 
         
        #if loggedinuser != created_by:
@@ -9396,9 +9306,9 @@ def login(request):
                   request.session['publicOrPrivate'] = login2.publicOrPrivate
                   #return render(request,'users/renew_license.html') 
                   return HttpResponseRedirect('/utility_tool/users/renew_license.html')   
-               if login.user <> login2.user:
+               if login.user != login2.user:
                   return render(request,'users/login.html',{'loginform': loginform, 'err': 'Invalid user name. Please enter the correct user name.'}) 
-               if login.password <> login2.password:                                                                                                                                                                     
+               if login.password != login2.password:                                                                                                                                                                     
                   return render(request,'users/login.html',{'loginform': loginform, 'err': 'Invalid password. Please enter the correct password.'}) 
                #if login2.endDate <= datetime.date.today():      
                   #return render(request,'users/login.html',{'loginform': loginform, 'err': 'Your license agreement has expired.  Please re-register from the Home page. If you wish to continue using your existing account, re-register with the same User name. You may change your password and any other information that needs updating.'})                                                                                      
@@ -9420,7 +9330,7 @@ def login(request):
 
         else:
            form_errors = 'Yes'
-           print form_errors
+           print (form_errors)
 
     else:
         loginform = LoginForm()
@@ -9434,15 +9344,12 @@ def change_password(request):
        loggedinuser = request.session['user']
     else:
        loggedinuser = 'not found'
-    print loggedinuser
     if request.method == 'POST':
        changeform = ChangeForm(request.POST)
        if changeform.is_valid():
           change = changeform.save(commit=False)
           #try:  
           r = Users.objects.get(user = loggedinuser) 
-          print change.oldpassword
-          print r.password
           if change.oldpassword != r.password:
              return render(request,'users/change_password.html',{'changeform':changeform, 'loggedinuser':loggedinuser, 'err': 'Current Password does not match the saved Password.'})    
           elif change.password != change.passwordagain:
@@ -9454,7 +9361,7 @@ def change_password(request):
           r.updated_date = datetime.datetime.now()
           r.save(update_fields=['password', 'passwordagain','updated_by', 'updated_date'])
           #except:
-             #print 'does not exist'      
+             #print ('does not exist'      
           return HttpResponseRedirect('/utility_tool/decisions/decisions_list.html')         
     else:
        changeform = ChangeForm()
@@ -9470,14 +9377,12 @@ def forgot(request):
           try:
              r = Users.objects.get(email = forgot.email)
           except:
-             print 'does not exist'
-             return render_to_response('users/forgot.html',{'forgotform':forgotform,'err':'The email address you have entered does not match what we have in our records. Please enter again.'}, context)
-          print 'jul31 test1'
+             print ('does not exist')
+             return render(request, 'users/forgot.html',{'forgotform':forgotform,'err':'The email address you have entered does not match what we have in our records. Please enter again.'}, context)
           message = 'The User Name you used to log in to DecisionMaker is: "' + r.user + '". Your Password is "' + r.password + '". If you need to contact CBCSE, please email fmh7@tc.columbia.edu.'
           subject = 'Login details for DecisionMaker'
           from_email = 'decisionmaker.cbcse@gmail.com'
           to_email = forgot.email
-          print to_email
           if subject and message and from_email and to_email:
              try: 
                 send_mail(subject, message, from_email,[to_email])
@@ -9487,8 +9392,7 @@ def forgot(request):
              return HttpResponse('Make sure all fields are entered and valid.') 
           return HttpResponseRedirect('/utility_tool/users/login.html')                                                                                                                                                       
        else:
-          print forgotform.errors
-          return render_to_response('users/forgot.html',{'forgotform':forgotform,'err':forgotform.errors}, context)
+          return render(request, 'users/forgot.html',{'forgotform':forgotform,'err':forgotform.errors}, context)
     else:
        forgotform = ForgotForm()
     return render(request,'users/forgot.html', {'forgotform':forgotform})
@@ -9505,19 +9409,19 @@ def register(request):
             #if login.endDate > date.today():
                #return render_to_response('users/register.html',{'registerform': registerform, 'err': 'The User Name you have entered already exists. Please select another one.'}, context)                                                                                      
          #except ObjectDoesNotExist:
-            #print 'xyz' 
+            #print ('xyz' 
          try:
             r = Users.objects.filter(email = register.email).count()
             if r > 0:
                return render(request, 'users/register.html',{'registerform': registerform,'err':'Another user has the same email address entered. Please enter a different email address.'})
          except ObjectDoesNotExist:
-             print 'something wrong in email unique check'
+             print ('something wrong in email unique check')
          try: 
             r = Users.objects.filter(user = register.user).count()                                                                                                                
             if r > 0: 
                return render(request, 'users/register.html',{'registerform': registerform,'err':'Another user has the same user name entered. Please enter a different user name.'})
          except ObjectDoesNotExist:
-             print 'something wrong in email unique check' 
+             print ('something wrong in email unique check') 
          if register.password != register.passwordagain:                                                                                   
             return render(request, 'users/register.html',{'registerform': registerform, 'err': 'Password does not match Confirm Password.'})              
          if register.email != register.emailagain:
@@ -9525,7 +9429,7 @@ def register(request):
          rand = random.randrange(1000,999999999)
          try:  
             unique = Users.objects.get(uniqueRandomId = rand)
-            print 'RANDOM ID NOT CREATED'
+            print ('RANDOM ID NOT CREATED')
          except ObjectDoesNotExist:
             register.uniqueRandomId = random.randrange(1000,999999999)
             register.endDate= datetime.datetime.now() + relativedelta(years=2)
@@ -9557,7 +9461,7 @@ def register(request):
          request.session['publicOrPrivate'] = register.publicOrPrivate 
          return HttpResponseRedirect('/utility_tool/users/license.html') 
       else:
-         print registerform.errors
+         print (registerform.errors)
           
    else:                                                                                                                            
       registerform = RegisterForm()
@@ -9584,8 +9488,6 @@ def license(request):
             return HttpResponseRedirect('/Home.html')
       else:
          form_errors = 'Select Yes or No to proceed'
-         print form_errors
-         print licenseform.errors
          return render(request, 'users/license.html',{'licenseform': licenseform, 'form_errors':form_errors, 'publicOrPrivate':'publicOrPrivate'})
    else:
       licenseform = License()
@@ -9618,8 +9520,6 @@ def renew_license(request):
             return HttpResponseRedirect('/Home.html')
       else:
          form_errors = 'Select Yes or No to proceed'
-         print form_errors
-         print licenseform.errors
          return render(request, 'users/renew_license.html',{'licenseform': licenseform, 'form_errors':form_errors, 'publicOrPrivate':'publicOrPrivate'})
    else:
       licenseform = License()                                                                                                             
@@ -9629,26 +9529,26 @@ def renew_license(request):
 def return_pdf(request):
    publicOrPrivate=request.session['publicOrPrivate']
    if publicOrPrivate == 'Public':
-      with open('/home/amritha/costutility/documents/DM Online Public Institution Tool Kit License.pdf', 'r') as pdf: 
+      with open('/home/amritha19/costutility/documents/DM Online Public Institution Tool Kit License.pdf', 'r') as pdf: 
          response = HttpResponse(pdf.read(), content_type='application/pdf')
          response['Content-Disposition'] = 'inline;filename=DM Online Public Institution Tool Kit License.pdf'
          return response
       pdf.closed
    else:
-      with open('/home/amritha/costutility/documents/DM Online Private Institution Tool Kit License.pdf', 'r') as pdf: 
+      with open('/home/amritha19/costutility/documents/DM Online Private Institution Tool Kit License.pdf', 'r') as pdf: 
          response = HttpResponse(pdf.read(), content_type='application/pdf')
          response['Content-Disposition'] = 'inline;filename=DM Online Private Institution Tool Kit License.pdf'
          return response
       pdf.closed
 def private_pdf(request):
-      with open('/home/amritha/costutility/documents/DM Online Private Institution Tool Kit License.pdf', 'r') as pdf: 
+      with open('/home/amritha19/costutility/documents/DM Online Private Institution Tool Kit License.pdf', 'r') as pdf: 
          response = HttpResponse(pdf.read(), content_type='application/pdf')
          response['Content-Disposition'] = 'inline;filename=DM Online Private Institution Tool Kit License.pdf'
          return response
       pdf.closed
 
 def public_pdf(request):
-      with open('/home/amritha/costutility/documents/DM Online Public Institution Tool Kit License.pdf', 'r') as pdf: 
+      with open('/home/amritha19/costutility/documents/DM Online Public Institution Tool Kit License.pdf', 'r') as pdf: 
          response = HttpResponse(pdf.read(), content_type='application/pdf')
          response['Content-Disposition'] = 'inline;filename=DM Online Public Institution Tool Kit License.pdf'
          return response
@@ -9674,11 +9574,11 @@ def logout(request):
 
 def import_excel(request):                                                                                                                                                                                       
     # Open the workbook and define the worksheet
-    book = xlrd.open_workbook("/home/amritha/costutility/documents/Stakeholders.xlsx")
+    book = xlrd.open_workbook("/home/amritha19/costutility/documents/Stakeholders.xlsx")
     sheet = book.sheet_by_name("Stakeholders")
     
     # Establish a MySQL connection
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     # Get the cursor, which is used to traverse the database, line by line
     cursor = database.cursor()
     
@@ -9718,7 +9618,7 @@ def export_stakeholders(request):
     ws = wb.add_sheet("Stakeholders")
     row_num = 0
     
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     user = request.session['user']
     cursor = database.cursor ()
     # Create the INSERT INTO sql query
@@ -9747,7 +9647,7 @@ def export_stakeholders(request):
     font_style2 = xlwt.XFStyle()
     font_style2.alignment = aL
 
-    for col_num in xrange(len(columns)):
+    for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num][0], font_style)
         # set column width
         ws.col(col_num).width = columns[col_num][1]
@@ -9765,10 +9665,10 @@ def export_stakeholders(request):
           email = row[4]
           phone = row[5] 
           notes = row[6]
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
              ws.write(row_num, col_num, row[col_num], font_style2)
     except:
-       print "Error: unable to fetch data"
+       print ("Error: unable to fetch data")
     # disconnect from server
     database.close()
     wb.save(response)
@@ -9780,7 +9680,7 @@ def export_users(request):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet("Users")
     row_num = 0 
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     cursor = database.cursor ()
     sql = """SELECT id, user, email, firstName, lastName, addressline1, addressline2, city, state, zip, country, phone, organisation, type_of_org, other_org, position, other_pos, hearaboutus, other_hear, updates, education, age, gender, race, other_race,  publicOrPrivate, startDate, endDate, lastLogin, timesLoggedin, orig_reg_date FROM utility_tool_users"""
 
@@ -9868,7 +9768,7 @@ def export_users(request):
        cursor.execute(sql)
        results = cursor.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
@@ -9905,13 +9805,13 @@ def export_users(request):
           lastLogin = row[28]
           timesLoggedin = row[29]
           orig_reg_date = row[30]
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 26 or col_num == 27 or col_num == 28 or col_num == 30:
                 ws.write(row_num, col_num, row[col_num],date_style4)
               else:
                 ws.write(row_num, col_num, row[col_num],font_style4)
     except:
-       print "Error: unable to fetch data"
+       print ("Error: unable to fetch data")
     # disconnect from server
     database.close()
     wb.save(response)                                                                                                                                                                                            
@@ -9928,18 +9828,18 @@ def imports(request):
 
 def import_cbcse_scrcr(request):
     # Open the workbook and define the worksheet                                                                                                         
-    book = xlrd.open_workbook("/home/amritha/costutility/costutility/static/CBCSE_screening_criteria.xlsx")
+    book = xlrd.open_workbook("/home/amritha19/costutility/costutility/static/CBCSE_screening_criteria.xls")
     sheet = book.sheet_by_name("Sheet1")
     CBCSE_Screening_Criteria.objects.all().delete()
     # Establish a MySQL connection
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     # Get the cursor, which is used to traverse the database, line by line
     cursor = database.cursor()
     # Create the INSERT INTO sql query
     query = """INSERT INTO utility_tool_cbcse_screening_criteria (criterion) VALUES (%s)"""
     # Create a For loop to iterate through each row in the XLS file, starting at row 2 to skip the headers
     for r in range(1, sheet.nrows):
-        print sheet.cell(r,0).value
+        print (sheet.cell(r,0).value)
         list_one      = str(sheet.cell(r,0).value)
         # Execute sql Query
         cursor.execute(query, (list_one,))
@@ -9955,11 +9855,11 @@ def import_cbcse_scrcr(request):
 
 def import_cbcse_evacr(request):
     # Open the workbook and define the worksheet                                                                                                         
-    book = xlrd.open_workbook("/home/amritha/costutility/costutility/static/CBCSE_evaluation_criteria.xlsx")
+    book = xlrd.open_workbook("/home/amritha19/costutility/costutility/static/CBCSE_evaluation_criteria.xls")
     sheet = book.sheet_by_name("Granular evaluation criteria")
     CBCSE_Evaluation_Criteria.objects.all().delete()
     # Establish a MySQL connection
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")    
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")    
     # Get the cursor, which is used to traverse the database, line by line
     cursor = database.cursor()
     # Create the INSERT INTO sql query
@@ -10023,8 +9923,7 @@ def appendices(request,dec_id):
     response = HttpResponse(content_type='application/ms-excel')                                                                                                                                                 
     response['Content-Disposition'] = 'attachment; filename="%s"' % filename  
     wb = xlwt.Workbook(encoding='utf-8')
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
-    print 'am i in here'
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     #Heading of tables
     borders = xlwt.Borders()
     borders.left = 1
@@ -10139,8 +10038,6 @@ def appendices(request,dec_id):
        s2 = s1.exclude(archived = 'Y')
        s1_count = s1.count()
        s_count = s2.count()
-       print 's_count'
-       print s_count
     except ObjectDoesNotExist:
        s_count = 3
        s1_count = 0
@@ -10195,7 +10092,7 @@ def appendices(request,dec_id):
        cursor5.execute(sql, {'dec_id' : dec_id})
        results = cursor5.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
@@ -10209,7 +10106,7 @@ def appendices(request,dec_id):
           scrcr_type = row[5]
           evacr_type = row[6]
           iw_type = row[7]
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 0 or col_num == 1 or col_num == 2 or col_num == 3:
                  ws.write(row_num, col_num, StValue(row[0], row[1], col_num, from_where),font_style6)
               else:
@@ -10225,7 +10122,7 @@ def appendices(request,dec_id):
                  elif row[col_num] == 'Y':
                     ws.write(row_num, col_num, row[col_num],font_style4)'''
     except:
-       print "Error: unable to fetch data"
+       print ("Error: unable to fetch data")
 
     row_num += 2
     ws.write(row_num, 0, "Key", font_style5)
@@ -10252,7 +10149,7 @@ def appendices(request,dec_id):
     except ObjectDoesNotExist:
        table = 'doesnotexist'
     # hiding the unwanted columns; first add them to a list and set width to 1
-    if table <> 'doesnotexist':
+    if table != 'doesnotexist':
        ws = wb.add_sheet("Appendix B Screening SOs")                                                                                                  
        row_num = 0 
        col_width = 256 * 30     
@@ -10284,21 +10181,17 @@ def appendices(request,dec_id):
        try:
           for scrcr in Screening_Criteria.objects.filter(dec_id=dec_id):
               scrcr_list.append(str(scrcr.id))
-              print scrcr.id 
        except ObjectDoesNotExist:
-          print 'nothing todo scrcr'
+          print ('nothing todo scrcr')
     
-       print 'SCRCR LIST'
        for i in scrcr_list:
-          print i
-       print 'APPENDIX B'
-       print table
+          print (i)
        arrx = table[1:]
        # get the first and last postion of the solution options list
        firstposx = arrx.find('[') + 1
        lastposx =  arrx.find(']')
        arrx1 = arrx[firstposx:lastposx]
-       #print 'arr1'
+       #print ('arr1'
        pos = 0
        pos2 = 0
        new_list = []              
@@ -10310,24 +10203,16 @@ def appendices(request,dec_id):
        z = c.replace('[[','[')
        yy = z.replace('[""]','[')
        y = yy.replace('"],"','","')                                                                                                                   
-       print 'this is the Y june27'
-       print y
        copy_of_y = y
        while len(y): 
           firstpos = y.find('[') + 1
           lastpos =  y.find(']')
           arr2 = y[firstpos:lastpos]
           x = arr2.split(',')[0]
-          print arr2
           for l2 in arr2.split(','):
              l3 = l2.replace('"', '')
-             print 'looking for l3'
-             print l3
              col_count = col_count + 1
              if (l3.find('has been deleted') != -1):
-                print 'in find'
-                print l3
-                print col_count
                 col_not_disp.append(col_count - 1)
           z = y.replace(arr2, '')                                                                                                                     
           c = z.replace('[],','')
@@ -10335,9 +10220,9 @@ def appendices(request,dec_id):
           if (c == '[]]'):
             break;
           y = c  
-       print 'col not disp LIST'
+       print ('col not disp LIST')
        for i in col_not_disp:
-          print i  
+          print (i)  
        y = copy_of_y
        col_not_disp.append(0)
        while len(y): 
@@ -10345,12 +10230,9 @@ def appendices(request,dec_id):
           lastpos =  y.find(']')
           arr2 = y[firstpos:lastpos]
           x = arr2.split(',')[0]
-          print arr2                                                                                                                                  
           for l2 in arr2.split(','):
              l3 = l2.replace('"', '')
-             print l3
              if col_num in col_not_disp:
-                print 'skip this column'
                 ws.col(col_num).width = 1 
                 col_num = col_num + 1 
              else:
@@ -10423,7 +10305,7 @@ def appendices(request,dec_id):
     for st in stdec:
         if st.votes is not None:
            total_votes = st.votes + total_votes
-        if st.votes <> 10:
+        if st.votes != 10:
            vote_changed = 'Y' 
     scores = Importance_Scores.objects.raw("SELECT i.id, i.score score FROM utility_tool_importance_scores i, utility_tool_stakeholders_decisions s WHERE i.dec_id = s.dec_id AND i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.deleted IS NULL) order by i.created_by, i.eva_id", [dec_id])
     #min_scores = Importance_Scores.objects.raw("SELECT id, MIN(score), eva_id FROM utility_tool_importance_scores WHERE dec_id=%s group by eva_id", [dec_id])
@@ -10454,8 +10336,6 @@ i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.
     ws.write(0, 0, "Appendix C: Importance Scores", font_style5)
     counter = 1
     eva_count = eva_table.count()
-    print 'EVA COUNT'
-    print eva_count
     eva_count = eva_count + 3
     while counter < eva_count:
         ws.write(0, counter, "", font_style5)
@@ -10584,14 +10464,13 @@ i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.
         s = IdentifyTable.objects.filter(dec_id=dec_id).last()
         table =  s.table
 
-    print table
-    if table <> 'doesnotexist':
+    if table != 'doesnotexist':
        arrx = table[1:]                                                                                                                                    
        # get the first and last postion of the solution options list
        firstposx = arrx.find('[') + 1
        lastposx =  arrx.find(']') 
        arrx1 = arrx[firstposx:lastposx]
-       #print 'arr1'
+       #print ('arr1'
        pos = 0
        pos2 = 0
        archived_list = []
@@ -10605,7 +10484,7 @@ i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.
                  if solopt.archived == 'Y' or solopt.deleted == 'Y':
                     archived_list.append(pos)
               except ObjectDoesNotExist:
-                 print 'nothing todo' 
+                 print ('nothing todo') 
               except MultipleObjectsReturned:
                  for s in Solution_Options.objects.filter(sol_option = ln, dec_id=dec_id):
                      if s.archived == 'Y' or s.deleted == 'Y':
@@ -10625,18 +10504,16 @@ i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.
           lastpos =  y.find(']')
           arr2 = y[firstpos:lastpos]
           x = arr2.split(',')[0]
-          print arr2
           for l2 in arr2.split(','):
               l3 = l2.replace('"', '')
-              print l3 
-              if ((pos2 not in archived_list) and (x <> '0' and x <> 0 and x <> 'None')):
+              if ((pos2 not in archived_list) and (x != '0' and x != 0 and x != 'None')):
                 if row_num == 1:
                    ws.write(row_num, col_num, l3, font_style)
                    col_num = col_num + 1
                 else:
                     try:
                        evacr = Evaluation_Criteria.objects.get(combined = l3, dec_id=dec_id)
-                       if evacr.deleted <> 'Y':
+                       if evacr.deleted != 'Y':
                           ws.write(row_num, col_num, l3, font_style4) 
                           col_num = col_num + 1  
                        else:
@@ -10692,7 +10569,7 @@ i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.
        cursor.execute(sql, {'dec_id' : dec_id})
        results = cursor.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
@@ -10705,17 +10582,17 @@ i.dec_id=%s AND s.iw_type = 'Y' AND i.email = s.email AND (i.deleted = 'N' OR i.
           training_cost = row[4]
           other_cost = row[5]
           total_cost = row[6]
-          for col_num in xrange(len(row)):                                                                                                                                                                       
+          for col_num in range(len(row)):                                                                                                                                                                       
               if col_num == 0:
                  ws.write(row_num, col_num, row[col_num],font_style4)
               else:
                  ws.write(row_num, col_num, row[col_num],num_style)
     except:
-       print "Error: unable to fetch data"
+       print ("Error: unable to fetch data")
 
     database.close()
-    wb.save('/home/amritha/' + filename)
-    with open('/home/amritha/' + filename, 'r') as xlsx:
+    wb.save('/home/amritha19/' + filename)
+    with open('/home/amritha19/' + filename, 'rb') as xlsx:
        response = HttpResponse(xlsx.read(), content_type='application/xlsx')
        response['Content-Disposition'] = 'inline;filename="%s"' % filename
        return response 
@@ -10731,8 +10608,7 @@ def export_sr(request):
           filename = 'SummaryReport-' + str(r.id) + '-R.docx'  
           zipObj.write(filename)
         except:
-           print 'could not write error SR'
-           print r.id 
+           print (r.id) 
     zipObj.close()
     response = HttpResponse(f.getvalue(),content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=SummaryReportsReal.zip'
@@ -10744,15 +10620,12 @@ def export_sr_t(request):
     f = io.BytesIO()
     zipObj = ZipFile(f, 'a', compression=zipfile.ZIP_DEFLATED)
     for r in real_dec:
-        print 'Nov the 6th'
-        print r.id 
         try:
            summary_report(request, str(r.id))
            filename = 'SummaryReport-' + str(r.id) + '-T.docx'  
            zipObj.write(filename)
         except:
-           print 'could not write error SR T'
-           print r.id 
+           print (r.id) 
     zipObj.close()
     response = HttpResponse(f.getvalue(),content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=SummaryReportsTraining.zip'
@@ -10770,8 +10643,7 @@ def export_app(request):
           filename = 'appendices-' + str(r.id) + '-R.xls'  
           zipObj.write(filename)
         except:
-           print 'could not write error APP'
-           print r.id 
+           print (r.id) 
     zipObj.close()
     response = HttpResponse(f.getvalue(),content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=AppendicesReal.zip'
@@ -10789,8 +10661,7 @@ def export_app_t(request):
           filename = 'appendices-' + str(r.id) + '-T.xls'  
           zipObj.write(filename)
         except:
-           print 'could not write error APP T'
-           print r.id 
+           print (r.id) 
     zipObj.close()
     response = HttpResponse(f.getvalue(),content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=AppendicesTraining.zip'
@@ -10838,20 +10709,17 @@ def export_test(request):
     date_style4 = xlwt.XFStyle()
     mapp2 = Mapping_Data.objects.all()
     mapp = mapp2.exclude(dec_id__in=demo_dec_list)
-    print 'COUNT jul21'
-    print mapp.count() 
     '''for m in mapp:
         print m.id
         #print row_num
         #t = temp_table(field1 = m.id) 
         #t.save()   
         row_num = row_num + 1'''
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     cursor2 = database.cursor ()
     #sql2 = """SELECT * FROM utility_tool_mappingtable where dec_id not in %(demo_dec_list)s"""
     #sql2 = """SELECT dec_id, sol_id, sol_option, sc_id, criterion, result, created_date, created_by, updated_date, updated_by FROM utility_tool_mapping_data where dec_id not in %(demo_dec_list)s"""                
     for m in mapp: 
-        print m.id
         #print row_num
         #t = temp_table(field1 = m.id) 
         #t.save()   
@@ -10873,8 +10741,6 @@ def export_all(request):
     dec2 = Decisions.objects.filter(demoDec = 'Y')
     dec = dec2.exclude(real_dec_yn = 'X')
     demo_dec_list = []
-    print ' total decisions'
-    print dec.count()
     for d in dec:
         demo_dec_list.append(d.id)
  
@@ -10884,7 +10750,7 @@ def export_all(request):
     #Decisions
     ws = wb.add_sheet("Decisions")
     row_num = 0 
-    database = MySQLdb.connect (host="amritha.mysql.pythonanywhere-services.com", user = "amritha", passwd = "lilies19", charset="utf8", db = "amritha$costutility")
+    database = MySQLdb.connect (host="amritha19.mysql.pythonanywhere-services.com", user = "amritha19", passwd = "lilies19", charset="utf8", db = "amritha19$costutility")
     cursor = database.cursor ()
 
     sql = """SELECT d.id, real_dec_yn, demoDec, short_title, title,  name_decisionmaker, decision_prob,  evidence,  goal,  target_audience,  stakeholders, participating_stakeholders, '', potential_sources,  by_when, d.created_date,  d.created_by,  d.updated_date,  d.updated_by,  shared, '', '', sol_option, reason, primary_factor, other_cons, type_of_cost, source, organisation, position, type_of_org, other_org, other_pos, education, age, gender, race, other_race, publicOrPrivate FROM utility_tool_decisions d LEFT JOIN utility_tool_users u ON d.created_by = u.user LEFT JOIN utility_tool_decision_made dd ON d.id = dd.dec_id LEFT JOIN utility_tool_cost_setup ss ON d.id =ss.dec_id where d.id not in %(demo_dec_list)s"""
@@ -10976,7 +10842,7 @@ def export_all(request):
        cursor.execute(sql, {'demo_dec_list' :demo_dec_list})
        results = cursor.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
@@ -11018,7 +10884,7 @@ def export_all(request):
           race = row[33] 
           other_race = row[34] 
           publicOrPrivate = row[35] '''
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 12:                                                                                        
                 ws.write(row_num, col_num, TotalST(row[0],'Y'),font_style4)
               elif col_num == 14 or col_num == 15 or col_num == 17:
@@ -11037,7 +10903,7 @@ def export_all(request):
               else:
                 ws.write(row_num, col_num, row[col_num],font_style4)
     except:
-       print "Error: unable to fetch decisions data"
+       print ("Error: unable to fetch decisions data")
 
     # Stakeholders Decisions
     ws = wb.add_sheet("Stakeholders in Decisions")
@@ -11046,7 +10912,6 @@ def export_all(request):
     #sql2 = """SELECT  s.dec_id, s.id,  st_id,  pa, iw_type,  iw_date, '', thinking, evacr_type,  evacr_date, '', scrcr_type,  scrcr_date, '', solopt_type,  solopt_date,  '', s.created_date,  s.created_by,  s.updated_date,  s.updated_by,  votes,  deleted, organisation, position, type_of_org, other_org, other_pos, education, age, gender, race, other_race, publicOrPrivate FROM utility_tool_stakeholders_decisions s LEFT JOIN utility_tool_users ON user = created_by LEFT JOIN utility_tool_scores_setup ss ON ss.dec_id = s.dec_id where s.dec_id not in %(demo_dec_list)s"""      
     sd3 = Stakeholders_Decisions.objects.all()
     sd = sd3.exclude(dec_id__in=demo_dec_list)
-    print sd.count() 
     row = sd.count()
     columns = [
           (u"decision_id", 3000),
@@ -11090,7 +10955,7 @@ def export_all(request):
     solcount = 0
     scrcount = 0
     evacount = 0  
-    for col_num in xrange(no_columns):
+    for col_num in range(no_columns):
         ws.write(row_num, col_num, columns[col_num][0], font_style)
         ws.col(col_num).width = columns[col_num][1]
     for s in sd:
@@ -11153,14 +11018,14 @@ def export_all(request):
        cursor2.execute(sql2,{'demo_dec_list' :demo_dec_list})
        results = cursor2.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
        for row in results:
           row_num += 1
 
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 5 or col_num == 9 or col_num == 8 or col_num == 12 or col_num == 15 or col_num == 17 or col_num == 19:
                 ws.write(row_num, col_num, row[col_num],date_style4)
               elif col_num == 18 or col_num == 20:
@@ -11176,7 +11041,7 @@ def export_all(request):
     ws = wb.add_sheet("Solution Options")
     row_num = 0 
     cursor2 = database.cursor ()
-    sql2 = """SELECT s.dec_id, s.id, s.sol_option, source, option_details, type_of_cost, no_of_participants, personnel_cost, facilities_cost, materials_cost, training_cost, other_cost, u.cost, weighted_utility, cost_utility_ratio, '',filename1, file_attachment1, filename2, file_attachment2, filename3, file_attachment3, filename4, file_attachment4, linkname1, link1, linkname2, link2, linkname3, link3, linkname4, link4, s.archived, archived_date, archived_by, unarchived, unarchived_date, unarchived_by, deleted, s.created_date, s.created_by, s.updated_date, s.updated_by FROM utility_tool_solution_options s LEFT JOIN utility_tool_cost_utility u ON s.id = u.opt_id LEFT JOIN utility_tool_detailed_costs d ON s.id = d.opt_id where s.dec_id not in %(demo_dec_list)s and s.archived <> 'Y' and s.deleted <> 'Y'"""      
+    sql2 = """SELECT s.dec_id, s.id, s.sol_option, source, option_details, type_of_cost, no_of_participants, personnel_cost, facilities_cost, materials_cost, training_cost, other_cost, u.cost, weighted_utility, cost_utility_ratio, '',filename1, file_attachment1, filename2, file_attachment2, filename3, file_attachment3, filename4, file_attachment4, linkname1, link1, linkname2, link2, linkname3, link3, linkname4, link4, s.archived, archived_date, archived_by, unarchived, unarchived_date, unarchived_by, deleted, s.created_date, s.created_by, s.updated_date, s.updated_by FROM utility_tool_solution_options s LEFT JOIN utility_tool_cost_utility u ON s.id = u.opt_id LEFT JOIN utility_tool_detailed_costs d ON s.id = d.opt_id where s.dec_id not in %(demo_dec_list)s and s.archived != 'Y' and s.deleted != 'Y'"""      
 
     columns = [
           (u"decision_id", 3000),
@@ -11227,13 +11092,13 @@ def export_all(request):
        cursor2.execute(sql2,{'demo_dec_list' :demo_dec_list})
        results = cursor2.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
        for row in results:
           row_num += 1
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 15:
                  ws.write(row_num, col_num, selectOption(row[0],row[1]),font_style4) 
               elif col_num == 33 or col_num == 36 or col_num == 39 or col_num == 41:
@@ -11243,7 +11108,7 @@ def export_all(request):
               else:
                 ws.write(row_num, col_num, row[col_num],font_style4)                                                                                    
     except:
-       print "Error: unable to fetch solution options data"
+       print ("Error: unable to fetch solution options data")
 
     # Screening Criteria
     ws = wb.add_sheet("Screening Criteria")
@@ -11265,13 +11130,13 @@ def export_all(request):
        cursor2.execute(sql2,{'demo_dec_list' :demo_dec_list})
        results = cursor2.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
        for row in results:
           row_num += 1
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 5 or col_num == 7:
                 ws.write(row_num, col_num, row[col_num],date_style4)
               elif col_num == 6 or col_num == 8:
@@ -11279,7 +11144,7 @@ def export_all(request):
               else:
                 ws.write(row_num, col_num, row[col_num],font_style4)                                                                                    
     except:
-       print "Error: unable to fetch screening criteria data"
+       print ("Error: unable to fetch screening criteria data")
 
     # Mapping Table                                                                                                                                
     ws = wb.add_sheet("Screening Table")
@@ -11291,8 +11156,6 @@ def export_all(request):
     mapp3 = Mapping_Data.objects.all()
     mapp2 = mapp3.exclude(archived = 'Y')  
     mapp = mapp2.exclude(dec_id__in=demo_dec_list)
-    print 'COUNT_All_b jul21'
-    print mapp.count() 
     row = mapp.count()
 
     columns = [
@@ -11309,7 +11172,7 @@ def export_all(request):
     ]
 
     no_columns = 10
-    for col_num in xrange(no_columns):
+    for col_num in range(no_columns):
         ws.write(row_num, col_num, columns[col_num][0], font_style)
         ws.col(col_num).width = columns[col_num][1]
     for m in mapp:
@@ -11363,13 +11226,13 @@ def export_all(request):
        cursor2.execute(sql2,{'demo_dec_list' :demo_dec_list})
        results = cursor2.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
        for row in results:
           row_num += 1
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 17 or col_num == 19:
                 ws.write(row_num, col_num, row[col_num],date_style4)
               elif col_num == 18 or col_num == 20:
@@ -11377,7 +11240,7 @@ def export_all(request):
               else:
                 ws.write(row_num, col_num, row[col_num],font_style4)
     except:                                                                                                                                             
-       print "Error: unable to fetch evaluation criteria data"
+       print ("Error: unable to fetch evaluation criteria data")
 
     # Importance Scores                                                                                                                               
     ws = wb.add_sheet("Importance Scores")
@@ -11402,13 +11265,13 @@ def export_all(request):
        cursor2.execute(sql2,{'demo_dec_list' :demo_dec_list})
        results = cursor2.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
        for row in results:
           row_num += 1
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 7 or col_num == 8:
                 ws.write(row_num, col_num, row[col_num],date_style4)
               elif col_num == 2 or col_num == 9:
@@ -11416,19 +11279,17 @@ def export_all(request):
               else:
                 ws.write(row_num, col_num, row[col_num],font_style4)
     except:                                                                                                                                             
-       print "Error: unable to fetch importance scores data"
+       print ("Error: unable to fetch importance scores data")
 
     # Identify Measures Table                                                                                                                       
     ws = wb.add_sheet("Identify Measures")
     row_num = 0 
     cursor2 = database.cursor ()
-    #sql2 = """SELECT dec_id, sol_id, sol_option, ec_id, measure, data, criterion, result, created_date, created_by FROM utility_tool_identify_data where dec_id not in %(demo_dec_list)s and (archived <> 'Y' or archived is null) and (deleted <> 'Y' or deleted is null)"""
+    #sql2 = """SELECT dec_id, sol_id, sol_option, ec_id, measure, data, criterion, result, created_date, created_by FROM utility_tool_identify_data where dec_id not in %(demo_dec_list)s and (archived != 'Y' or archived is null) and (deleted != 'Y' or deleted is null)"""
     idn3 = Identify_Data.objects.all()
     idn2 = idn3.exclude(archived = 'Y')  
     idn1 = idn2.exclude(deleted = 'Y') 
     idn = idn1.exclude(dec_id__in=demo_dec_list)
-    print 'idn COUNT_All_b jul21'
-    print idn.count() 
     row = idn.count()
           
     columns = [
@@ -11447,13 +11308,13 @@ def export_all(request):
        cursor2.execute(sql2,{'demo_dec_list' :demo_dec_list})
        results = cursor2.fetchall()
        if results != ():
-          for col_num in xrange(len(columns)):
+          for col_num in range(len(columns)):
              ws.write(row_num, col_num, columns[col_num][0], font_style)
              # set column width
              ws.col(col_num).width = columns[col_num][1]
        for row in results:
           row_num += 1
-          for col_num in xrange(len(row)):
+          for col_num in range(len(row)):
               if col_num == 8 or col_num == 10:
                 ws.write(row_num, col_num, row[col_num],date_style4)
               elif col_num == 9 or col_num == 11:
@@ -11463,7 +11324,7 @@ def export_all(request):
     except:
        print "Error: unable to fetch identify measures data" '''
     no_columns = 10                                                                                                                       
-    for col_num in xrange(no_columns):
+    for col_num in range(no_columns):
         ws.write(row_num, col_num, columns[col_num][0], font_style)
         ws.col(col_num).width = columns[col_num][1]
     for m in idn:
@@ -11501,10 +11362,10 @@ def extract_idn_data(request):
         #jul16 692 556 782 608
         table =  idtable.table
         dec_id = idtable.dec_id
-        #print 'dec id and tanle id'
+        #print ('dec id and tanle id'
         #print dec_id
         #print idtable.id 
-        #print 'first row'
+        #print ('first row'
         # remove the first [ from the array we got from ajax  
         # get the first and last postion of the solution options list
         # add all the solution options into a temporary table called Temp_Mapping
@@ -11519,13 +11380,9 @@ def extract_idn_data(request):
            if l4 not in ("Evaluation Criterion", "Common evaluation measure you can use across all options", "Data to collect"):    
               l5 = l4.replace('Describe the information you will use to evaluate  ','')
               l3 = l5.replace('  against this criterion and where you will get it from.','')
-              print 'l3'
-              print l3
               try:
                  sol = Solution_Options.objects.get(dec_id=dec_id, sol_option = l3)  
                  #print sol.archived
-                 print sol.dec_id
-                 print sol.id 
                  if sol.archived == 'Y' or sol.deleted == 'Y':
                     archived = 'Y'  
                  else:
@@ -11534,7 +11391,7 @@ def extract_idn_data(request):
                  tm.save()
                  pos = pos + 1
               except:
-                 print 'not inserting' 
+                 print ('not inserting') 
     
         # Loop through the rest of the rows. Ignore the Keep Option row.
         a = table.replace(arr1,'')
@@ -11559,21 +11416,21 @@ def extract_idn_data(request):
         '''aa = w.replace(arr2,'')
         cc = aa.replace('[],','')
         c = cc.replace('["],','')'''
-        #print 'c'
+        #print ('c'
         #print c
         c = w
         while len(c):
            '''firstpos = c.find('[') + 2
            lastpos =  c.find(']') '''
-           #print 'c jun8'
+           #print ('c jun8'
            #print c
            '''arr3 = c[firstpos:lastpos]
            print arr3
-           print 'arr3' '''
+           print ('arr3' '''
            # how many rows are there in the solution options for that decision
            max_pos = Temp_Mapping.objects.filter(dec_id = dec_id).count()
            max_pos = max_pos + 2
-           #print 'july 9'
+           #print ('july 9'
            #print max_pos
            pos2 = 0
            ec_id = 0
@@ -11583,13 +11440,13 @@ def extract_idn_data(request):
            for ly in w.split(','):
              l5 = ly.replace('[','')
              l4 = l5.replace('"', '')                            
-             #print 'forget everything'
+             #print ('forget everything'
              #print l4
-             if l4 <> '' and l4 <> 'null' and l4 is not None and l4 <> 'null]' and l4 <> 'null]]':        
-                #print 'jun 30 in l4'
+             if l4 != '' and l4 != 'null' and l4 is not None and l4 != 'null]' and l4 != 'null]]':        
+                #print ('jun 30 in l4'
                 #print pos2
                 if pos2 == 0:
-                  #print 'crtierion'
+                  #print ('crtierion'
                   #print l4
                   try:  
                      ec = Evaluation_Criteria.objects.get(dec_id=dec_id, combined = l4)   
@@ -11597,7 +11454,7 @@ def extract_idn_data(request):
                      ec_id = ec.id
                      #print ec_id
                   except:
-                     print 'ec does not exist' 
+                     print ('ec does not exist') 
                   criteria = l4   
                 elif pos2 == 1:                                                                                                              
                   ec_measure = l4
@@ -11605,26 +11462,22 @@ def extract_idn_data(request):
                   ec_data = l4  
                 # add all mapping postions for the scr - solopt combination in this temporary table for one option   
                 if pos2 > 2 and pos2 <= max_pos:
-                  print 'jul 9 222'
-                  print pos2
-                  print max_pos
-                  print l4
-                  if ec_id <>  0 and ec_id is not None and ec_id <> ' ' and ec_id <> '':
+                  if ec_id !=  0 and ec_id is not None and ec_id != ' ' and ec_id != '':
                      ecm = Cri_Temp_Mapping(cri_id = ec_id, position = pos2, value = l4)
                      ecm.save()
              if pos2 < max_pos:
-                #print 'if' 
+                #print ('if' 
                 #print pos2          
                 pos2 = pos2 + 1
              else:
-                #print 'else' 
+                #print ('else' 
                 #print pos2  
                 pos2 = 0 
                 # create mapping rows for all the options and criteria without the result    
                 for temp in Temp_Mapping.objects.all():
-                  #print 'jun 30'
+                  #print ('jun 30'
                   #print temp.sol_id
-                  if ec_id <>  0 and ec_id is not None and ec_id <> ' ' and ec_id <> '':
+                  if ec_id !=  0 and ec_id is not None and ec_id != ' ' and ec_id != '':
                      try:
                        m = Identify_Data.objects.get(dec_id = dec_id, sol_id = temp.sol_id, ec_id = ec_id, sol_position = temp.sol_position)
                      except ObjectDoesNotExist:
@@ -11633,19 +11486,14 @@ def extract_idn_data(request):
                            m = Identify_Data(dec_id = dec_id, sol_id = temp.sol_id, sol_position = temp.sol_position, sol_option = temp.sol_option, ec_id = ec_id, measure = ec_measure, data = ec_data, criterion = criteria, created_date = idtable.created_date,created_by = idtable.created_by,updated_date = idtable.updated_date,updated_by = idtable.updated_by, archived = temp.archived, deleted = deleted, result = cr.value) 
                            m.save()
                        except ObjectDoesNotExist:
-                          print 'jun 30 part 2'
-                          print dec_id
-                          print ec_id
-                          print temp.sol_position
-                          print criteria 
-                          print pos2                           
+                          print ('jun 30 part 2')
                 # update the result for this row 
                 '''for temp in Cri_Temp_Mapping.objects.all():
-                  if temp.value <> '' and temp.value is not None and temp.value <> 'null':  
+                  if temp.value != '' and temp.value is not None and temp.value != 'null':  
                      try:  
                        m = Identify_Data.objects.get(sol_position = temp.position, ec_id = temp.cri_id, dec_id = dec_id)                        
                        m.result = temp.value                                                                                                 
-                       print 'jun 9'
+                       print ('jun 9'
                        print temp.value
                        print dec_id
                        print temp.cri_id
@@ -11653,12 +11501,9 @@ def extract_idn_data(request):
                        print temp.value
                        m.save(update_fields=['result'])
                      except ObjectDoesNotExist:
-                       print 'PROBLEM' '''
-           print 'out of that loop'
+                       print ('PROBLEM' '''
            z = c.replace(w, '')
            y = z.replace('[],','')
-           print 'this is y'
-           print y
            # break out of the loop when only []] remains
            if (y == '[,]' or y == '[[]'):
              break;
@@ -11679,7 +11524,7 @@ def extract_data(request):
         #dec_id = 761 
         table =  mapptable.table
         dec_id = mapptable.dec_id
-        #print 'first row'
+        #print ('first row'
         # remove the first [ from the array we got from ajax  
         # get the first and last postion of the solution options list
         # add all the solution options into a temporary table called Temp_Mapping
@@ -11691,7 +11536,7 @@ def extract_data(request):
         deleted = 'N' 
         for lx in arr1.split(','):
            l3 = lx.replace('"', '')
-           #print 'l3'
+           #print ('l3'
            #print l3
            try:
               sol = Solution_Options.objects.get(dec_id=dec_id, sol_option = l3)  
@@ -11703,7 +11548,7 @@ def extract_data(request):
               tm.save()
               pos = pos + 1
            except:
-              print 'not inserting' 
+              print ('not inserting') 
     
         # Loop through the rest of the rows. Ignore the Keep Option row.
         a = table.replace(arr1,'')
@@ -11714,24 +11559,20 @@ def extract_data(request):
         w1 = w0.replace('[0','')
         w2 = w1.replace('0','')     
         w = w2.replace('null]','')     
-        #print 'w'
+        #print ('w'
         #print w
         firstpos = w.find('[') + 2
         lastpos =  w.find(']') 
         arr2 = w[firstpos:lastpos]
         #print arr2
-        #print 'arr2'
+        #print ('arr2'
         aa = w.replace(arr2,'')
         c = aa.replace('[],','')
         while len(c):
            firstpos = c.find('[') + 2
            lastpos =  c.find(']') 
-           print 'c'
-           print c
 
            arr3 = c[firstpos:lastpos]
-           print arr3
-           print 'arr3'
            pos2 = 0
            scr_id = 0
            criteria = ''
@@ -11748,15 +11589,15 @@ def extract_data(request):
                criteria = l4
              # add all mapping postions for the scr - solopt combination in this temporary table for one option   
              if pos2 > 1 and pos2 < max_pos:
-               #print 'am i in here'
+               #print ('am i in here'
                #print scr_id
-               if scr_id <>  0 and scr_id is not None and scr_id <> ' ' and scr_id <> '':
+               if scr_id !=  0 and scr_id is not None and scr_id != ' ' and scr_id != '':
                   stm = Cri_Temp_Mapping(cri_id = scr_id, position = pos2, value = l4)
                   stm.save()
              pos2 = pos2 + 1
            # create mapping rows for all the options and criteria without the result    
            for temp in Temp_Mapping.objects.all():
-             if scr_id <>  0 and scr_id is not None and scr_id <> ' ' and scr_id <> '':  
+             if scr_id !=  0 and scr_id is not None and scr_id != ' ' and scr_id != '':  
                 try:
                    m = Mapping_Data.objects.get(dec_id = dec_id, sol_id = temp.sol_id, sc_id = scr_id)
                 except ObjectDoesNotExist:
@@ -11770,14 +11611,12 @@ def extract_data(request):
                  m.result = temp.value
                  m.save(update_fields=['result'])
               except ObjectDoesNotExist:
-                 print 'PROBLEM' 
+                 print ('PROBLEM') 
               except BaseException as error:
                  print('An exception occurred: {}'.format(error)) 
-           print 'out of that loop'
+           print ('out of that loop')
            z = c.replace(arr3, '')
            y = z.replace('[],','')
-           print 'this is y'
-           print y
            # break out of the loop when only []] remains
            if (y == '[,]' or y == '[[]'):
              break;
